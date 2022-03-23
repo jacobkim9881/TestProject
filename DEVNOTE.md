@@ -6,7 +6,7 @@ Cocos creator에서 Node가 움직이는 것을 구현해보았다.
 ### 기타
 Typescript는 함수를 코딩할 때 파라미터의 타입을 정해주여야 한다. 예를 들면
 
-```
+```js
 function(parameter : type) {
 return parameter;
 };
@@ -37,7 +37,7 @@ https://docs.cocos.com/creator/1.9/api/en/classes/SystemEvent.html
 
 ### Node의 벡터 좌표 이동
 
-```
+```js
 import { Vec } from `cc`
 
 private _curPos = new Vec3();
@@ -68,7 +68,7 @@ this.node.setPosition(this._curPos);
 
 그래서 어떤 키 값을 넣어 어느 시간 만큼 n만큼의 좌표가 이동이 되었다를 계산하려면 두 파라미터 모두를 값으로 가져가야 한다. 그러므로 미리 변수를 선언하여 이벤트가 실행되었을 때 저장한다.
 
-```
+```js
 private _keycode;
 
 onKeyup(e: EventKeyboard) {
