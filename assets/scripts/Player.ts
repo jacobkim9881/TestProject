@@ -25,12 +25,12 @@ export class Player extends Component {
     private _isPushed = false;
     private pushingTime = 0;
     private pausedTime = 0;
-    private _xPushed = false;
-    private _zPushed = false;
     private _xCode = 0;
     private _zCode = 0;
+    private _yCode = 0;
     //private _isPushing = false;
     private _keycode = 0;
+    private moveLen = 3;
 
     start () {
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this);
@@ -39,31 +39,32 @@ export class Player extends Component {
     }
 
     onKeyDown(e: EventKeyboard) {
-        console.log('key: ', e.keyCode)
+        console.log('key pushed: ', e.keyCode)
         this._keycode = e.keyCode;
-        this._isPushed = true;        
-        if (this._keycode === 37 || this._keycode === 39) this._xPushed = true;
-        if (this._keycode === 38 || this._keycode === 40) this._zPushed = true;
+        this._isPushed = true;      
+        this.pausedTime = 0;
+
+        this._xCode = this._keycode === 37 ? - this.moveLen 
+        : this._keycode === 39 ? this.moveLen 
+        : this._xCode;
+
+        this._yCode = this._keycode === 38 ? - this.moveLen 
+        : this._keycode === 40 ? this.moveLen 
+        : this._yCode;
+        
     }
 
     onKeyUP(e: EventKeyboard) {
-        //console.log('key: ', e.keyCode)
+        //console.log('key up: ', e.keyCode)
         this._keycode = e.keyCode;
-        this._isPushed = false;        
-        if (this._keycode === 37 || this._keycode === 39) {
-            this._xCode = 0;
-            this._xPushed = false;
-        }
-        if (this._keycode === 38 || this._keycode === 40) {
-            this._zCode = 0;
-            this._zPushed = false;
-        }
+        this._isPushed = false;                
+        this.pushingTime = this.pausedTime <= 0.2 ? this.pushingTime : 0;
+
+        if (this._keycode === 37 || this._keycode === 39) this._xCode = 0;        
+        if (this._keycode === 38 || this._keycode === 40) this._zCode = 0;
     }
 
-    moveObj(key: number, dt: number) {         
-        let x, y, z;
-        x = key === 37 ? -3 : key === 39 ? 3 : 0;
-        z = key === 38 ? -3 : key === 40 ? 3 : 0;         
+    moveObj(x: number, y: number, z: number, dt: number) {                 
         x = x * dt;
         z = z * dt;
         //console.log(x !== 0 ? x : null + z !== 0 ? z :null)
@@ -72,28 +73,18 @@ export class Player extends Component {
         this.node.getPosition(this._curPos)
         Vec3.add(this._curPos, this._curPos, new Vec3(x, 0, z));        
         this.node.setPosition(this._curPos);
-        //this.node.getPosition(this._curPos)
         //console.log(this.node.getPosition(this._curPos))       
     }
-
-    update(dt: number) {
+    update(dt: number) {        
+        this.moveObj(this._xCode, this._yCode, this._zCode, this.pushingTime);
         if (this._isPushed) {
             //console.log(dt)
-            //console.log('pushed')
-            this.pausedTime = 0;
+            //console.log('pushed')            
             this.pushingTime = this.pushingTime <= 0.1 ? this.pushingTime + dt * 0.3 : this.pushingTime;
-            //console.log(this.pushingTime)
-            if (this._keycode === 37 || this._keycode === 39) this._xCode = this._keycode;
-            if (this._xPushed) this.moveObj(this._xCode, this.pushingTime);
-            if (this._keycode === 38 || this._keycode === 40) this._zCode = this._keycode;
-            if (this._zPushed) this.moveObj(this._zCode, this.pushingTime);
-            //this.moveObj(this._keycode, this.pushingTime);
-            //this._isPushed = false;
+            //console.log(this.pushingTime)            
         } else {
             //console.log(dt)
-            this.pausedTime = this.pausedTime <= 0.2 ? this.pausedTime + dt : this.pausedTime;            
-            this.pushingTime = this.pausedTime <= 0.2 ? this.pushingTime : 0;
-            //this._isPushing = false;
+            this.pausedTime = this.pausedTime <= 0.2 ? this.pausedTime + dt : this.pausedTime;                                    
             //console.log('not pushed')
         }
     }
