@@ -22,13 +22,14 @@ export class Player extends Component {
 
     private _curPos = new Vec3();
     private _tarPos = new Vec3();
-    private _isPushed = false;
+    private _isPushed = 0;
     private pushingTime = 0;
     private pausedTime = 0;
+    private overedPushingTime = 0.1;
+    private overedPausedTime = 0.1;
     private _xCode = 0;
     private _zCode = 0;
     private _yCode = 0;
-    //private _isPushing = false;
     private _keycode = 0;
     private moveLen = 3;
 
@@ -41,23 +42,23 @@ export class Player extends Component {
     onKeyDown(e: EventKeyboard) {
         console.log('key pushed: ', e.keyCode)
         this._keycode = e.keyCode;
-        this._isPushed = true;      
+        this._isPushed = 1;      
         this.pausedTime = 0;
 
         this._xCode = this._keycode === 37 ? - this.moveLen 
         : this._keycode === 39 ? this.moveLen 
         : this._xCode;
 
-        this._yCode = this._keycode === 38 ? - this.moveLen 
+        this._zCode = this._keycode === 38 ? - this.moveLen 
         : this._keycode === 40 ? this.moveLen 
-        : this._yCode;
+        : this._zCode;
         
     }
 
     onKeyUP(e: EventKeyboard) {
         //console.log('key up: ', e.keyCode)
         this._keycode = e.keyCode;
-        this._isPushed = false;                
+        this._isPushed = 0;                
         this.pushingTime = this.pausedTime <= 0.2 ? this.pushingTime : 0;
 
         if (this._keycode === 37 || this._keycode === 39) this._xCode = 0;        
@@ -66,7 +67,7 @@ export class Player extends Component {
 
     moveObj(x: number, y: number, z: number, dt: number) {                 
         x = x * dt;
-        z = z * dt;
+        z = z * dt;        
         //console.log(x !== 0 ? x : null + z !== 0 ? z :null)
         //console.log(x)
         //console.log(this.node.getPosition(this._curPos))       
@@ -75,18 +76,20 @@ export class Player extends Component {
         this.node.setPosition(this._curPos);
         //console.log(this.node.getPosition(this._curPos))       
     }
+
+    calPushTime(pushingTime: number, overed: number, dt: number, pushed: number) {
+        return pushingTime = pushingTime <= overed ? pushingTime + dt * 0.3 * pushed : pushingTime;
+    }
+
+    calPausedTime(puasedTime: number, overed: number, dt: number, pushed: number) {
+        return puasedTime = puasedTime <= overed ? puasedTime + dt * (1 - pushed) : puasedTime;
+    }
+
     update(dt: number) {        
-        this.moveObj(this._xCode, this._yCode, this._zCode, this.pushingTime);
-        if (this._isPushed) {
-            //console.log(dt)
-            //console.log('pushed')            
-            this.pushingTime = this.pushingTime <= 0.1 ? this.pushingTime + dt * 0.3 : this.pushingTime;
-            //console.log(this.pushingTime)            
-        } else {
-            //console.log(dt)
-            this.pausedTime = this.pausedTime <= 0.2 ? this.pausedTime + dt : this.pausedTime;                                    
-            //console.log('not pushed')
-        }
+        this.moveObj(this._xCode, this._yCode, this._zCode, this.pushingTime);        
+        this.pushingTime = this.calPushTime(this.pushingTime, this.overedPushingTime, dt, this._isPushed);
+        this.pausedTime = this.calPausedTime(this.pausedTime, this.overedPausedTime, dt, this._isPushed);
+        
     }
 
 }
