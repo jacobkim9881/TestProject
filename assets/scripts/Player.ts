@@ -39,6 +39,10 @@ export class Player extends Component {
         // [3]
     }
 
+    aKeyDown(keycode: number, isPushed: number, puasedTime: number, moveLen: number, codeVal: number) {
+        
+    }
+
     onKeyDown(e: EventKeyboard) {
         console.log('key pushed: ', e.keyCode)
         this._keycode = e.keyCode;
@@ -88,7 +92,7 @@ export class Player extends Component {
     update(dt: number) {        
         this.moveObj(this._xCode, this._yCode, this._zCode, this.pushingTime);        
         this.pushingTime = this.calPushTime(this.pushingTime, this.overedPushingTime, dt, this._isPushed);
-        this.pausedTime = this.calPausedTime(this.pausedTime, this.overedPausedTime, dt, this._isPushed);
+        this.pausedTime = this.calPausedTime(this.pausedTime, this.overedPausedTime, dt, this._isPushed);        
         
     }
 

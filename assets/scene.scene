@@ -28,16 +28,19 @@
       },
       {
         "__id__": 16
+      },
+      {
+        "__id__": 20
       }
     ],
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 20
+      "__id__": 22
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 21
+      "__id__": 23
     },
     "_id": "23058c5e-064e-4fa2-a081-ddaea5b6eb6e"
   },
@@ -501,7 +504,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0
+      "z": 3.287
     },
     "_lrot": {
       "__type__": "cc.Quat",
@@ -542,8 +545,8 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 10.45,
-      "y": 0.32,
+      "x": 0,
+      "y": 0,
       "z": 0
     },
     "_lrot": {
@@ -613,25 +616,83 @@
     "_lightmapSize": 64
   },
   {
+    "__type__": "cc.Node",
+    "_name": "Game Manager",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 21
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_layer": 1073741824,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_id": "edeW50PvdHdYZELdn1jnfQ"
+  },
+  {
+    "__type__": "743048RpxJDyqhRiz3RWLTC",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 20
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "curPrefab": {
+      "__uuid__": "6350d660-e888-4acf-a552-f3b719ae9110",
+      "__expectedType__": "cc.Prefab"
+    },
+    "_id": "86q6RoqQlHfIXt6xly+MbR"
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "fileId": "f46876e4-e81b-4931-b493-6d367be385e7"
   },
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 22
-    },
-    "shadows": {
-      "__id__": 23
-    },
-    "_skybox": {
       "__id__": 24
     },
-    "fog": {
+    "shadows": {
       "__id__": 25
     },
-    "octree": {
+    "_skybox": {
       "__id__": 26
+    },
+    "fog": {
+      "__id__": 27
+    },
+    "octree": {
+      "__id__": 28
     }
   },
   {
