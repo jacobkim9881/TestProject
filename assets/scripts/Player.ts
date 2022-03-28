@@ -26,6 +26,11 @@ export class Player extends Component {
     private _keycode = 0;
     private moveLen = 3;
 
+    private _left = new OneAxis();
+    private _right = new OneAxis();
+    private _up = new OneAxis();
+    private _down = new OneAxis();
+
     private _x = new OneAxis();
     private _y = new OneAxis();
     private _z = new OneAxis();
@@ -61,39 +66,44 @@ export class Player extends Component {
         console.log('key pushed: ', e.keyCode)
         this._keycode = e.keyCode;
 
-        if (e.keyCode === 37 || e.keyCode === 39) {
-            this._x.isPushed = 1;
-            this._x.pausedTime = 0
-            this._x.position = e.keyCode === 37 ? - this.moveLen 
-        : e.keyCode === 39 ? this.moveLen 
-        : this._x.position;
-        } else if (e.keyCode === 38 || e.keyCode === 40) {
-            this._z.isPushed = 1;
-            this._z.pausedTime = 0
-            this._z.position = e.keyCode === 38 ? - this.moveLen 
-        : e.keyCode === 40 ? this.moveLen 
-        : this._z.position;
-        }
-        
+
+        if (e.keyCode === 37) {
+            this._left.isPushed = 1;
+            this._left.pausedTime = 0
+            this._left.position = -this.moveLen         
+        } else if (e.keyCode === 39) {
+            this._right.isPushed = 1;
+            this._right.pausedTime = 0
+            this._right.position = this.moveLen 
+        } else if (e.keyCode === 38) {
+            this._up.isPushed = 1;
+            this._up.pausedTime = 0
+            this._up.position = -this.moveLen 
+        } else if (e.keyCode === 40) {
+            this._down.isPushed = 1;
+            this._down.pausedTime = 0
+            this._down.position = this.moveLen 
+        } 
     }
 
     onKeyUP(e: EventKeyboard) {
         //console.log('key up: ', e.keyCode)
-        if (e.keyCode === 37 || e.keyCode === 39) {               
-            this._x.isPushed = 0;
-            this._x.pushingTime = this._x.pausedTime <= 0.04 ? this._x.pushingTime : 0;
-            this._x.position = 0;
-        } else if (e.keyCode === 38 || e.keyCode === 40) {
-            this._z.isPushed = 0;
-            this._z.pushingTime = this._z.pausedTime <= 0.2 ? this._z.pushingTime : 0;
-            this._z.position = 0;
-
-        }
+        if (e.keyCode === 37) {               
+            this._left.isPushed = 0;
+            this._left.position = this.pushingTime <= 0 ? 0 : this._left.position;
+        } else if (e.keyCode === 39) {               
+            this._right.isPushed = 0;
+            this._right.position = this.pushingTime <= 0 ? 0 : this._right.position;
+        } else if (e.keyCode === 38) {               
+            this._up.isPushed = 0;
+            this._up.position = this.pushingTime <= 0 ? 0 : this._up.position;
+        } else if (e.keyCode === 40) {               
+            this._down.isPushed = 0;
+            this._down.position = this.pushingTime <= 0 ? 0 : this._down.position;
+        }  
     }
 
-    moveObj(x: number, y: number, z: number, xdt: number, ydt: number, zdt: number) {                 
-        x = x * xdt;
-        z = z * zdt;        
+    moveObj(x: number, y: number, z: number) {                 
         //console.log(x !== 0 ? x : null + z !== 0 ? z :null)
         //console.log(x)
         //console.log(this.node.getPosition(this._curPos))       
@@ -102,6 +112,7 @@ export class Player extends Component {
         this.node.setPosition(this._curPos);
         //console.log(this.node.getPosition(this._curPos))       
     }
+
 
     calPushTime(pushingTime: number, overed: number, dt: number, pushed: number) {
         //return pushingTime = pushingTime + dt * 0.3 * pushed;
@@ -112,13 +123,21 @@ export class Player extends Component {
         return puasedTime = puasedTime <= overed ? puasedTime + dt * (1 - pushed) : puasedTime;
     }
 
-    update(dt: number) {        
-        this.moveObj(this._x.position, this._y.position, this._z.position, this._x.pushingTime, this._y.pushingTime, this._z.pushingTime);        
-        this._x.pushingTime = this.calPushTime(this._x.pushingTime, this._x.overedPushingTime, dt, this._x.isPushed);
-        this._x.pausedTime = this.calPausedTime(this._x.pausedTime, this._x.overedPausedTime, dt, this._x.isPushed);        
-        console.log(this._x.pushingTime, this._x.pausedTime)
-        //this._x.pushingTime = this.calPushTime(this._x.pushingTime, this._x.overedPushingTime, dt, this._x.isPushed);
-        this._z.pushingTime = this.calPushTime(this._z.pushingTime, this._z.overedPushingTime, dt, this._z.isPushed);
+    update(dt: number) {                
+        this._left.pushingTime = this.calPushTime(this._left.pushingTime, this._left.overedPushingTime, dt, this._left.isPushed);
+        this._left.pausedTime = this.calPausedTime(this._left.pausedTime, this._left.overedPausedTime, dt, this._left.isPushed);        
+        this._right.pushingTime = this.calPushTime(this._right.pushingTime, this._right.overedPushingTime, dt, this._right.isPushed);
+        this._right.pausedTime = this.calPausedTime(this._right.pausedTime, this._right.overedPausedTime, dt, this._right.isPushed);        
+        this._up.pushingTime = this.calPushTime(this._up.pushingTime, this._up.overedPushingTime, dt, this._up.isPushed);
+        this._up.pausedTime = this.calPausedTime(this._up.pausedTime, this._up.overedPausedTime, dt, this._up.isPushed);        
+        this._down.pushingTime = this.calPushTime(this._down.pushingTime, this._down.overedPushingTime, dt, this._down.isPushed);
+        this._down.pausedTime = this.calPausedTime(this._down.pausedTime, this._down.overedPausedTime, dt, this._down.isPushed);        
+
+        this._xCode = this._left.pushingTime * this._left.position + this._right.pushingTime * this._right.position;       
+        this._zCode = this._up.pushingTime * this._up.position + this._down.pushingTime * this._down.position;       
+        //console.log(this._x.pushingTime, this._x.pausedTime)
+        
+        this.moveObj(this._xCode, this._yCode, this._zCode)
         
     }
 
