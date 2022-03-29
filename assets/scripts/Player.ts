@@ -100,7 +100,7 @@ export class Player extends Component {
     calPausedTime(puasedTime: number, overed: number, dt: number, pushed: number) {
         return puasedTime = puasedTime <= overed ? puasedTime + dt * (1 - pushed) : puasedTime;
     }
-
+//
     update(dt: number) {                
         this._left.pushingTime = this.calPushTime(this._left.pushingTime, this.overedPushingTime, dt, this._left.isPushed);
         this._left.pausedTime = this.calPausedTime(this._left.pausedTime, this.overedPausedTime, dt, this._left.isPushed);        
