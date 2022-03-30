@@ -14,7 +14,14 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
- 
+ /*
+ enum KeyVal {
+    LEFT = 37,
+    RIGHT = 39,
+    UP = 38,
+    DOWN = 40
+  }
+*/
 @ccclass('Player')
 export class Player extends Component {
     @property({
@@ -44,7 +51,11 @@ export class Player extends Component {
 
     onKeyDown(e: EventKeyboard) {
         console.log('key pushed: ', e.keyCode)
-
+/*
+        switch(e.keyCode) {
+            case KeyVal.LEFT:
+        }
+*/
         if (e.keyCode === 37) {
             this._left.isPushed = 1;
             this._left.pausedTime = 0
