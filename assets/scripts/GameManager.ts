@@ -33,6 +33,11 @@ export class GameManager extends Component {
         
     }
 
+    onClick(e: number) {
+
+        console.log('hello', e)
+    }
+
     start () {
         this.test(1)
         this.test(2)

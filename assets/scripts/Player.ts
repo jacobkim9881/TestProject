@@ -14,14 +14,14 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
-/*
+
  enum KeyVal {
     LEFT = 37,
     RIGHT = 39,
     UP = 38,
     DOWN = 40
   }
-*/
+
 @ccclass('Player')
 export class Player extends Component {
     @property({
