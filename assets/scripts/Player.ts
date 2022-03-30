@@ -14,7 +14,7 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
- /*
+/*
  enum KeyVal {
     LEFT = 37,
     RIGHT = 39,
@@ -43,32 +43,45 @@ export class Player extends Component {
     private _zCode = 0;
     private _yCode = 0;
 
+    private Key = {
+        LEFT : 37,
+        RIGHT : 39,
+        UP : 38,
+        DOWN : 40
+      }
+
     start () {        
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this);
       systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this);        
         // [3]
     }
 
+
     onKeyDown(e: EventKeyboard) {
         console.log('key pushed: ', e.keyCode)
 /*
         switch(e.keyCode) {
-            case KeyVal.LEFT:
+            case this.Key.LEFT:                
+            this._left.isPushed = 1;
+            this._left.pausedTime = 0
+            this._left.position = -this.moveLen       
+            break;
         }
-*/
-        if (e.keyCode === 37) {
+        */
+
+        if (e.keyCode === this.Key.LEFT) {
             this._left.isPushed = 1;
             this._left.pausedTime = 0
             this._left.position = -this.moveLen         
-        } else if (e.keyCode === 39) {
+        } else if (e.keyCode === this.Key.RIGHT) {
             this._right.isPushed = 1;
             this._right.pausedTime = 0
             this._right.position = this.moveLen 
-        } else if (e.keyCode === 38) {
+        } else if (e.keyCode === this.Key.UP) {
             this._up.isPushed = 1;
             this._up.pausedTime = 0
             this._up.position = -this.moveLen 
-        } else if (e.keyCode === 40) {
+        } else if (e.keyCode === this.Key.DOWN) {
             this._down.isPushed = 1;
             this._down.pausedTime = 0
             this._down.position = this.moveLen 
@@ -77,16 +90,16 @@ export class Player extends Component {
 
     onKeyUP(e: EventKeyboard) {
         //console.log('key up: ', e.keyCode)
-        if (e.keyCode === 37) {               
+        if (e.keyCode === this.Key.LEFT) {               
             this._left.isPushed = 0;
             this._left.position = 0
-        } else if (e.keyCode === 39) {               
+        } else if (e.keyCode === this.Key.RIGHT) {               
             this._right.isPushed = 0;
             this._right.position = 0;
-        } else if (e.keyCode === 38) {               
+        } else if (e.keyCode === this.Key.UP) {               
             this._up.isPushed = 0;
             this._up.position = 0
-        } else if (e.keyCode === 40) {               
+        } else if (e.keyCode === this.Key.DOWN) {               
             this._down.isPushed = 0;
             this._down.position = 0
         }  
