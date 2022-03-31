@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, SystemEventType, EventKeyboard, Vec3, KeyCode } from 'cc';
+import { _decorator, Component, Node, systemEvent, SystemEvent, SystemEventType, EventKeyboard, Vec3, KeyCode, AudioSource, AudioClip } from 'cc';
 import { OneAxis } from './OneAxis'
 const { ccclass, property } = _decorator;
 
@@ -27,6 +27,10 @@ export class Player extends Component {
     @property({
         type: Animation
     })
+
+    @property(AudioSource)    
+    private _audioSource: AudioSource = null!
+    private _clip: AudioClip = null!
 
     private _curPos = new Vec3();
     private _tarPos = new Vec3();
@@ -85,7 +89,9 @@ export class Player extends Component {
             this._down.isPushed = 1;
             this._down.pausedTime = 0
             this._down.position = this.moveLen 
-        } 
+        } else if (e.keyCode === 87) {
+            this.makeSound();
+        }
     }
 
     onKeyUP(e: EventKeyboard) {
@@ -102,7 +108,14 @@ export class Player extends Component {
         } else if (e.keyCode === this.Key.DOWN) {               
             this._down.isPushed = 0;
             this._down.position = 0
-        }  
+        } 
+    }
+
+    makeSound() {
+        var audio = this.node.getComponent(AudioSource)!;
+        console.log(audio)
+        this._audioSource = audio;
+        this._audioSource.play();
     }
 
     moveObj(x: number, y: number, z: number) {                 
