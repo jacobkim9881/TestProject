@@ -1,28 +1,15 @@
-import { _decorator, Component, Node, AudioSource, assert } from 'cc';
+import { _decorator, Component, Node, AudioSource, assert, AudioClip } from 'cc';
  const { ccclass, property } = _decorator;
 
  @ccclass("AudioController")
  export class AudioController extends Component { 
+    @property(AudioClip)
+    public clip: AudioClip = null!   
 
-     @property(AudioSource)
-     public _audioSource: AudioSource = null!
+    @property(AudioSource)
+    public audioSource: AudioSource = null!
 
-     onLoad () {
-         // Get the AudioSource component
-         const audioSource = this.node.getComponent(AudioSource)! ;
-         // Check if it contains AudioSource, if not, output an error message
-         assert(audioSource);
-         // Assign the component to the global variable _audioSource
-         this._audioSource = audioSource;
-     }
-
-     play () {
-         // Play the music
-         this._audioSource.play();
-     }
-
-     pause () {
-         // Pause the music
-         this._audioSource.pause();
-     }
+    playOneShot () {
+        this.audioSource.playOneShot(this.clip, 1);
+    }
  }

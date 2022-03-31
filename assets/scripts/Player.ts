@@ -30,6 +30,8 @@ export class Player extends Component {
 
     @property(AudioSource)    
     private _audioSource: AudioSource = null!
+
+    @property(AudioClip)
     private _clip: AudioClip = null!
 
     private _curPos = new Vec3();
@@ -90,7 +92,8 @@ export class Player extends Component {
             this._down.pausedTime = 0
             this._down.position = this.moveLen 
         } else if (e.keyCode === 87) {
-            this.makeSound();
+            //this.makeSound();
+            this.playbackSound()
         }
     }
 
@@ -116,6 +119,14 @@ export class Player extends Component {
         console.log(audio)
         this._audioSource = audio;
         this._audioSource.play();
+    }
+
+    playbackSound() {
+        var audio = this.node.getComponent(AudioSource)!;                
+        this._audioSource = audio;
+        console.log(this._audioSource)
+        console.log(audio.clip)
+        this._audioSource.playOneShot(audio.clip, 1);
     }
 
     moveObj(x: number, y: number, z: number) {                 
