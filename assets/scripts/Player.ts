@@ -57,6 +57,7 @@ export class Player extends Component {
       }
 
     start () {        
+        
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this);
       systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this);        
         // [3]

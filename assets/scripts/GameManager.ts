@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, Prefab, instantiate } from 'cc';
+import { _decorator, Component, Node, Prefab, instantiate, director, Director } from 'cc';
 const { ccclass, property } = _decorator;
 
 /**
@@ -19,12 +19,8 @@ export class GameManager extends Component {
     @property(Prefab)
 
     curPrefab: Prefab = null!;
-    // [1]
-    // dummy = '';
 
-    // [2]
-    // @property
-    // serializableDummy = 0;
+    @property(Director)
 
     test(n: number) {
         let child = instantiate(this.curPrefab);
