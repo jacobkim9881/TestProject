@@ -19,7 +19,8 @@ const { ccclass, property } = _decorator;
     LEFT = 37,
     RIGHT = 39,
     UP = 38,
-    DOWN = 40
+    DOWN = 40,
+    SOUND = 87
   }
 
 @ccclass('Player')
@@ -66,35 +67,31 @@ export class Player extends Component {
 
     onKeyDown(e: EventKeyboard) {
         console.log('key pushed: ', e.keyCode)
-/*
-        switch(e.keyCode) {
-            case this.Key.LEFT:                
+        let input: number = e.keyCode;
+        switch(input) {
+            case KeyVal.LEFT:                
             this._left.isPushed = 1;
             this._left.pausedTime = 0
             this._left.position = -this.moveLen       
             break;
-        }
-        */
-
-        if (e.keyCode === this.Key.LEFT) {
-            this._left.isPushed = 1;
-            this._left.pausedTime = 0
-            this._left.position = -this.moveLen         
-        } else if (e.keyCode === this.Key.RIGHT) {
+            case KeyVal.RIGHT:                
             this._right.isPushed = 1;
             this._right.pausedTime = 0
             this._right.position = this.moveLen 
-        } else if (e.keyCode === this.Key.UP) {
+            break;
+            case KeyVal.UP:                
             this._up.isPushed = 1;
             this._up.pausedTime = 0
-            this._up.position = -this.moveLen 
-        } else if (e.keyCode === this.Key.DOWN) {
+            this._up.position = -this.moveLen   
+            break;
+            case KeyVal.DOWN:                
             this._down.isPushed = 1;
             this._down.pausedTime = 0
             this._down.position = this.moveLen 
-        } else if (e.keyCode === 87) {
-            //this.makeSound();
-            this.playbackSound()
+            break;            
+            case KeyVal.SOUND:                
+            this.playbackSound();
+            break;
         }
     }
 
