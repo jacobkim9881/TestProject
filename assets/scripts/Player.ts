@@ -37,25 +37,16 @@ export class Player extends Component {
 
     private _curPos = new Vec3();
     private _tarPos = new Vec3();
-    private moveLen = 3;
+    private moveLen = 0.15;
 
     private _left = new OneAxis();
     private _right = new OneAxis();
     private _up = new OneAxis();
     private _down = new OneAxis();
 
-    private overedPushingTime = 0.05;
-    private overedPausedTime = 0.04;
     private _xCode = 0;
     private _zCode = 0;
     private _yCode = 0;
-
-    private Key = {
-        LEFT : 37,
-        RIGHT : 39,
-        UP : 38,
-        DOWN : 40
-      }
 
     start () {        
         
@@ -72,19 +63,15 @@ export class Player extends Component {
         switch(input) {
             case KeyVal.LEFT:                
             this._left.isPushed = 1;
-            this._left.pausedTime = 0       
             break;
             case KeyVal.RIGHT:                
             this._right.isPushed = 1;
-            this._right.pausedTime = 0 
             break;
             case KeyVal.UP:                
             this._up.isPushed = 1;
-            this._up.pausedTime = 0   
             break;
             case KeyVal.DOWN:                
             this._down.isPushed = 1;
-            this._down.pausedTime = 0 
             break;            
             case KeyVal.SOUND:                
             this.playbackSound();
@@ -140,28 +127,10 @@ export class Player extends Component {
         //console.log(this.node.getPosition(this._curPos))       
     }
 
-
-    calPushTime(pushingTime: number, overed: number, dt: number, pushed: number) {
-        //return pushingTime = pushingTime + dt * 0.3 * pushed;
-        return pushingTime = pushingTime <= overed ? pushingTime + dt * 0.3 * pushed : pushingTime;
-    }
-
-    calPausedTime(puasedTime: number, overed: number, dt: number, pushed: number) {
-        return puasedTime = puasedTime <= overed ? puasedTime + dt * (1 - pushed) : puasedTime;
-    }
-//
     update(dt: number) {                
-        this._left.pushingTime = this.calPushTime(this._left.pushingTime, this.overedPushingTime, dt, this._left.isPushed);
-        this._left.pausedTime = this.calPausedTime(this._left.pausedTime, this.overedPausedTime, dt, this._left.isPushed);        
-        this._right.pushingTime = this.calPushTime(this._right.pushingTime, this.overedPushingTime, dt, this._right.isPushed);
-        this._right.pausedTime = this.calPausedTime(this._right.pausedTime, this.overedPausedTime, dt, this._right.isPushed);        
-        this._up.pushingTime = this.calPushTime(this._up.pushingTime, this.overedPushingTime, dt, this._up.isPushed);
-        this._up.pausedTime = this.calPausedTime(this._up.pausedTime, this.overedPausedTime, dt, this._up.isPushed);        
-        this._down.pushingTime = this.calPushTime(this._down.pushingTime, this.overedPushingTime, dt, this._down.isPushed);
-        this._down.pausedTime = this.calPausedTime(this._down.pausedTime, this.overedPausedTime, dt, this._down.isPushed);        
-
-        this._xCode = this.moveLen * (this._left.pushingTime * this._left.isPushed * -1 + this._right.pushingTime * this._right.isPushed);       
-        this._zCode = this.moveLen * (this._up.pushingTime * this._up.isPushed * -1 + this._down.pushingTime * this._down.isPushed);       
+        this._xCode = this.moveLen * (this._left.isPushed * -1 + this._right.isPushed);       
+        this._zCode = this.moveLen * (this._up.isPushed * -1 + this._down.isPushed);       
+        
         //console.log(this._x.pushingTime, this._x.pausedTime)
         
         this.moveObj(this._xCode, this._yCode, this._zCode)
@@ -169,14 +138,3 @@ export class Player extends Component {
     }
 
 }
-
-/**
- * [1] Class member could be defined like this.
- * [2] Use `property` decorator if your want the member to be serializable.
- * [3] Your initialization goes here.
- * [4] Your update function goes here.
- *
- * Learn more about scripting: https://docs.cocos.com/creator/3.4/manual/en/scripting/
- * Learn more about CCClass: https://docs.cocos.com/creator/3.4/manual/en/scripting/decorator.html
- * Learn more about life-cycle callbacks: https://docs.cocos.com/creator/3.4/manual/en/scripting/life-cycle-callbacks.html
- */
