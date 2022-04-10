@@ -66,50 +66,53 @@ export class Player extends Component {
 
 
     onKeyDown(e: EventKeyboard) {
-        console.log('key pushed: ', e.keyCode)
+        //console.log('key pushed: ', e.keyCode)
+        console.log(this._left.pushingTime)
         let input: number = e.keyCode;
         switch(input) {
             case KeyVal.LEFT:                
             this._left.isPushed = 1;
-            this._left.pausedTime = 0
-            this._left.position = -this.moveLen       
+            this._left.pausedTime = 0       
             break;
             case KeyVal.RIGHT:                
             this._right.isPushed = 1;
-            this._right.pausedTime = 0
-            this._right.position = this.moveLen 
+            this._right.pausedTime = 0 
             break;
             case KeyVal.UP:                
             this._up.isPushed = 1;
-            this._up.pausedTime = 0
-            this._up.position = -this.moveLen   
+            this._up.pausedTime = 0   
             break;
             case KeyVal.DOWN:                
             this._down.isPushed = 1;
-            this._down.pausedTime = 0
-            this._down.position = this.moveLen 
+            this._down.pausedTime = 0 
             break;            
             case KeyVal.SOUND:                
             this.playbackSound();
+            break;
+            default:
             break;
         }
     }
 
     onKeyUP(e: EventKeyboard) {
-        //console.log('key up: ', e.keyCode)
-        if (e.keyCode === this.Key.LEFT) {               
+        //console.log('key up: ', e.keyCode)        
+        let input: number = e.keyCode;
+        switch(input) {
+            case KeyVal.LEFT:                
             this._left.isPushed = 0;
-            this._left.position = 0
-        } else if (e.keyCode === this.Key.RIGHT) {               
+            break;
+            case KeyVal.RIGHT:                
             this._right.isPushed = 0;
-            this._right.position = 0;
-        } else if (e.keyCode === this.Key.UP) {               
+            break;
+            case KeyVal.UP:                
             this._up.isPushed = 0;
-            this._up.position = 0
-        } else if (e.keyCode === this.Key.DOWN) {               
+            break;
+            case KeyVal.DOWN:                
             this._down.isPushed = 0;
-            this._down.position = 0
-        } 
+            break;            
+            default:
+            break;
+        }
     }
 
     makeSound() {
@@ -157,8 +160,8 @@ export class Player extends Component {
         this._down.pushingTime = this.calPushTime(this._down.pushingTime, this.overedPushingTime, dt, this._down.isPushed);
         this._down.pausedTime = this.calPausedTime(this._down.pausedTime, this.overedPausedTime, dt, this._down.isPushed);        
 
-        this._xCode = this._left.pushingTime * this._left.position + this._right.pushingTime * this._right.position;       
-        this._zCode = this._up.pushingTime * this._up.position + this._down.pushingTime * this._down.position;       
+        this._xCode = this.moveLen * (this._left.pushingTime * this._left.isPushed * -1 + this._right.pushingTime * this._right.isPushed);       
+        this._zCode = this.moveLen * (this._up.pushingTime * this._up.isPushed * -1 + this._down.pushingTime * this._down.isPushed);       
         //console.log(this._x.pushingTime, this._x.pausedTime)
         
         this.moveObj(this._xCode, this._yCode, this._zCode)

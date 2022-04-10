@@ -19,5 +19,4 @@ export class OneAxis extends Component {
     isPushed = 0
     pushingTime = 0
     pausedTime = 0
-    position = 0    
 }
