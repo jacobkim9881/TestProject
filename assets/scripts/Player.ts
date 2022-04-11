@@ -56,7 +56,7 @@ export class Player extends Component {
 
     start () {        
         let collider : Collider = this.getComponent(Collider);
-        collider.on('onCollisionEnter', this.onTrigger, this);
+        collider.on('onTriggerEnter', this.onTrigger, this);
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this);
       systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this);        
         // [3]
