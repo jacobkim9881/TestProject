@@ -32,6 +32,7 @@ export class Player extends Component {
 
     @property(AudioSource)    
     private _audioSource: AudioSource = null!
+    private audio: AudioSource = null!;
 
     @property(AudioClip)
     private _clip: AudioClip = null!
@@ -41,6 +42,7 @@ export class Player extends Component {
     private moveLen = 0.15;
     private jumpHeight = 6;
     private jumpLimit = 0.2;
+    private input: number = null!;
 
     private _left = new OneAxis();
     private _right = new OneAxis();
@@ -53,7 +55,7 @@ export class Player extends Component {
     private _yCode = 0;
 
     start () {        
-        let collider = this.getComponent(Collider);
+        let collider : Collider = this.getComponent(Collider);
         collider.on('onCollisionEnter', this.onTrigger, this);
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this);
       systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this);        
@@ -68,8 +70,8 @@ export class Player extends Component {
         console.log('key pushed: ', e.keyCode)
         console.log(this._jump.pushingTime)
         console.log(this._jump.isPushed)
-        let input: number = e.keyCode;
-        switch(input) {
+        this.input = e.keyCode;
+        switch(this.input) {
             case KeyVal.LEFT:                
             this._left.isPushed = 1;
             break;
@@ -96,8 +98,8 @@ export class Player extends Component {
 
     onKeyUP(e: EventKeyboard) {
         //console.log('key up: ', e.keyCode)        
-        let input: number = e.keyCode;
-        switch(input) {
+        this.input = e.keyCode;
+        switch(this.input) {
             case KeyVal.LEFT:                
             this._left.isPushed = 0;
             break;
@@ -120,18 +122,18 @@ export class Player extends Component {
     }
 
     makeSound() {
-        var audio = this.node.getComponent(AudioSource)!;
-        console.log(audio)
-        this._audioSource = audio;
+        this.audio = this.node.getComponent(AudioSource)!;
+        console.log(this.audio)
+        this._audioSource = this.audio;
         this._audioSource.play();
     }
 
     playbackSound() {
-        var audio = this.node.getComponent(AudioSource)!;                
-        this._audioSource = audio;
+        this.audio = this.node.getComponent(AudioSource)!;                
+        this._audioSource = this.audio;
         console.log(this._audioSource)
-        console.log(audio.clip)
-        this._audioSource.playOneShot(audio.clip, 1);
+        console.log(this.audio.clip)
+        this._audioSource.playOneShot(this.audio.clip, 1);
     }
 
     calJumpTime(pushingTime: number, dt: number, pushed: number) {
