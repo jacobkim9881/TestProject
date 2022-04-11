@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, SystemEventType, EventKeyboard, Vec3, KeyCode, AudioSource, AudioClip } from 'cc';
+import { _decorator, Component, Node, systemEvent, SystemEvent, SystemEventType, EventKeyboard, Vec3, KeyCode, AudioSource, AudioClip, Collider, ITriggerEvent } from 'cc';
 import { OneAxis } from './OneAxis'
 const { ccclass, property } = _decorator;
 
@@ -53,12 +53,16 @@ export class Player extends Component {
     private _yCode = 0;
 
     start () {        
-        
+        let collider = this.getComponent(Collider);
+        collider.on('onCollisionEnter', this.onTrigger, this);
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this);
       systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this);        
         // [3]
     }
 
+    private onTrigger (event: ITriggerEvent) {
+        console.log(event.type, event);
+    }
 
     onKeyDown(e: EventKeyboard) {
         console.log('key pushed: ', e.keyCode)
