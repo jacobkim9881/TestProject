@@ -758,16 +758,15 @@
     "_lightmapSize": 64
   },
   {
-    "__type__": "a02abXnEU1N64iO28/oiXqC",
+    "__type__": "dda86c966tNRq/b8VnfVL1d",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 22
     },
-    "_enabled": false,
+    "_enabled": true,
     "__prefab": null,
-    "camera": null,
-    "_id": "70SdXA7qJMWrrhkAjI4/nu"
+    "_id": "490zgQkuZFsZr5Cz5w41WT"
   },
   {
     "__type__": "cc.CapsuleCollider",

@@ -14,6 +14,11 @@ const { ccclass, property } = _decorator;
  *
  */
  
+export let rayRes: Array<object> = null!
+export let rayPosX: number = null!;
+export let rayPosZ: number = null!;
+export let isRay: boolean = null!;
+
 @ccclass('Camera')
 export class Camera extends Component {
 
@@ -21,6 +26,7 @@ export class Camera extends Component {
     private camera: CameraComponent = null as any;
 
     private _ray: geometry.Ray = new geometry.Ray();
+    
 
     start () {        
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this);
@@ -30,9 +36,11 @@ export class Camera extends Component {
         this.camera = this.getComponent(CameraComponent)
         
         this.camera.screenPointToRay(e.getLocationX(), e.getLocationY(), this._ray);
-        let rayShoot = PhysicsSystem.instance.raycast(this._ray, 0xffffffff, 100, true);
-        let rayRes = PhysicsSystem.instance.raycastResults;
-        console.log('raycast get', rayShoot)
+        isRay = PhysicsSystem.instance.raycast(this._ray, 0xffffffff, 100, true);
+        rayRes = PhysicsSystem.instance.raycastResults;
+        rayPosX = PhysicsSystem.instance.raycastResults[0].hitPoint.x;
+        rayPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z;
+        console.log('raycast get', isRay)
         console.log(rayRes)
     }
 
