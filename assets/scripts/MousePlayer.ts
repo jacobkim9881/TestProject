@@ -26,7 +26,8 @@ export class MousePlayer extends Component {
     private jumpHeight = 6;
     private jumpLimit = 0.2;
     private _isMPushed: number = 0;
-    private _mPushingTime: number = 0;    
+    private _mPushingTime: number = 0;   
+    private moveVal: object; 
     private c1val: number = 0;
     private x1val: number = 0;
     private z1val: number = 0;
@@ -35,7 +36,29 @@ export class MousePlayer extends Component {
         systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this);
     }
 
+    calMoveObj(isRay:boolean, curx: number, curz: number, moveLen: number ) {        
+        if (isRay) {
+            let xLen, zLen, cval, dt;
+            dt = 0.015;
+            //console.log('cur x, z', curx, curz)
+            //console.log('ray x, z', rayPosX, rayPosZ)
+            xLen = curx - rayPosX;
+            zLen = curz - rayPosZ;
+            cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2));
+            return {             
+            c1val: cval/(dt * moveLen),
+            x1val: - xLen / cval/(dt * moveLen),
+            z1val: - zLen / cval/(dt * moveLen),   
+            }
+            //console.log(this.x1val, this.z1val)
+
+           }
+    }
+
     onMouseDown(e: EventMouse) {     
+        this.moveVal = this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3);
+        //this.c1val = this.moveVal["c1val"];
+        /*
         if (isRay) {
             let curx, curz, xLen, zLen, cval, dt, moveLen;
             curx = this.node.getPosition().x;
@@ -52,6 +75,7 @@ export class MousePlayer extends Component {
             this.z1val = - zLen / this.c1val;
             console.log(this.x1val, this.z1val)
            }
+           */
      //   xLen = 
     }
 
@@ -77,10 +101,11 @@ export class MousePlayer extends Component {
         //console.log(this.node.getPosition(this._curPos))       
     }
 
-    update(dt: number) {    
-        if(this.c1val > 0) {
-            this.moveObj(this.x1val, 0, this.z1val)    
-            this.c1val = this.c1val - 1;
+    update(dt: number) {            
+        if(this.moveVal["c1val"] > 0) {
+            this.moveObj(this.moveVal["x1val"], 0, this.moveVal["z1val"])    
+            this.moveVal["c1val"] = this.moveVal["c1val"] - 1;
+            console.log(this.moveVal["c1val"])
         }else if(this.c1val === 0) {
 
         }       
