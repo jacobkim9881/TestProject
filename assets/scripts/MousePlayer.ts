@@ -1,7 +1,6 @@
 
-import { _decorator, Component, Node, systemEvent, SystemEvent, SystemEventType, EventKeyboard, Vec3, KeyCode, AudioSource, AudioClip, Collider, ITriggerEvent, EventMouse } from 'cc';
-import { Camera, rayRes, isRay, rayPosX, rayPosZ } from './Camera'
-import { OneAxis } from './OneAxis'
+import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse } from 'cc';
+import { isRay, rayPosX, rayPosZ } from './Camera'
 const { ccclass, property } = _decorator;
 
 /**

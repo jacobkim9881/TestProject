@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, systemEvent, SystemEvent, SystemEventType, EventKeyboard, Vec3, KeyCode, AudioSource, AudioClip, Collider, ITriggerEvent } from 'cc';
+import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, AudioSource, AudioClip, Collider, ITriggerEvent } from 'cc';
 import { OneAxis } from './OneAxis'
 const { ccclass, property } = _decorator;
 
