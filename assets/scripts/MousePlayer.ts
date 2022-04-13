@@ -24,35 +24,36 @@ export class MousePlayer extends Component {
     })
 
     private _curPos = new Vec3();
-    private _tarPos = new Vec3();
-    private moveLen = 0.15;
     private jumpHeight = 6;
     private jumpLimit = 0.2;
-    private input: number = null!;
     private _isMPushed: number = 0;
     private _mPushingTime: number = 0;    
-    private _xLen: number = 0;
-    private _zLen: number = 0;
-    private _curx: number = 0;
-    private _curz: number = 0;
-
-    private _left = new OneAxis();
-    private _right = new OneAxis();
-    private _xCode = 0;
-    private _zCode = 0;
+    private c1val: number = 0;
+    private x1val: number = 0;
+    private z1val: number = 0;
 
     start () {        
         systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this);
     }
 
     onMouseDown(e: EventMouse) {     
-        this._curx = this.node.getPosition().x;
-        this._curz = this.node.getPosition().z;
         if (isRay) {
-            this._xLen = Math.abs(this._curx - rayPosX)/(0.015 * this.moveLen);
-            this._zLen = Math.abs(this._curz - rayPosX)/(0.015 * this.moveLen);
+            let curx, curz, xLen, zLen, cval, dt, moveLen;
+            curx = this.node.getPosition().x;
+            curz = this.node.getPosition().z;
+            dt = 0.015;
+            moveLen = 3;
+            console.log('cur x, z', curx, curz)
+            console.log('ray x, z', rayPosX, rayPosZ)
+            xLen = curx - rayPosX;
+            zLen = curz - rayPosZ;
+            cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2));
+            this.c1val = cval/(dt * moveLen);
+            this.x1val = - xLen / this.c1val;
+            this.z1val = - zLen / this.c1val;
+            console.log(this.x1val, this.z1val)
            }
-     //   this._xLen = 
+     //   xLen = 
     }
 
     calJumpTime(pushingTime: number, dt: number, pushed: number) {
@@ -61,6 +62,10 @@ export class MousePlayer extends Component {
 
     isJumpStop(limit: number, dt: number) {
         return dt > limit ? 0 : 1
+    }
+
+    move1() {
+        
     }
 
     moveObj(x: number, y: number, z: number) {                 
@@ -74,11 +79,12 @@ export class MousePlayer extends Component {
     }
 
     update(dt: number) {    
+        if(this.c1val > 0) {
+            this.moveObj(this.x1val, 0, this.z1val)    
+            this.c1val = this.c1val - 1;
+        }else if(this.c1val === 0) {
 
-                 
-        //console.log(this._x.pushingTime, this._x.pausedTime)
-        
-        this.moveObj(this._xLen, 0, this._zLen)
+        }       
         
     }
 }
