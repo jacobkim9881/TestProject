@@ -45,18 +45,16 @@ export class MousePlayer extends Component {
             xLen = curx - rayPosX;
             zLen = curz - rayPosZ;
             cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2));
-            return {             
-            c1val: cval/(dt * moveLen),
-            x1val: - xLen / cval/(dt * moveLen),
-            z1val: - zLen / cval/(dt * moveLen),   
-            }
-            //console.log(this.x1val, this.z1val)
-
+            //console.log(cval)
+            this.c1val = cval/(dt * moveLen);
+            this.x1val = - xLen / this.c1val;
+            this.z1val = - zLen / this.c1val;
            }
     }
 
     onMouseDown(e: EventMouse) {     
-        this.moveVal = this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3);
+        this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3);
+        //console.log(this.moveVal["c1val"])
         //this.c1val = this.moveVal["c1val"];
         /*
         if (isRay) {
@@ -101,14 +99,11 @@ export class MousePlayer extends Component {
         //console.log(this.node.getPosition(this._curPos))       
     }
 
-    update(dt: number) {            
-        if(this.moveVal["c1val"] > 0) {
-            this.moveObj(this.moveVal["x1val"], 0, this.moveVal["z1val"])    
-            this.moveVal["c1val"] = this.moveVal["c1val"] - 1;
-            console.log(this.moveVal["c1val"])
-        }else if(this.c1val === 0) {
-
-        }       
-        
+    update(dt: number) {                    
+        if(this.c1val > 0) {
+            this.moveObj(this.x1val, 0, this.z1val)    
+            this.c1val = this.c1val - 1;
+            //console.log(this.moveVal["c1val"])
+        }             
     }
 }
