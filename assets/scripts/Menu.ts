@@ -13,14 +13,16 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
- 
+
+export let labels:Array<any> = null!
+
 @ccclass('Menu')
-export class Menu extends Component {
-    private _label:Array<object> = null!
+export class Menu extends Component {    
     private _label2:Array<object> = null!
 
     start () {
-        this._label = this.node.getComponentsInChildren(Label);
+        labels = this.node.getComponentsInChildren(Label);        
+        console.log(labels)
         //this._label2 = this.node.getChildByName('guide');
     }
 

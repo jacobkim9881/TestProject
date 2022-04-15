@@ -14,7 +14,7 @@ const { ccclass, property } = _decorator;
  *
  */
  
-export let rayRes: Array<object> = null!
+export let rayRes: Array<any> = null!
 export let rayPosX: number = null!;
 export let rayPosZ: number = null!;
 export let isRay: boolean = null!;

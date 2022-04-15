@@ -150,6 +150,7 @@ export class Player extends Component {
         this.node.getPosition(this._curPos)
         Vec3.add(this._curPos, this._curPos, new Vec3(x, y, z));        
         this.node.setPosition(this._curPos);
+        //this.node.setRotation()        
         //console.log(this.node.getPosition(this._curPos))       
     }
 

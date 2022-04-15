@@ -1,6 +1,7 @@
 
-import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse } from 'cc';
-import { isRay, rayPosX, rayPosZ } from './Camera'
+import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label } from 'cc';
+import { isRay, rayPosX, rayPosZ, rayRes } from './Camera'
+import { labels, Menu } from './Menu'
 const { ccclass, property } = _decorator;
 
 /**
@@ -22,6 +23,10 @@ export class MousePlayer extends Component {
         type: Animation
     })
 
+    @property({
+        type: Label
+    })
+
     private _curPos = new Vec3();
     private jumpHeight = 6;
     private jumpLimit = 0.2;
@@ -30,14 +35,34 @@ export class MousePlayer extends Component {
     private moveVal: object; 
     private c1val: number = 0;
     private x1val: number = 0;
-    private z1val: number = 0;
+    private z1val: number = 0;    
 
     start () {        
         systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this);
     }
 
+    findId(uuid: string) {
+        let selected = rayRes[0]._collider.node._id;
+        let str;
+        console.log(labels[2]._string)
+        if (uuid === selected) {            
+            //Menu.getComponentsInChildren(Label)
+            str =  'Mouse player clicked';    
+            this._isMPushed = 1;        
+        } else if (uuid !== selected) {            
+            str =  '';
+            this._isMPushed = 0;
+        }
+        labels[2].string = str;
+    }
+
     calMoveObj(isRay:boolean, curx: number, curz: number, moveLen: number ) {        
-        if (isRay) {
+        let objId = this.node.uuid
+        this.findId(objId)        
+        console.log(objId)
+        console.log(rayRes)
+        console.log(this)
+        if (isRay && this._isMPushed) {
             let xLen, zLen, cval, dt;
             dt = 0.015;
             //console.log('cur x, z', curx, curz)
