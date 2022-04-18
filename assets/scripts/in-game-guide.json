@@ -1,0 +1,9 @@
+{
+    "Title": "Manual",
+    "page": [
+        {
+            "guide": "push 'w' to start play sound \n push arrow keys to move object",
+            "returns": ""
+        }
+    ]
+}

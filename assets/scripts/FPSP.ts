@@ -72,6 +72,7 @@ export class FPSP extends Component {
         let camera = this.getComponentInChildren(CameraComponent)
         this._eMouse = e;
         camera.destroy();
+
     }
 
     private onTrigger (event: ITriggerEvent) {
