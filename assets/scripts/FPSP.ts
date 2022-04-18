@@ -1,18 +1,6 @@
-import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, AudioSource, AudioClip, Collider, ITriggerEvent, Quat } from 'cc';
+import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, AudioSource, AudioClip, Collider, ITriggerEvent, Quat, EventMouse, quat, Camera, CameraComponent } from 'cc';
 import { OneAxis } from './OneAxis'
 const { ccclass, property } = _decorator;
-
-/**
- * Predefined variables
- * Name = Player
- * DateTime = Wed Mar 23 2022 11:46:14 GMT+0900 (대한민국 표준시)
- * Author = jacobkim9881
- * FileBasename = Player.ts
- * FileBasenameNoExtension = Player
- * URL = db://assets/scripts/Player.ts
- * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
- *
- */
 
  enum KeyVal {
     LEFT = 37,
@@ -23,8 +11,22 @@ const { ccclass, property } = _decorator;
     SOUND = 87
   }
 
-@ccclass('Player')
-export class Player extends Component {
+
+/**
+ * Predefined variables
+ * Name = FPSP
+ * DateTime = Sat Apr 16 2022 08:18:09 GMT+0900 (대한민국 표준시)
+ * Author = jacobkim9881
+ * FileBasename = FPSP.ts
+ * FileBasenameNoExtension = FPSP
+ * URL = db://assets/scripts/FPSP.ts
+ * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
+ *
+ */
+export let fpsPos;
+ 
+@ccclass('FPSP')
+export class FPSP extends Component {
     @property({
         type: Animation
     })
@@ -49,26 +51,37 @@ export class Player extends Component {
     private _down = new OneAxis();
     private _jump = new OneAxis();
 
+    private _eMouse:any;
+
     private _xCode = 0;
     private _zCode = 0;
     private _yCode = 0;
 
-    start () {        
+    start () {         
+        fpsPos = this.node.getPosition();
+        console.log('dd')
         let collider : Collider = this.getComponent(Collider);
         collider.on('onTriggerEnter', this.onTrigger, this);
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this);
-      systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this);        
+      systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this);       
+      systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this); 
         // [3]
     }
 
+    onMouseDown(e: EventMouse) {         
+        let camera = this.getComponentInChildren(CameraComponent)
+        this._eMouse = e;
+        camera.destroy();
+    }
+
     private onTrigger (event: ITriggerEvent) {
-        //console.log(event.type, event);
+        console.log(event.type, event);
     }
 
     onKeyDown(e: EventKeyboard) {
-       // console.log('key pushed: ', e.keyCode)
-        //console.log(this._jump.pushingTime)
-        //console.log(this._jump.isPushed)
+        console.log('key pushed: ', e.keyCode)
+        console.log(this._jump.pushingTime)
+        console.log(this._jump.isPushed)
         this.input = e.keyCode;
         switch(this.input) {
             case KeyVal.LEFT:                
@@ -147,14 +160,23 @@ export class Player extends Component {
         //console.log(x !== 0 ? x : null + z !== 0 ? z :null)
         //console.log(x)
         //console.log(this.node.getPosition(this._curPos))       
+        let rotx = new Quat(0, 0, 0);
+
         this.node.getPosition(this._curPos)
         Vec3.add(this._curPos, this._curPos, new Vec3(x, y, z));        
         this.node.setPosition(this._curPos);
+        /*
+        this.node.getRotation(rotx)
+        Quat.rotateX(rotx, Quat.IDENTITY, 0.2)
+        this.node.setRotation(rotx);
+        */
         //this.node.setRotation()        
         //console.log(this.node.getPosition(this._curPos))       
     }
 
     update(dt: number) {          
+        //console.log(this._eMouse)
+        //console.log(this._eMouse)
         this._jump.pushingTime = this.calJumpTime(this._jump.pushingTime, dt, this._jump.isPushed)      
         this._xCode = this.moveLen * (this._left.isPushed * -1 + this._right.isPushed);       
         this._zCode = this.moveLen * (this._up.isPushed * -1 + this._down.isPushed);       

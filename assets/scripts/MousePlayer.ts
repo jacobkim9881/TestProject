@@ -1,5 +1,5 @@
 
-import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label } from 'cc';
+import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat } from 'cc';
 import { isRay, rayPosX, rayPosZ, rayRes } from './Camera'
 import { labels, Menu } from './Menu'
 const { ccclass, property } = _decorator;
@@ -44,7 +44,6 @@ export class MousePlayer extends Component {
     findId(uuid: string) {
         let selected = rayRes[0]._collider.node._id;
         let str;
-        console.log(labels[2]._string)
         if (uuid === selected) {            
             //Menu.getComponentsInChildren(Label)
             str =  'Mouse player clicked';    
@@ -56,13 +55,11 @@ export class MousePlayer extends Component {
         labels[2].string = str;
     }
 
-    calMoveObj(isRay:boolean, curx: number, curz: number, moveLen: number ) {        
-        let objId = this.node.uuid
-        this.findId(objId)        
-        console.log(objId)
-        console.log(rayRes)
-        console.log(this)
-        if (isRay && this._isMPushed) {
+    calMoveObj(isRay:boolean, curx: number, curz: number, moveLen: number, button: number ) {        
+        let objId = this.node.uuid        
+        if (button === 0) {
+            this.findId(objId)                
+        } else if (isRay && button === 2 && this._isMPushed) {
             let xLen, zLen, cval, dt;
             dt = 0.015;
             //console.log('cur x, z', curx, curz)
@@ -77,8 +74,17 @@ export class MousePlayer extends Component {
            }
     }
 
-    onMouseDown(e: EventMouse) {     
-        this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3);
+    onMouseDown(e: EventMouse) {         
+      
+            let _quat = new Quat();
+            let rad = 100 * Math.PI / 180;
+            this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, 2*Math.PI/180)
+    
+            //this.node.rotation = Quat.fromEuler(new Quat(), 0, 20, 0);
+    
+            //Quat.rotateAround(_quat, this.node.rotation, Vec3.UP, rad);
+console.log(this.node.rotation)
+this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3, e.getButton());
         //console.log(this.moveVal["c1val"])
         //this.c1val = this.moveVal["c1val"];
         /*
