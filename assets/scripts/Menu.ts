@@ -47,9 +47,8 @@ export class Menu extends Component {
             this._guideCon.string = data.json.page[0].guide;
             this._pageNum.string = `1/${data.json.page.length}`
             this._returns.string = data.json.page[0].returns
-            this.menuButtonEvent(butts, data, 1);
-            this.menuButtonEvent(butts, data, 0);
-        
+            this.prevButtonEvent(butts, data);
+            this.nextButtonEvent(butts, data);
             
             console.log(data)
             if (err) console.log(err);
@@ -59,20 +58,29 @@ export class Menu extends Component {
         return;
     }
 
-    menuButtonEvent(butts:Array<any>, data, pageNum) {        
-    let next = pageNum === 1 ? -1 : 1;            
-    let buttonNum = pageNum === 1 ? 0 : 1;            
-    let getPage = pageNum === 1 ? -2 : -1;            
-    butts[buttonNum].node.on('click', (e) =>{
+    prevButtonEvent(butts:Array<any>, data) {        
+    butts[0].node.on('click', (e) =>{
         let curPage = parseInt(this._pageNum.string.split('/')[0]);
-        if (curPage > pageNum && curPage < data.json.page.length && curPage !==1) {
-            this._pageNum.string = `${curPage + next}/${data.json.page.length}`
-            this._guideCon.string = data.json.page[curPage - getPage].guide;
-            this._returns.string = data.json.page[curPage - getPage].returns
+        if (curPage > 1 && curPage < data.json.page.length) {
+            this._pageNum.string = `${curPage - 1}/${data.json.page.length}`
+            this._guideCon.string = data.json.page[curPage - 2].guide;
+            this._returns.string = data.json.page[curPage - 2].returns
         }
         console.log('cliked')
     }, this)
     }
+
+    nextButtonEvent(butts:Array<any>, data) {        
+        butts[1].node.on('click', (e) =>{
+            let curPage = parseInt(this._pageNum.string.split('/')[0]);
+            if (curPage > 0 && curPage < data.json.page.length) {
+                this._pageNum.string = `${curPage + 1}/${data.json.page.length}`
+                this._guideCon.string = data.json.page[curPage - 1].guide;
+                this._returns.string = data.json.page[curPage - 1].returns
+            }
+            console.log('cliked')
+        }, this)
+        }
 
     onMouseDown(e: EventMouse) {
         console.log(e)
