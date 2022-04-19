@@ -78,7 +78,7 @@ export class MousePlayer extends Component {
       
             let _quat = new Quat();
             let rad = 100 * Math.PI / 180;
-            this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, 2*Math.PI/180)
+            this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, 2 * Math.PI/180)
     
             //this.node.rotation = Quat.fromEuler(new Quat(), 0, 20, 0);
     

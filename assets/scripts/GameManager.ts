@@ -1,8 +1,8 @@
 
-import { _decorator, Component, Node, Prefab, instantiate, director, Director, Button, Label, Asset, CCClass } from 'cc';
+import { _decorator, Component, Node, Prefab, instantiate, director, Director, Button, Label, Asset, CCClass, resources, assetManager, CCLoader, JsonAsset, AssetManager } from 'cc';
 import { Camera } from './Camera';
-import * as guideScript from './in-game-guide.json'
 const { ccclass, property } = _decorator;
+
 /**
  * Predefined variables
  * Name = GameManager
@@ -14,7 +14,6 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
- 
 @ccclass('GameManager')
 export class GameManager extends Component {
     @property(NodeList)
@@ -46,11 +45,7 @@ export class GameManager extends Component {
     }
 
     start () {
-        let butts = this.getComponentsInChildren(Button);
-        let labels = this.getComponentsInChildren(Label);
-console.log(butts)
-console.log(labels)
-//console.log(guideScript)
+
         this.getNodes();
         this.test(1)
         this.test(2)

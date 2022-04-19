@@ -71,7 +71,7 @@ export class FPSP extends Component {
     onMouseDown(e: EventMouse) {         
         let camera = this.getComponentInChildren(CameraComponent)
         this._eMouse = e;
-        camera.destroy();
+        camera.enabled = false;
 
     }
 
