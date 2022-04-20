@@ -30,10 +30,10 @@
         "__id__": 62
       },
       {
-        "__id__": 94
+        "__id__": 97
       },
       {
-        "__id__": 158
+        "__id__": 161
       }
     ],
     "_active": true,
@@ -41,7 +41,7 @@
     "_prefab": null,
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 159
+      "__id__": 162
     },
     "_id": "23058c5e-064e-4fa2-a081-ddaea5b6eb6e"
   },
@@ -3085,27 +3085,31 @@
     "_parent": {
       "__id__": 87
     },
-    "_children": [],
-    "_active": true,
-    "_components": [
+    "_children": [
       {
         "__id__": 89
-      },
-      {
-        "__id__": 91
-      },
+      }
+    ],
+    "_active": true,
+    "_components": [
       {
         "__id__": 92
       },
       {
-        "__id__": 93
+        "__id__": 94
+      },
+      {
+        "__id__": 95
+      },
+      {
+        "__id__": 96
       }
     ],
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -5.475,
-      "y": 4.016,
+      "x": -8.988,
+      "y": 0,
       "z": 0
     },
     "_lrot": {
@@ -3131,6 +3135,93 @@
     "_id": "7ew+GwAnlKG5g747VsXs9L"
   },
   {
+    "__type__": "cc.Node",
+    "_name": "Cone",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 88
+    },
+    "_children": [],
+    "_active": false,
+    "_components": [
+      {
+        "__id__": 90
+      }
+    ],
+    "_prefab": null,
+    "_lpos": {
+      "__type__": "cc.Vec3",
+      "x": 0.876,
+      "y": 0,
+      "z": 0
+    },
+    "_lrot": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": -0.7071067811865475,
+      "w": 0.7071067811865476
+    },
+    "_lscale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_layer": 1073741824,
+    "_euler": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": -90
+    },
+    "_id": "babu28vttDe5lEyexnX22A"
+  },
+  {
+    "__type__": "cc.MeshRenderer",
+    "_name": "Cone<ModelComponent>",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 89
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_materials": [
+      {
+        "__uuid__": "d3c7820c-2a98-4429-8bc7-b8453bc9ac41",
+        "__expectedType__": "cc.Material"
+      }
+    ],
+    "_visFlags": 0,
+    "lightmapSettings": {
+      "__id__": 91
+    },
+    "_mesh": {
+      "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@38fd2",
+      "__expectedType__": "cc.Mesh"
+    },
+    "_shadowCastingMode": 0,
+    "_shadowReceivingMode": 1,
+    "_enableMorph": true,
+    "_id": "a53d6ums9HG5QjedAAl1Nq"
+  },
+  {
+    "__type__": "cc.ModelLightmapSettings",
+    "texture": null,
+    "uvParam": {
+      "__type__": "cc.Vec4",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 0
+    },
+    "_bakeable": false,
+    "_castShadow": false,
+    "_receiveShadow": false,
+    "_recieveShadow": false,
+    "_lightmapSize": 64
+  },
+  {
     "__type__": "cc.MeshRenderer",
     "_name": "Capsule<ModelComponent>",
     "_objFlags": 0,
@@ -3147,7 +3238,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 90
+      "__id__": 93
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@a804a",
@@ -3252,13 +3343,13 @@
     },
     "_children": [
       {
-        "__id__": 95
+        "__id__": 98
       },
       {
-        "__id__": 100
+        "__id__": 103
       },
       {
-        "__id__": 106
+        "__id__": 109
       }
     ],
     "_active": true,
@@ -3297,17 +3388,17 @@
     "_name": "field",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 94
+      "__id__": 97
     },
     "_children": [
       {
-        "__id__": 96
+        "__id__": 99
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 99
+        "__id__": 102
       }
     ],
     "_prefab": null,
@@ -3344,13 +3435,13 @@
     "_name": "Plane-001",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 95
+      "__id__": 98
     },
     "_children": [],
     "_active": false,
     "_components": [
       {
-        "__id__": 97
+        "__id__": 100
       }
     ],
     "_prefab": null,
@@ -3387,7 +3478,7 @@
     "_name": "Plane<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 96
+      "__id__": 99
     },
     "_enabled": true,
     "__prefab": null,
@@ -3399,7 +3490,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 98
+      "__id__": 101
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@2e76e",
@@ -3431,7 +3522,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 95
+      "__id__": 98
     },
     "_enabled": true,
     "__prefab": null,
@@ -3457,11 +3548,11 @@
     "_name": "Ball",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 94
+      "__id__": 97
     },
     "_children": [
       {
-        "__id__": 101
+        "__id__": 104
       }
     ],
     "_active": true,
@@ -3500,19 +3591,19 @@
     "_name": "Sphere",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 100
+      "__id__": 103
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 102
-      },
-      {
-        "__id__": 104
-      },
-      {
         "__id__": 105
+      },
+      {
+        "__id__": 107
+      },
+      {
+        "__id__": 108
       }
     ],
     "_prefab": null,
@@ -3549,7 +3640,7 @@
     "_name": "Sphere<ModelComponent>",
     "_objFlags": 0,
     "node": {
-      "__id__": 101
+      "__id__": 104
     },
     "_enabled": true,
     "__prefab": null,
@@ -3561,7 +3652,7 @@
     ],
     "_visFlags": 0,
     "lightmapSettings": {
-      "__id__": 103
+      "__id__": 106
     },
     "_mesh": {
       "__uuid__": "1263d74c-8167-4928-91a6-4e2672411f47@17020",
@@ -3593,7 +3684,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 101
+      "__id__": 104
     },
     "_enabled": true,
     "__prefab": null,
@@ -3613,7 +3704,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 101
+      "__id__": 104
     },
     "_enabled": true,
     "__prefab": null,
@@ -3643,13 +3734,13 @@
     "_name": "Particle",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 94
+      "__id__": 97
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 107
+        "__id__": 110
       }
     ],
     "_prefab": null,
@@ -3686,7 +3777,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 106
+      "__id__": 109
     },
     "_enabled": true,
     "__prefab": null,
@@ -3698,56 +3789,56 @@
     ],
     "_visFlags": 0,
     "startColor": {
-      "__id__": 108
+      "__id__": 111
     },
     "scaleSpace": 1,
     "startSize3D": false,
     "startSizeX": {
-      "__id__": 109
+      "__id__": 112
     },
     "startSize": {
-      "__id__": 109
+      "__id__": 112
     },
     "startSizeY": {
-      "__id__": 110
+      "__id__": 113
     },
     "startSizeZ": {
-      "__id__": 111
+      "__id__": 114
     },
     "startSpeed": {
-      "__id__": 112
+      "__id__": 115
     },
     "startRotation3D": false,
     "startRotationX": {
-      "__id__": 113
-    },
-    "startRotationY": {
-      "__id__": 114
-    },
-    "startRotationZ": {
-      "__id__": 115
-    },
-    "startRotation": {
-      "__id__": 115
-    },
-    "startDelay": {
       "__id__": 116
     },
-    "startLifetime": {
+    "startRotationY": {
       "__id__": 117
+    },
+    "startRotationZ": {
+      "__id__": 118
+    },
+    "startRotation": {
+      "__id__": 118
+    },
+    "startDelay": {
+      "__id__": 119
+    },
+    "startLifetime": {
+      "__id__": 120
     },
     "duration": 5,
     "loop": true,
     "simulationSpeed": 1,
     "playOnAwake": false,
     "gravityModifier": {
-      "__id__": 118
+      "__id__": 121
     },
     "rateOverTime": {
-      "__id__": 119
+      "__id__": 122
     },
     "rateOverDistance": {
-      "__id__": 120
+      "__id__": 123
     },
     "bursts": [],
     "_renderCulling": false,
@@ -3758,34 +3849,34 @@
     "_dataCulling": false,
     "enableCulling": false,
     "_colorOverLifetimeModule": {
-      "__id__": 121
+      "__id__": 124
     },
     "_shapeModule": {
-      "__id__": 123
+      "__id__": 126
     },
     "_sizeOvertimeModule": {
-      "__id__": 125
+      "__id__": 128
     },
     "_velocityOvertimeModule": {
-      "__id__": 130
+      "__id__": 133
     },
     "_forceOvertimeModule": {
-      "__id__": 135
+      "__id__": 138
     },
     "_limitVelocityOvertimeModule": {
-      "__id__": 139
+      "__id__": 142
     },
     "_rotationOvertimeModule": {
-      "__id__": 144
+      "__id__": 147
     },
     "_textureAnimationModule": {
-      "__id__": 148
+      "__id__": 151
     },
     "_trailModule": {
-      "__id__": 152
+      "__id__": 155
     },
     "renderer": {
-      "__id__": 157
+      "__id__": 160
     },
     "_prewarm": false,
     "_capacity": 100,
@@ -3879,7 +3970,7 @@
     "__type__": "cc.ColorOvertimeModule",
     "_enable": false,
     "color": {
-      "__id__": 122
+      "__id__": 125
     }
   },
   {
@@ -3908,7 +3999,7 @@
     "arcMode": 0,
     "arcSpread": 0,
     "arcSpeed": {
-      "__id__": 124
+      "__id__": 127
     },
     "length": 5,
     "boxThickness": {
@@ -3949,16 +4040,16 @@
     "_enable": false,
     "separateAxes": false,
     "size": {
-      "__id__": 126
+      "__id__": 129
     },
     "x": {
-      "__id__": 127
+      "__id__": 130
     },
     "y": {
-      "__id__": 128
+      "__id__": 131
     },
     "z": {
-      "__id__": 129
+      "__id__": 132
     }
   },
   {
@@ -3989,16 +4080,16 @@
     "__type__": "cc.VelocityOvertimeModule",
     "_enable": false,
     "x": {
-      "__id__": 131
+      "__id__": 134
     },
     "y": {
-      "__id__": 132
+      "__id__": 135
     },
     "z": {
-      "__id__": 133
+      "__id__": 136
     },
     "speedModifier": {
-      "__id__": 134
+      "__id__": 137
     },
     "space": 1
   },
@@ -4030,13 +4121,13 @@
     "__type__": "cc.ForceOvertimeModule",
     "_enable": false,
     "x": {
-      "__id__": 136
+      "__id__": 139
     },
     "y": {
-      "__id__": 137
+      "__id__": 140
     },
     "z": {
-      "__id__": 138
+      "__id__": 141
     },
     "space": 1
   },
@@ -4062,16 +4153,16 @@
     "__type__": "cc.LimitVelocityOvertimeModule",
     "_enable": false,
     "limitX": {
-      "__id__": 140
+      "__id__": 143
     },
     "limitY": {
-      "__id__": 141
+      "__id__": 144
     },
     "limitZ": {
-      "__id__": 142
+      "__id__": 145
     },
     "limit": {
-      "__id__": 143
+      "__id__": 146
     },
     "dampen": 3,
     "separateAxes": false,
@@ -4106,13 +4197,13 @@
     "_enable": false,
     "_separateAxes": false,
     "x": {
-      "__id__": 145
+      "__id__": 148
     },
     "y": {
-      "__id__": 146
+      "__id__": 149
     },
     "z": {
-      "__id__": 147
+      "__id__": 150
     }
   },
   {
@@ -4143,10 +4234,10 @@
     "_mode": 0,
     "animation": 0,
     "frameOverTime": {
-      "__id__": 149
+      "__id__": 152
     },
     "startFrame": {
-      "__id__": 151
+      "__id__": 154
     },
     "cycleCount": 0,
     "_flipU": 0,
@@ -4159,7 +4250,7 @@
     "__type__": "cc.CurveRange",
     "mode": 1,
     "spline": {
-      "__id__": 150
+      "__id__": 153
     },
     "multiplier": 1
   },
@@ -4207,25 +4298,25 @@
     "_enable": false,
     "mode": 0,
     "lifeTime": {
-      "__id__": 153
+      "__id__": 156
     },
     "_minParticleDistance": 0.1,
     "existWithParticles": true,
     "textureMode": 0,
     "widthFromParticle": true,
     "widthRatio": {
-      "__id__": 154
+      "__id__": 157
     },
     "colorFromParticle": false,
     "colorOverTrail": {
-      "__id__": 155
+      "__id__": 158
     },
     "colorOvertime": {
-      "__id__": 156
+      "__id__": 159
     },
     "_space": 0,
     "_particleSystem": {
-      "__id__": 107
+      "__id__": 110
     }
   },
   {
@@ -4317,19 +4408,19 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 160
-    },
-    "shadows": {
-      "__id__": 161
-    },
-    "_skybox": {
-      "__id__": 162
-    },
-    "fog": {
       "__id__": 163
     },
-    "octree": {
+    "shadows": {
       "__id__": 164
+    },
+    "_skybox": {
+      "__id__": 165
+    },
+    "fog": {
+      "__id__": 166
+    },
+    "octree": {
+      "__id__": 167
     }
   },
   {

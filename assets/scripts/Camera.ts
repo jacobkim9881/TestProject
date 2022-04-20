@@ -51,8 +51,9 @@ export class Camera extends Component {
         rayRes = PhysicsSystem.instance.raycastResults;
         rayPosX = PhysicsSystem.instance.raycastResults[0].hitPoint.x;
         rayPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z;
-        console.log('raycast get', isRay)
-        console.log(rayRes)
+        //console.log('raycast get', isRay)
+        //console.log(rayRes)
+        //console.log(rayPosX, rayPosZ)
 
         
 /*
