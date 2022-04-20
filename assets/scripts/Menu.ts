@@ -17,6 +17,7 @@ const { ccclass, property } = _decorator;
  */
 
 export let labels:Array<any> = null!
+export let curPage: number = 0;
 
 @ccclass('Menu')
 export class Menu extends Component {    
@@ -29,12 +30,10 @@ export class Menu extends Component {
     private _returns = null!
     private _clicker = null!
 
-    private _curPage: number = 0;
-
     async start () {
         //this.onStart();
 
-        systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this);
+        //systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this);
         
         let butts = this.getComponentsInChildren(Button);
             labels = this.getComponentsInChildren(Label);            
@@ -46,9 +45,9 @@ export class Menu extends Component {
             this._returns = labels[5];
 
             let gameGuide;
-    console.log(butts)
-    console.log(labels)
-    console.log(this._guideCon)
+    //console.log(butts)
+    //console.log(labels)
+    //console.log(this._guideCon)
         gameGuide = await assetManager.loadAny({uuid: 'c2d8785f-ab37-4e17-b91d-f717afff41fa'}, JsonAsset, (err, data) => {
             this._guideCon.string = data.json.page[0].guide;
             this._pageNum.string = `1/${data.json.page.length}`
@@ -57,7 +56,7 @@ export class Menu extends Component {
             this.menuButtonEvent(butts, data, 1);
             this.menuButtonEvent(butts, data, 0);       
             this.clcikerEvent(butts);
-            console.log(data)
+            //console.log(data)
             if (err) console.log(err);
             return data.json    
         });        
@@ -86,12 +85,12 @@ export class Menu extends Component {
     let buttonNum = isPrev === 1 ? 0 : 1;            
     
     butts[buttonNum].node.on('click', (e) =>{
-        this._curPage = parseInt(this._pageNum.string.split('/')[0]);
-        let getPage = isPrev === 1 ? this._curPage - 2 : this._curPage;            
-        isPrev === 1? this.prevEvent(this._curPage, isPrev, data, next, getPage)
-        : this.nextEvent(this._curPage, data, next, getPage);
-console.log(this._curPage, isPrev)
-        if (this._curPage === 1 && isPrev === 0 || this._curPage === 3 && isPrev === 1) {
+        curPage = parseInt(this._pageNum.string.split('/')[0]);
+        let getPage = isPrev === 1 ? curPage - 2 : curPage;            
+        isPrev === 1? this.prevEvent(curPage, isPrev, data, next, getPage)
+        : this.nextEvent(curPage, data, next, getPage);
+console.log(curPage, isPrev)
+        if (curPage === 1 && isPrev === 0 || curPage === 3 && isPrev === 1) {
             console.log('p2')
             butts[2].node.active = true;
             labels[6].string = data.json.page[1].button1
@@ -107,16 +106,16 @@ console.log(this._curPage, isPrev)
         return butts[2].node.on('click', (e) => {
             //console.log(this._curPage)
             //console.log(clicker.string)
-            console.log(e)
-            console.log(FpsCamera)
-            console.log(this._clicker.string)
+            //console.log(e)
+            //console.log(FpsCamera)
+            //console.log(this._clicker.string)
             
             if (this._clicker.string === 'FPS click') {
                 //console.log('fps')
                 FpsCamera.enabled = true;
                 RtsCamera.enabled = false;
                 this._clicker.string = 'RTS click'
-                console.log(this._clicker.string)
+                //console.log(this._clicker.string)
             } else if (this._clicker.string === 'RTS click') {
                 FpsCamera.enabled = false;
                 RtsCamera.enabled = true;
