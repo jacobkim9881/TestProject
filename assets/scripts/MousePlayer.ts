@@ -109,8 +109,8 @@ export class MousePlayer extends Component {
             
             //Quat.rotateAround(_quat, this.node.rotation, Vec3.UP, rad);
 console.log(this.node.rotation)
-let test1 = new Quat(this.node.rotation);
-let test2 = Math.acos(test1.w) * 2
+let rotQuat = new Quat(this.node.rotation);
+let QuatToDeg = Math.acos(rotQuat.w) * 2 * 180 / Math.PI
 //console.log(test1)
 //console.log(test2 * 180 / Math.PI)
 this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3, e.getButton());
