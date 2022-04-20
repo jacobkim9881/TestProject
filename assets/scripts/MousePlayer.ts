@@ -52,7 +52,7 @@ export class MousePlayer extends Component {
             str =  '';
             this._isMPushed = 0;
         }
-        labels[2].string = str;
+        labels[5].string = str;
     }
 
     calMoveObj(isRay:boolean, curx: number, curz: number, moveLen: number, button: number ) {        

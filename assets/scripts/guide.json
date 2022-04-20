@@ -4,6 +4,11 @@
         {
             "guide": "push 'w' to start play sound \n push arrow keys to move object",
             "returns": ""
+        },
+        {
+            "guide": "click to FPS mode",
+            "returns": "",
+            "button1": "FPS click"
         }
     ]
 }

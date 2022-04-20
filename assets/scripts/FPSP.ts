@@ -24,6 +24,7 @@ const { ccclass, property } = _decorator;
  *
  */
 export let fpsPos;
+export let FpsCamera:CameraComponent = null!;
  
 @ccclass('FPSP')
 export class FPSP extends Component {
@@ -59,19 +60,21 @@ export class FPSP extends Component {
 
     start () {         
         fpsPos = this.node.getPosition();
+        FpsCamera = this.getComponentInChildren(CameraComponent);
         console.log('dd')
         let collider : Collider = this.getComponent(Collider);
         collider.on('onTriggerEnter', this.onTrigger, this);
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this);
       systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this);       
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this); 
+
+      FpsCamera.enabled = false;
         // [3]
     }
 
-    onMouseDown(e: EventMouse) {         
-        let camera = this.getComponentInChildren(CameraComponent)
+    onMouseDown(e: EventMouse) {                 
         this._eMouse = e;
-        camera.enabled = false;
+        
 
     }
 
