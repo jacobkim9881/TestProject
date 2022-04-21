@@ -38,6 +38,7 @@ export class MousePlayer extends Component {
     private z1val: number = 0;    
     private _deg: number = 0;
     private _ditn: number = 0;
+    private _preDeg: number = 0
 
     start () {        
         systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this);
@@ -65,8 +66,8 @@ export class MousePlayer extends Component {
         } else if (isRay && button === 2 && this._isMPushed) {
             let xLen, zLen, cval, dt, sinx, sinz, xdeg;
             dt = 0.015;
-            console.log('cur x, z', curx, curz)
-            console.log('ray x, z', rayPosX, rayPosZ)
+            //console.log('cur x, z', curx, curz)
+            //console.log('ray x, z', rayPosX, rayPosZ)
             xLen = curx - rayPosX;
             zLen = curz - rayPosZ;
             cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2));
@@ -75,47 +76,61 @@ export class MousePlayer extends Component {
             this.x1val = - xLen / this.c1val;
             this.z1val = - zLen / this.c1val;
             sinx = xLen / cval            
-            console.log(xLen, cval)
-            console.log(sinx)
+            //console.log(xLen, cval)
+            //console.log(sinx)
             xdeg = Math.asin(sinx) * (180 / Math.PI)
-            console.log(xdeg)            
-//console.log(this.node.rotation)
+            //console.log(xdeg)            
+console.log('node quat: ',this.node.rotation)
 let rotQuat = new Quat(this.node.rotation);
-let QuatToDeg = Math.acos(rotQuat.w) * 2 * 180 / Math.PI;
+let QuatToDeg = this._preDeg;
+//Math.acos(rotQuat.w) * 2 * 180 / Math.PI;
 //QuatToDeg = QuatToDeg > 180 ? - Math.abs(QuatToDeg) + 360 : - Math.abs(QuatToDeg);
 //QuatToDeg = 0
 this._deg = xdeg
 //this._ditn = 1
 console.log('this rot: ',QuatToDeg)
-QuatToDeg = QuatToDeg <= 180 ? QuatToDeg - 90 : - (QuatToDeg - 270);
-console.log('target deg : ', this._deg)
-this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1
+//QuatToDeg = QuatToDeg <= 180 ? QuatToDeg - 90 : - (QuatToDeg - 270);
 
-            if (0 < xdeg || xdeg < 90) { //<- this and below should be &&
+//this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1
+
+            if (0 < xdeg && xdeg < 90) { //<- this and below should be &&
                 if (curz < rayPosZ) { //90-180
-                    //this._deg = this._deg + 90 
+                    this._deg = this._deg + 90 
                 } else if ( curz > rayPosZ) {//180-270 to -180 -90
-                    //this._deg = (90 - this._deg) - 180; 
-                    this._ditn = - this._ditn
+                    this._deg = (90 - this._deg) + 180; 
+                    //this._ditn = - this._ditn
                 }
-            } else if ( 0 > xdeg || xdeg > -90) {
+            } else if ( 0 > xdeg && xdeg > -90) {
                 if (curz < rayPosZ) {//0-90
-                    //this._deg = this._deg + 90 
+                    this._deg = this._deg + 90 
                 } else if ( curz > rayPosZ) {//270-360 to -90 0
-                    //this._deg = this._deg * -1 - 90;
-                    this._ditn = - this._ditn
+                    this._deg = - this._deg + 270;
+                    //this._ditn = - this._ditn
                 }
             }            
-            //this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1;
+
+            console.log('target deg : ', this._deg)
+            this._preDeg = this._deg;
+            this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1;             
             this._deg = QuatToDeg - this._deg;
+            console.log('before 360 q-t : ', this._deg)
+            console.log('before 360 ditn : ', this._ditn)
+            this._ditn = this._deg > 180 ?  -1 
+            : this._deg < - 180 ? 1 
+            : this._ditn;  
+            this._deg = this._deg > 180 ?  this._deg - 360 
+            : this._deg < - 180 ? this._deg + 360 
+            : this._deg;
+            console.log('q - t : ', this._deg)
+            console.log('ditn: ', this._ditn)
             this._deg = Math.abs(this._deg)
             
-console.log('quat deg: ',QuatToDeg)
+//console.log('quat deg: ',QuatToDeg)
             //this._ditn = this._deg - QuatToDeg
             //this._deg = Math.abs(xdeg)
             //this._ditn = xdeg < 0 ? - 1 : 1;
-            console.log('direction: ',this._ditn)
-            console.log('quat deg - tar deg : ', this._deg)
+            //console.log('direction: ',this._ditn)
+            //console.log('quat deg - tar deg : ', this._deg)
             //this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, 30 * Math.PI/180);
            }
     }
