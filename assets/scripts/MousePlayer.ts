@@ -1,5 +1,5 @@
 
-import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat } from 'cc';
+import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat } from 'cc';
 import { isRay, rayPosX, rayPosZ, rayRes } from './Camera'
 import { labels, Menu, curPage } from './Menu'
 const { ccclass, property } = _decorator;
@@ -79,34 +79,43 @@ export class MousePlayer extends Component {
             console.log(sinx)
             xdeg = Math.asin(sinx) * (180 / Math.PI)
             console.log(xdeg)            
-console.log(this.node.rotation)
+//console.log(this.node.rotation)
 let rotQuat = new Quat(this.node.rotation);
 let QuatToDeg = Math.acos(rotQuat.w) * 2 * 180 / Math.PI;
-QuatToDeg = QuatToDeg > 180 ? - QuatToDeg + 360 : - Math.abs(QuatToDeg);
+//QuatToDeg = QuatToDeg > 180 ? - Math.abs(QuatToDeg) + 360 : - Math.abs(QuatToDeg);
 //QuatToDeg = 0
-console.log(QuatToDeg)
 this._deg = xdeg
-            if (0 < xdeg || xdeg < 90) {
+//this._ditn = 1
+console.log('this rot: ',QuatToDeg)
+QuatToDeg = QuatToDeg <= 180 ? QuatToDeg - 90 : - (QuatToDeg - 270);
+console.log('target deg : ', this._deg)
+this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1
+
+            if (0 < xdeg || xdeg < 90) { //<- this and below should be &&
                 if (curz < rayPosZ) { //90-180
-                    this._deg = this._deg + 90 
+                    //this._deg = this._deg + 90 
                 } else if ( curz > rayPosZ) {//180-270 to -180 -90
-                    this._deg = (90 - this._deg) - 180; 
+                    //this._deg = (90 - this._deg) - 180; 
+                    this._ditn = - this._ditn
                 }
             } else if ( 0 > xdeg || xdeg > -90) {
                 if (curz < rayPosZ) {//0-90
-                    this._deg = this._deg + 90 
+                    //this._deg = this._deg + 90 
                 } else if ( curz > rayPosZ) {//270-360 to -90 0
-                    this._deg = this._deg * -1 - 90;
+                    //this._deg = this._deg * -1 - 90;
+                    this._ditn = - this._ditn
                 }
             }            
-            this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1;
-            this._deg = Math.abs(QuatToDeg - this._deg)
-            console.log(this._deg)
+            //this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1;
+            this._deg = QuatToDeg - this._deg;
+            this._deg = Math.abs(this._deg)
+            
+console.log('quat deg: ',QuatToDeg)
             //this._ditn = this._deg - QuatToDeg
             //this._deg = Math.abs(xdeg)
             //this._ditn = xdeg < 0 ? - 1 : 1;
-            console.log(this._ditn)
-            console.log(this._deg)
+            console.log('direction: ',this._ditn)
+            console.log('quat deg - tar deg : ', this._deg)
             //this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, 30 * Math.PI/180);
            }
     }
