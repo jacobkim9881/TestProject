@@ -81,9 +81,11 @@ export class MousePlayer extends Component {
             xdeg = Math.asin(sinx) * (180 / Math.PI)
             //console.log(xdeg)            
 console.log('node quat: ',this.node.rotation)
+console.log('node world rot quat: ',this.node.eulerAngles)
 let rotQuat = new Quat(this.node.rotation);
 let QuatToDeg = this._preDeg;
-//Math.acos(rotQuat.w) * 2 * 180 / Math.PI;
+//Math.acos(rotQuat.w) * 2 * 180 / Math.PI; 
+
 //QuatToDeg = QuatToDeg > 180 ? - Math.abs(QuatToDeg) + 360 : - Math.abs(QuatToDeg);
 //QuatToDeg = 0
 this._deg = xdeg
