@@ -78,23 +78,35 @@ export class MousePlayer extends Component {
             console.log(xLen, cval)
             console.log(sinx)
             xdeg = Math.asin(sinx) * (180 / Math.PI)
-            console.log(xdeg)
+            console.log(xdeg)            
+console.log(this.node.rotation)
+let rotQuat = new Quat(this.node.rotation);
+let QuatToDeg = Math.acos(rotQuat.w) * 2 * 180 / Math.PI;
+QuatToDeg = QuatToDeg > 180 ? - QuatToDeg + 360 : - Math.abs(QuatToDeg);
+//QuatToDeg = 0
+console.log(QuatToDeg)
+this._deg = xdeg
             if (0 < xdeg || xdeg < 90) {
-                if (curz < rayPosZ) {
-                    this._deg = this._deg + 90
-                } else if ( curz > rayPosZ) {
-                    this._deg = (90 - this._deg) + 180;
+                if (curz < rayPosZ) { //90-180
+                    this._deg = this._deg + 90 
+                } else if ( curz > rayPosZ) {//180-270 to -180 -90
+                    this._deg = (90 - this._deg) - 180; 
                 }
             } else if ( 0 > xdeg || xdeg > -90) {
-                if (curz < rayPosZ) {
-                    this._deg = this._deg + 90
-                } else if ( curz > rayPosZ) {
-                    this._deg = this._deg * -1 + 270;
+                if (curz < rayPosZ) {//0-90
+                    this._deg = this._deg + 90 
+                } else if ( curz > rayPosZ) {//270-360 to -90 0
+                    this._deg = this._deg * -1 - 90;
                 }
-            }
+            }            
+            this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1;
+            this._deg = Math.abs(QuatToDeg - this._deg)
+            console.log(this._deg)
+            //this._ditn = this._deg - QuatToDeg
             //this._deg = Math.abs(xdeg)
             //this._ditn = xdeg < 0 ? - 1 : 1;
-            //console.log(this._deg)
+            console.log(this._ditn)
+            console.log(this._deg)
             //this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, 30 * Math.PI/180);
            }
     }
@@ -108,9 +120,6 @@ export class MousePlayer extends Component {
             //this.node.rotation = Quat.fromEuler(new Quat(), 0, 20, 0);
             
             //Quat.rotateAround(_quat, this.node.rotation, Vec3.UP, rad);
-console.log(this.node.rotation)
-let rotQuat = new Quat(this.node.rotation);
-let QuatToDeg = Math.acos(rotQuat.w) * 2 * 180 / Math.PI
 //console.log(test1)
 //console.log(test2 * 180 / Math.PI)
 this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3, e.getButton());
@@ -161,12 +170,12 @@ this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3, 
 
     update(dt: number) {                    
         if(this.c1val > 0) {
-            this.moveObj(this.x1val, 0, this.z1val)    
+            //this.moveObj(this.x1val, 0, this.z1val)    
             this.c1val = this.c1val - 1;            
             //console.log(this.moveVal["c1val"])
         }             
         if (this._deg > 0) {
-        this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, 1 * Math.PI/180);
+        this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, this._ditn * Math.PI/180);
         this._deg--;
         } 
     }
