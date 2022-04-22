@@ -1,5 +1,5 @@
 
-import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat } from 'cc'
+import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat, Prefab, instantiate, Director, director } from 'cc'
 import { isRay, rayPosX, rayPosZ, rayRes } from './Camera'
 import { labels, Menu, curPage } from './Menu'
 const { ccclass, property } = _decorator
@@ -15,13 +15,18 @@ const { ccclass, property } = _decorator
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
-
 @ccclass('MousePlayer')
 export class MousePlayer extends Component {
+    @property(NodeList)
     @property({
       type: Animation
     })
+    
+    @property({type: Prefab})
 
+    private curPrefab11111: Prefab = null!
+    
+    @property(Director)
     @property({
       type: Label
     })
@@ -42,7 +47,24 @@ export class MousePlayer extends Component {
     private _curDeg: number = 0
 
     start () {
+        this.getNodes1()
+        this.shootObj()
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
+    }
+
+    getNodes1 () {
+        console.log(NodeList)
+        for (let i = 0; i < NodeList.length; i++) {
+          console.log(NodeList[i])
+        }
+      }
+
+    shootObj() {
+        let scene = director.getScene();
+        const child = instantiate(this.curPrefab11111)
+        //child.parent = scene
+        this.node.addChild(child)
+        child.setPosition(4, 0, 4)
     }
 
     findId (uuid: string) {

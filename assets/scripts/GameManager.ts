@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, Prefab, instantiate, director, Director, Button, Label, Asset, CCClass, resources, assetManager, CCLoader, JsonAsset, AssetManager } from 'cc'
+import { _decorator, Component, Prefab, instantiate, Director } from 'cc'
 import { Camera } from './Camera'
 const { ccclass, property } = _decorator
 
@@ -25,7 +25,7 @@ export class GameManager extends Component {
 
     @property(Director)
 
-    getNodes () {
+    getNodes22 () {
       console.log(NodeList)
       for (let i = 0; i < NodeList.length; i++) {
         console.log(NodeList[i])
@@ -43,11 +43,11 @@ export class GameManager extends Component {
     }
 
     start () {
-      this.getNodes()
+      this.getNodes22()
       this.test(1)
       this.test(2)
       this.test(3)
       this.nodes = this.node
-      console.log('prefab: ', this.curPrefab)
+      //console.log('prefab: ', this.curPrefab)
     }
 }

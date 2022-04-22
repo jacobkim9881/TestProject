@@ -1,4 +1,4 @@
-import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, AudioSource, AudioClip, Collider, ITriggerEvent, Quat, EventMouse, quat, Camera, CameraComponent } from 'cc'
+import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, AudioSource, AudioClip, Collider, ITriggerEvent, Quat, EventMouse, quat, Camera, CameraComponent, Prefab, instantiate } from 'cc'
 import { OneAxis } from './OneAxis'
 const { ccclass, property } = _decorator
 
@@ -32,15 +32,14 @@ export class FPSP extends Component {
     })
 
     @property(AudioSource)
-  private _audioSource: AudioSource = null!
 
-    private audio: AudioSource = null!
+    @property(Prefab)
+
+      curPrefabff: Prefab = null!
 
     @property(AudioClip)
-    private _clip: AudioClip = null!
 
     private _curPos = new Vec3()
-    private _tarPos = new Vec3()
     private moveLen = 0.15
     private jumpHeight = 6
     private jumpLimit = 0.2
@@ -52,11 +51,15 @@ export class FPSP extends Component {
     private _down = new OneAxis()
     private _jump = new OneAxis()
 
-    private _eMouse:any
-
     private _xCode = 0
     private _zCode = 0
     private _yCode = 0
+
+    test (n: number) {
+      const child = instantiate(this.curPrefabff)
+      this.node.addChild(child)
+      child.setPosition(n, 0, n)
+    }
 
     start () {
       fpsPos = this.node.getPosition()
@@ -66,14 +69,13 @@ export class FPSP extends Component {
       collider.on('onTriggerEnter', this.onTrigger, this)
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this)
       systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this)
-      systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
+      //systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
 
       FpsCamera.enabled = false
       // [3]
     }
 
     onMouseDown (e: EventMouse) {
-      this._eMouse = e
     }
 
     private onTrigger (event: ITriggerEvent) {
@@ -101,9 +103,6 @@ export class FPSP extends Component {
       case KeyVal.JUMP:
         console.log('pushed')
         this._jump.isPushed = 1
-        break
-      case KeyVal.SOUND:
-        this.playbackSound()
         break
       default:
         break
@@ -133,21 +132,6 @@ export class FPSP extends Component {
       default:
         break
       }
-    }
-
-    makeSound () {
-      this.audio = this.node.getComponent(AudioSource)!
-      console.log(this.audio)
-      this._audioSource = this.audio
-      this._audioSource.play()
-    }
-
-    playbackSound () {
-      this.audio = this.node.getComponent(AudioSource)!
-      this._audioSource = this.audio
-      console.log(this._audioSource)
-      console.log(this.audio.clip)
-      this._audioSource.playOneShot(this.audio.clip, 1)
     }
 
     calJumpTime (pushingTime: number, dt: number, pushed: number) {

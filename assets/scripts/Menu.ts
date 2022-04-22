@@ -1,7 +1,8 @@
 
-import { _decorator, Component, Node, Label, assetManager, Button, JsonAsset, systemEvent, SystemEventType, EventMouse } from 'cc'
+import { _decorator, Component, Node, Label, assetManager, Button, JsonAsset, systemEvent, SystemEventType, EventMouse, absMax } from 'cc'
 import { FpsCamera } from './FPSP'
 import { RtsCamera } from './Camera'
+import { MousePlayer } from './MousePlayer'
 const { ccclass, property } = _decorator
 
 /**
@@ -18,6 +19,12 @@ const { ccclass, property } = _decorator
 
 export let labels:Array<any> = null!
 export let curPage: number = 0
+export let clickerStr: clickerVal = null!
+
+export enum clickerVal {
+  DEF,
+  FIRE
+}
 
 @ccclass('Menu')
 export class Menu extends Component {
@@ -85,17 +92,16 @@ export class Menu extends Component {
     butts[buttonNum].node.on('click', (e) => {
       curPage = parseInt(this._pageNum.string.split('/')[0])
       const getPage = isPrev === 1 ? curPage - 2 : curPage
+      
       isPrev === 1
         ? this.prevEvent(curPage, isPrev, data, next, getPage)
         : this.nextEvent(curPage, data, next, getPage)
+        
       console.log(curPage, isPrev)
-      if (curPage === 1 && isPrev === 0 || curPage === 3 && isPrev === 1) {
-        console.log('p2')
-        butts[2].node.active = true
-        labels[6].string = data.json.page[1].button1
-      } else {
-        butts[2].node.active = false
-      }
+      //butts[2].node.emit('change', 'hi')
+
+        labels[6].string = data.json.page[getPage].button1;
+        butts[2].node.active = data.json.page[getPage].button1On
       // console.log('cliked')
     }, this)
   }
@@ -118,11 +124,16 @@ export class Menu extends Component {
         FpsCamera.enabled = false
         RtsCamera.enabled = true
         this._clicker.string = 'FPS click'
+      } else if (this._clicker.string === 'Fire an obj') {
+        //fire 
+        clickerStr = clickerVal.FIRE;
+        let test3 = new MousePlayer()
+        test3.shootObj();
       }
     }, this)
   }
 
   onMouseDown (e: EventMouse) {
-    console.log(e)
+    //console.log(e)
   }
 }
