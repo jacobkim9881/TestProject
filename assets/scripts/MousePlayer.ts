@@ -49,7 +49,6 @@ export class MousePlayer extends Component {
       const selected = rayRes[0]._collider.node._id
       let str
       if (uuid === selected) {
-        // Menu.getComponentsInChildren(Label)
         str = 'Mouse player clicked'
         this._isMPushed = 1
       } else if (uuid !== selected) {
@@ -61,11 +60,11 @@ export class MousePlayer extends Component {
 
     calMoveObj (isRay:boolean, curx: number, curz: number, moveLen: number, button: number) {
       const objId = this.node.uuid
-      const test = this.node.getChildByName('Cone')
       if (button === 0) {
         this.findId(objId)
       } else if (isRay && button === 2 && this._isMPushed) {
-        let xLen, zLen, cval, dt, sinx, sinz, xdeg
+        //console.log('--------------------------------------------')
+        let xLen, zLen, cval, dt, sinx, xdeg
         dt = 0.015
         // console.log('cur x, z', curx, curz)
         // console.log('ray x, z', rayPosX, rayPosZ)
@@ -80,30 +79,29 @@ export class MousePlayer extends Component {
         // console.log(xLen, cval)
         // console.log(sinx)
         xdeg = Math.asin(sinx) * (180 / Math.PI)
-        // console.log(xdeg)
-        console.log('--------------------------------------------')
-        console.log('Euler angle y: ', this.node.eulerAngles.y)
-        console.log('this._curDeg: ', this._curDeg)
+        // console.log(xdeg)        
+        //console.log('Euler angle y: ', this.node.eulerAngles.y)
+        //console.log('this._curDeg: ', this._curDeg)
         this._curDeg = - this.node.eulerAngles.y;
-        console.log('object cur deg: ', this._curDeg)
+        //console.log('object cur deg: ', this._curDeg)
         this._curDeg = this._curDeg >= 0 ? this._curDeg : this._curDeg + 360;
-        if (this._curDeg < 0) {console.log('edited cur deg + 360: ', this._curDeg)}
+        //if (this._curDeg < 0) {console.log('edited cur deg + 360: ', this._curDeg)}
         this._deg = xdeg
-        if (xdeg > 0 && xdeg < 90) { // <- this and below should be &&
+        if (xdeg > 0 && xdeg < 90) { 
           if (curz < rayPosZ) { // 90-180
             this._deg = this._deg + 90
-          } else if (curz > rayPosZ) { // 180-270 to -180 -90
+          } else if (curz > rayPosZ) { // 180-270 
             this._deg = (90 - this._deg) + 180
           }
         } else if (xdeg < 0 && xdeg > -90) {
           if (curz < rayPosZ) { // 0-90
             this._deg = this._deg + 90
-          } else if (curz > rayPosZ) { // 270-360 to -90 0
+          } else if (curz > rayPosZ) { // 270-360 
             this._deg = -this._deg + 270
           }
         }
 
-        console.log('target deg : ', this._deg)
+        //console.log('target deg : ', this._deg)
         this._preDeg = this._deg
         this._ditn = this._curDeg - this._deg > 0 ? 1 : -1
         this._deg = this._curDeg - this._deg
@@ -119,17 +117,13 @@ export class MousePlayer extends Component {
           : this._deg < -180
             ? this._deg + 360
             : this._deg
-        console.log('q - t : ', this._deg)
+        //console.log('q - t : ', this._deg)
         //console.log('ditn: ', this._ditn)
         this._deg = Math.abs(this._deg)
 
         // console.log('quat deg: ',this._curDeg)
-        // this._ditn = this._deg - this._curDeg
-        // this._deg = Math.abs(xdeg)
-        // this._ditn = xdeg < 0 ? - 1 : 1;
         // console.log('direction: ',this._ditn)
         // console.log('quat deg - tar deg : ', this._deg)
-        // this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, 30 * Math.PI/180);
       }
     }
 
@@ -143,27 +137,7 @@ export class MousePlayer extends Component {
       // console.log(test1)
       // console.log(test2 * 180 / Math.PI)
       this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3, e.getButton())
-      // console.log(this.moveVal["c1val"])
-      // this.c1val = this.moveVal["c1val"];
-      /*
-        if (isRay) {
-            let curx, curz, xLen, zLen, cval, dt, moveLen;
-            curx = this.node.getPosition().x;
-            curz = this.node.getPosition().z;
-            dt = 0.015;
-            moveLen = 3;
-            console.log('cur x, z', curx, curz)
-            console.log('ray x, z', rayPosX, rayPosZ)
-            xLen = curx - rayPosX;
-            zLen = curz - rayPosZ;
-            cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2));
-            this.c1val = cval/(dt * moveLen);
-            this.x1val = - xLen / this.c1val;
-            this.z1val = - zLen / this.c1val;
-            console.log(this.x1val, this.z1val)
-           }
-           */
-      //   xLen =
+
     }
 
     calJumpTime (pushingTime: number, dt: number, pushed: number) {
