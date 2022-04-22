@@ -40,7 +40,6 @@ export class MousePlayer extends Component {
     private _ditn: number = 0
     private _preDeg: number = 0
     private _curDeg: number = 0
-    private _movedDeg: number = 0
 
     start () {
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
@@ -83,11 +82,9 @@ export class MousePlayer extends Component {
         xdeg = Math.asin(sinx) * (180 / Math.PI)
         // console.log(xdeg)
         console.log('--------------------------------------------')
-        console.log('Euler angle y: ', this.node.eulerAngles.y)        
-        //this._curDeg = this._curDeg - this._movedDeg;
-        //console.log(`this._curDeg${this._curDeg} - this._movedDeg${this._movedDeg} = `, this._curDeg)
-        this._curDeg = this._curDeg - this.node.eulerAngles.y;
-        this._movedDeg = 0;
+        console.log('Euler angle y: ', this.node.eulerAngles.y)
+        console.log('this._curDeg: ', this._curDeg)
+        this._curDeg = - this.node.eulerAngles.y;
         console.log('object cur deg: ', this._curDeg)
         this._curDeg = this._curDeg >= 0 ? this._curDeg : this._curDeg + 360;
         if (this._curDeg < 0) {console.log('edited cur deg + 360: ', this._curDeg)}
@@ -193,13 +190,15 @@ export class MousePlayer extends Component {
 
     update (dt: number) {
       if (this.c1val > 0) {
-        // this.moveObj(this.x1val, 0, this.z1val)
+        this.moveObj(this.x1val, 0, this.z1val)
         this.c1val = this.c1val - 1
         // console.log(this.moveVal["c1val"])
       }
       if (this._deg > 0) {
-        this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, this._ditn * Math.PI / 180)
-        this._movedDeg = this._movedDeg + this._ditn
+        let moveLessThan1 = this._deg * this._ditn;
+        let move1 = this._ditn;
+        let moveDegree = this._deg < 1 && this._deg > 0 ? moveLessThan1 : move1;
+        this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, moveDegree * Math.PI / 180)
         this._deg--
       }
     }
