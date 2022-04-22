@@ -1,8 +1,8 @@
 
-import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, EventMouse, geometry, PhysicsSystem, CameraComponent, Quat } from 'cc';
-import { EDITOR } from 'cc/env';
-const { ccclass, property } = _decorator;
+import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, EventMouse, geometry, PhysicsSystem, CameraComponent, Quat } from 'cc'
+import { EDITOR } from 'cc/env'
 import { FPSP, fpsPos } from './FPSP'
+const { ccclass, property } = _decorator
 
 /**
  * Predefined variables
@@ -15,48 +15,44 @@ import { FPSP, fpsPos } from './FPSP'
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
- 
+
 export let rayRes: Array<any> = null!
-export let rayPosX: number = null!;
-export let rayPosZ: number = null!;
-export let isRay: boolean = null!;
-export let RtsCamera: CameraComponent = null!;
+export let rayPosX: number = null!
+export let rayPosZ: number = null!
+export let isRay: boolean = null!
+export let RtsCamera: CameraComponent = null!
 
 @ccclass('Camera')
 export class Camera extends Component {
-
     @property({ type: CameraComponent })
-    RtsCamera: CameraComponent = null as any;
+      RtsCamera: CameraComponent = null as any
 
-    private _ray: geometry.Ray = new geometry.Ray();
-    
+    private _ray: geometry.Ray = new geometry.Ray()
 
-    start () {        
-      RtsCamera = this.getComponent(CameraComponent);
-      systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this);
+    start () {
+      RtsCamera = this.getComponent(CameraComponent)
+      systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
     }
 
-    onMouseDown(e: EventMouse) {    
-        let player = fpsPos;
-        //console.log(player)
-        let cur_position = this.node.getPosition();
-        //console.log(player, cur_position)
-        //this.node.getPosition(cur_position)
-        //Vec3.lerp(cur_position, cur_position, player, 0.1)
-        //this.node.setPosition(cur_position);     
-        
-        
-        RtsCamera.screenPointToRay(e.getLocationX(), e.getLocationY(), this._ray);
-        isRay = PhysicsSystem.instance.raycast(this._ray, 0xffffffff, 100, true);
-        rayRes = PhysicsSystem.instance.raycastResults;
-        rayPosX = PhysicsSystem.instance.raycastResults[0].hitPoint.x;
-        rayPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z;
-        //console.log('raycast get', isRay)
-        //console.log(rayRes)
-        //console.log(rayPosX, rayPosZ)
+    onMouseDown (e: EventMouse) {
+      const player = fpsPos
+      // console.log(player)
+      const cur_position = this.node.getPosition()
+      // console.log(player, cur_position)
+      // this.node.getPosition(cur_position)
+      // Vec3.lerp(cur_position, cur_position, player, 0.1)
+      // this.node.setPosition(cur_position);
 
-        
-/*
+      RtsCamera.screenPointToRay(e.getLocationX(), e.getLocationY(), this._ray)
+      isRay = PhysicsSystem.instance.raycast(this._ray, 0xffffffff, 100, true)
+      rayRes = PhysicsSystem.instance.raycastResults
+      rayPosX = PhysicsSystem.instance.raycastResults[0].hitPoint.x
+      rayPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z
+      // console.log('raycast get', isRay)
+      // console.log(rayRes)
+      // console.log(rayPosX, rayPosZ)
+
+      /*
         let tarNode = rayRes[rayRes.length - 1];
         let pos2:Vec3= this.node.position;
         console.log(tarNode, pos2)
@@ -75,12 +71,9 @@ export class Camera extends Component {
         Quat.rotateAround(_quat, this.node.rotation, axis, rad)
         //Quat.rotateAroundLocal(tarNode._hitPoint, pos2, v1, 100);
         */
-        
     }
 
+    update (dt: number) {
 
-    update(dt: number) {          
-        
     }
-
 }

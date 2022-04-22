@@ -1,7 +1,7 @@
 
-import { _decorator, Component, Node, Prefab, instantiate, director, Director, Button, Label, Asset, CCClass, resources, assetManager, CCLoader, JsonAsset, AssetManager } from 'cc';
-import { Camera } from './Camera';
-const { ccclass, property } = _decorator;
+import { _decorator, Component, Node, Prefab, instantiate, director, Director, Button, Label, Asset, CCClass, resources, assetManager, CCLoader, JsonAsset, AssetManager } from 'cc'
+import { Camera } from './Camera'
+const { ccclass, property } = _decorator
 
 /**
  * Predefined variables
@@ -17,41 +17,37 @@ const { ccclass, property } = _decorator;
 @ccclass('GameManager')
 export class GameManager extends Component {
     @property(NodeList)
-    private nodes: any = null!
+  private nodes: any = null!
 
     @property(Prefab)
 
-    curPrefab: Prefab = null!;
-   
+      curPrefab: Prefab = null!
+
     @property(Director)
 
-    getNodes() {
-        console.log(NodeList)
-        for (let i = 0; i < NodeList.length; i++) {
-            console.log(NodeList[i]);
-        }
+    getNodes () {
+      console.log(NodeList)
+      for (let i = 0; i < NodeList.length; i++) {
+        console.log(NodeList[i])
+      }
     }
 
-    test(n: number) {
-        let child = instantiate(this.curPrefab);
-        this.node.addChild(child);
-        child.setPosition(n, 0, n)
-        
+    test (n: number) {
+      const child = instantiate(this.curPrefab)
+      this.node.addChild(child)
+      child.setPosition(n, 0, n)
     }
 
-    onClick(e: number) {
-
-        console.log('hello', e)
+    onClick (e: number) {
+      console.log('hello', e)
     }
 
     start () {
-
-        this.getNodes();
-        this.test(1)
-        this.test(2)
-        this.test(3)
-        this.nodes = this.node
-        console.log('prefab: ', this.curPrefab)
+      this.getNodes()
+      this.test(1)
+      this.test(2)
+      this.test(3)
+      this.nodes = this.node
+      console.log('prefab: ', this.curPrefab)
     }
-
 }

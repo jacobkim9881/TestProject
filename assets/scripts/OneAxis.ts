@@ -1,6 +1,6 @@
 
-import { _decorator, Component, Node } from 'cc';
-const { ccclass, property } = _decorator;
+import { _decorator, Component, Node } from 'cc'
+const { ccclass, property } = _decorator
 
 /**
  * Predefined variables
@@ -13,10 +13,10 @@ const { ccclass, property } = _decorator;
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
- 
+
 @ccclass('OneAxis')
 export class OneAxis extends Component {
-    isPushed = 0
-    pushingTime = 0
-    pausedTime = 0
+  isPushed = 0
+  pushingTime = 0
+  pausedTime = 0
 }
