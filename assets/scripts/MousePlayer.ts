@@ -39,6 +39,8 @@ export class MousePlayer extends Component {
     private _deg: number = 0
     private _ditn: number = 0
     private _preDeg: number = 0
+    private _curDeg: number = 0
+    private _movedDeg: number = 0
 
     start () {
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
@@ -80,42 +82,36 @@ export class MousePlayer extends Component {
         // console.log(sinx)
         xdeg = Math.asin(sinx) * (180 / Math.PI)
         // console.log(xdeg)
-        console.log('node quat: ', this.node.rotation)
-        console.log('node world rot quat: ', this.node.eulerAngles)
-        const rotQuat = new Quat(this.node.rotation)
-        const QuatToDeg = Math.acos(rotQuat.w) * 2 * 180 / Math.PI
-        // this._preDeg;
-        // QuatToDeg = QuatToDeg > 180 ? - Math.abs(QuatToDeg) + 360 : - Math.abs(QuatToDeg);
-        // QuatToDeg = 0
+        console.log('--------------------------------------------')
+        console.log('Euler angle y: ', this.node.eulerAngles.y)        
+        //this._curDeg = this._curDeg - this._movedDeg;
+        //console.log(`this._curDeg${this._curDeg} - this._movedDeg${this._movedDeg} = `, this._curDeg)
+        this._curDeg = this._curDeg - this.node.eulerAngles.y;
+        this._movedDeg = 0;
+        console.log('object cur deg: ', this._curDeg)
+        this._curDeg = this._curDeg >= 0 ? this._curDeg : this._curDeg + 360;
+        if (this._curDeg < 0) {console.log('edited cur deg + 360: ', this._curDeg)}
         this._deg = xdeg
-        // this._ditn = 1
-        console.log('this rot: ', QuatToDeg)
-        // QuatToDeg = QuatToDeg <= 180 ? QuatToDeg - 90 : - (QuatToDeg - 270);
-
-        // this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1
-
         if (xdeg > 0 && xdeg < 90) { // <- this and below should be &&
           if (curz < rayPosZ) { // 90-180
             this._deg = this._deg + 90
           } else if (curz > rayPosZ) { // 180-270 to -180 -90
             this._deg = (90 - this._deg) + 180
-            // this._ditn = - this._ditn
           }
         } else if (xdeg < 0 && xdeg > -90) {
           if (curz < rayPosZ) { // 0-90
             this._deg = this._deg + 90
           } else if (curz > rayPosZ) { // 270-360 to -90 0
             this._deg = -this._deg + 270
-            // this._ditn = - this._ditn
           }
         }
 
         console.log('target deg : ', this._deg)
         this._preDeg = this._deg
-        this._ditn = QuatToDeg - this._deg > 0 ? 1 : -1
-        this._deg = QuatToDeg - this._deg
-        console.log('before 360 q-t : ', this._deg)
-        console.log('before 360 ditn : ', this._ditn)
+        this._ditn = this._curDeg - this._deg > 0 ? 1 : -1
+        this._deg = this._curDeg - this._deg
+        //console.log('before 360 q-t : ', this._deg)
+        //console.log('before 360 ditn : ', this._ditn)
         this._ditn = this._deg > 180
           ? -1
           : this._deg < -180
@@ -127,11 +123,11 @@ export class MousePlayer extends Component {
             ? this._deg + 360
             : this._deg
         console.log('q - t : ', this._deg)
-        console.log('ditn: ', this._ditn)
+        //console.log('ditn: ', this._ditn)
         this._deg = Math.abs(this._deg)
 
-        // console.log('quat deg: ',QuatToDeg)
-        // this._ditn = this._deg - QuatToDeg
+        // console.log('quat deg: ',this._curDeg)
+        // this._ditn = this._deg - this._curDeg
         // this._deg = Math.abs(xdeg)
         // this._ditn = xdeg < 0 ? - 1 : 1;
         // console.log('direction: ',this._ditn)
@@ -203,6 +199,7 @@ export class MousePlayer extends Component {
       }
       if (this._deg > 0) {
         this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, this._ditn * Math.PI / 180)
+        this._movedDeg = this._movedDeg + this._ditn
         this._deg--
       }
     }
