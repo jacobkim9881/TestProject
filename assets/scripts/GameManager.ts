@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Prefab, instantiate, Director } from 'cc'
+import { _decorator, Component, Prefab, instantiate, Director, Vec3, director, RigidBody, SphereCollider } from 'cc'
 import { Camera } from './Camera'
 const { ccclass, property } = _decorator
 
@@ -16,25 +16,20 @@ const { ccclass, property } = _decorator
  */
 @ccclass('GameManager')
 export class GameManager extends Component {
-    @property(NodeList)
-  private nodes: any = null!
 
     @property(Prefab)
 
       curPrefab: Prefab = null!
 
-    @property(Director)
-
-    getNodes22 () {
-      console.log(NodeList)
-      for (let i = 0; i < NodeList.length; i++) {
-        console.log(NodeList[i])
-      }
-    }
-
-    test (n: number) {
+    createObject (n: number) {
       const child = instantiate(this.curPrefab)
-      this.node.addChild(child)
+      //child.getPosition(new Vec3())       
+      this.node.addChild(child)     
+      //let objColider = child.addComponent(SphereCollider)
+      //let objRigid = child.addComponent(RigidBody)
+      //objColider.enabled = true;
+      //objRigid.wakeUp();
+      //objRigid.node.
       child.setPosition(n, 0, n)
     }
 
@@ -43,11 +38,9 @@ export class GameManager extends Component {
     }
 
     start () {
-      this.getNodes22()
-      this.test(1)
-      this.test(2)
-      this.test(3)
-      this.nodes = this.node
+      this.createObject(1)
+      this.createObject(2)
+      this.createObject(3)
       //console.log('prefab: ', this.curPrefab)
     }
 }
