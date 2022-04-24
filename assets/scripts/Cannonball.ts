@@ -1,7 +1,7 @@
 
 import { _decorator, Component, Node, Prefab, director, instantiate, resources, systemEvent, SystemEventType, SphereCollider, RigidBody, Vec3, Scene } from 'cc';
 const { ccclass, property } = _decorator;
-import { objectRotDeg, objectPos, mPlayerUuid } from './MousePlayer';
+import { objectRotDeg, objectPos } from './MousePlayer';
 import { rayRes } from './Camera';
 import { labels } from './Menu';
 
@@ -53,7 +53,7 @@ export class Cannonball extends Component {
       //console.log(this.child1)
       
         this.child1.getPosition()        
-        //this.test1234.setLinearVelocity(new Vec3(100, 0, 0))
+        //this.test1234.setLinearVelocity(new Vec3(100, 0, 0))        
         let editedRotDeg = objectRotDeg < 0 ? objectRotDeg + 360 : objectRotDeg
         editedRotDeg = editedRotDeg + 90
         editedRotDeg = editedRotDeg *  Math.PI / 180

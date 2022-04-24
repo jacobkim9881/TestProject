@@ -2,7 +2,6 @@
 import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat, Prefab, instantiate, Director, director, resources } from 'cc'
 import { isRay, rayPosX, rayPosZ, rayRes } from './Camera'
 import { labels, Menu, curPage } from './Menu'
-import { Cannonball } from './Cannonball'
 const { ccclass, property } = _decorator
 
 /**
@@ -17,10 +16,9 @@ const { ccclass, property } = _decorator
  *
  */
 
-  export let objectRotDeg
-  export let objectPos
-  export let mPlayerUuid
-  export let mPlayerClicked
+  export let objectRotDeg: number = 0
+  export let objectPos:Vec3 = null!
+  export let mPlayerUuid:string = null!
 
 @ccclass('MousePlayer')
 export class MousePlayer extends Component {
@@ -38,30 +36,20 @@ export class MousePlayer extends Component {
     private jumpLimit = 0.2
     private _isMPushed: number = 0
     private _mPushingTime: number = 0
-    private moveVal: object
     private c1val: number = 0
     private x1val: number = 0
     private z1val: number = 0
     private _deg: number = 0
     private _ditn: number = 0
-    private _preDeg: number = 0
     private _curDeg: number = 0
 
     start () {
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
     }
 
-    findId (uuid: string) {
-      const selected = rayRes[0]._collider.node._id
-      let str
-      if (uuid === selected) {
-        str = 'Mouse player clicked'
-        this._isMPushed = 1
-      } else if (uuid !== selected) {
-        str = ''
-        this._isMPushed = 0
-      }
-      labels[5].string = str
+    findId (uuid: string, selected: string) {            
+      if (uuid === selected) return 1
+      else return 0      
     }
 
     rotateObj(curx: number, curz: number, moveLen: number) {
@@ -105,7 +93,6 @@ export class MousePlayer extends Component {
         }
 
         //console.log('target deg : ', this._deg)
-        this._preDeg = this._deg
         this._ditn = this._curDeg - this._deg > 0 ? 1 : -1
         this._deg = this._curDeg - this._deg
         //console.log('before 360 q-t : ', this._deg)
@@ -143,11 +130,15 @@ export class MousePlayer extends Component {
       let curx = this.node.getPosition().x
       let curz = this.node.getPosition().z
       let moveLen = 10
-
+      let selectedUuid = rayRes[0]._collider.node._id
       mPlayerUuid = this.node.uuid
+      
+      //if object selected
       if (button === 0) {
-        this.findId(mPlayerUuid)
+        this._isMPushed = this.findId(mPlayerUuid, selectedUuid);
+        labels[5].string = this._isMPushed === 1 ? 'Mouse player clicked' : ''
       } else if (isRay && button === 2 && this._isMPushed) {
+        //if right mouse button clicked and selected
         this.rotateObj(curx, curz, moveLen)
       }
     }
@@ -172,7 +163,7 @@ export class MousePlayer extends Component {
 
     update (dt: number) {
       if (this.c1val > 0) this.executeMove()
-      if (this._deg > 0) this.excuteRatate()
+      if (this._deg > 0) this.excuteRotate()
     }
 
     executeMove() {
@@ -180,7 +171,7 @@ export class MousePlayer extends Component {
       this.c1val = this.c1val - 1
     }
 
-    excuteRatate() {
+    excuteRotate() {
       let move1 = this._ditn * 4;
       let moveLessThan1 = this._deg;        
       let moveDegree = this._deg < move1 && this._deg > 0 ? moveLessThan1 : move1;
