@@ -48,15 +48,58 @@ export class MousePlayer extends Component {
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
     }
 
+    update (dt: number) {
+      if (this.c1val > 0) this.executeMove()
+      if (this._deg > 0) this.excuteRotate()
+    }
+
+    onMouseDown (e: EventMouse) {
+
+      let button = e.getButton();
+      
+      //if object selected
+      if (button === 0) {
+        this.changeMenuReturnsVal()
+      } else if (isRay && button === 2 && this._isMPushed) {
+        //if right mouse button clicked and selected
+        this.calRotationVals()
+      }
+    }
+
+    changeMenuReturnsVal() {
+      let selectedUuid = rayRes[0]._collider.node._id
+      mPlayerUuid = this.node.uuid
+      this._isMPushed = this.findId(mPlayerUuid, selectedUuid);
+      labels[5].string = this._isMPushed === 1 ? 'Mouse player clicked' : ''
+    }
+
+    calRotationVals() {
+      let dt = 0.015
+      let curx = this.node.getPosition().x
+      let curz = this.node.getPosition().z            
+      let moveLen = 10            
+      let curDeg = - this.node.eulerAngles.y;                
+      this._betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)
+      let betweenTwoObj = this._betweenTwoObj;        
+      this.c1val = betweenTwoObj.c1val;
+      this.x1val = betweenTwoObj.x1val;
+      this.z1val = betweenTwoObj.z1val;
+
+      let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, this._betweenTwoObj.xdeg)
+      this._ditn = rotateObj.ditn
+      this._deg = rotateObj.deg
+    }
+
+
     findId (uuid: string, selected: string) {            
       if (uuid === selected) return 1
       else return 0      
     }
 
-    rotateObj(curx: number, curz: number, rayPosX:number, rayPosZ: number, moveLen: number, curDeg:number, xdeg:number) {
-
+    rotateObj(curz: number, rayPosZ: number, curDeg:number, xdeg:number) {
+        let ditn, deg
         //console.log('--------------------------------------------')        
-        curDeg = - this.node.eulerAngles.y;
+        //curDeg = - this.node.eulerAngles.y;
         //console.log('object cur deg: ', curDeg)
         curDeg = curDeg >= 0 ? curDeg : curDeg + 360;
         //if (curDeg < 0) {console.log('edited cur deg + 360: ', curDeg)}        
@@ -74,28 +117,29 @@ export class MousePlayer extends Component {
           }
         }
 
-        //console.log('target deg : ', this._deg)
-        this._ditn = curDeg - xdeg > 0 ? 1 : -1
-        this._deg = curDeg - xdeg
-        //console.log('before 360 q-t : ', this._deg)
-        //console.log('before 360 ditn : ', this._ditn)
-        this._ditn = this._deg > 180
+        //console.log('target deg : ', deg)
+        ditn = curDeg - xdeg > 0 ? 1 : -1
+        deg = curDeg - xdeg
+        //console.log('before 360 q-t : ', deg)
+        //console.log('before 360 ditn : ', ditn)
+        ditn = deg > 180
           ? -1
-          : this._deg < -180
+          : deg < -180
             ? 1
-            : this._ditn
-        this._deg = this._deg > 180
-          ? this._deg - 360
-          : this._deg < -180
-            ? this._deg + 360
-            : this._deg
-        //console.log('q - t : ', this._deg)
-        //console.log('ditn: ', this._ditn)
-        this._deg = Math.abs(this._deg)
+            : ditn
+        deg = deg > 180
+          ? deg - 360
+          : deg < -180
+            ? deg + 360
+            : deg
+        //console.log('q - t : ', deg)
+        //console.log('ditn: ', ditn)
+        deg = Math.abs(deg)
 
         // console.log('quat deg: ',curDeg)
-        // console.log('direction: ',this._ditn)
-        // console.log('quat deg - tar deg : ', this._deg)
+        // console.log('direction: ',ditn)
+        // console.log('quat deg - tar deg : ', deg)
+        return {ditn: ditn, deg: deg}
     }
 
     betweenObjects(curx:number, curz: number, rayPosX:number, rayPosZ: number, moveLen: number, dt: number) {
@@ -122,36 +166,6 @@ export class MousePlayer extends Component {
       }
     }
 
-    onMouseDown (e: EventMouse) {
-      const _quat = new Quat()      
-      const rad = 100 * Math.PI / 180
-
-      // this.node.rotation = Quat.fromEuler(new Quat(), 0, 20, 0);
-
-      // Quat.rotateAround(_quat, this.node.rotation, Vec3.UP, rad);
-      // console.log(test1)
-      // console.log(test2 * 180 / Math.PI)      
-
-      let button = e.getButton();
-      let curx = this.node.getPosition().x
-      let curz = this.node.getPosition().z
-      let moveLen = 10
-      let selectedUuid = rayRes[0]._collider.node._id
-      mPlayerUuid = this.node.uuid
-      
-      //if object selected
-      if (button === 0) {
-        this._isMPushed = this.findId(mPlayerUuid, selectedUuid);
-        labels[5].string = this._isMPushed === 1 ? 'Mouse player clicked' : ''
-      } else if (isRay && button === 2 && this._isMPushed) {
-        //if right mouse button clicked and selected
-        let dt = 0.015
-        let curDeg = - this.node.eulerAngles.y;
-        this._betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)
-        this.rotateObj(curx, curz, rayPosX, rayPosZ, moveLen, curDeg, this._betweenTwoObj.xdeg)
-      }
-    }
-
     calJumpTime (pushingTime: number, dt: number, pushed: number) {
       return pushingTime = pushingTime + dt * pushed
     }
@@ -168,11 +182,6 @@ export class MousePlayer extends Component {
       Vec3.add(this._curPos, this._curPos, new Vec3(x, y, z))
       this.node.setPosition(this._curPos)
       // console.log(this.node.getPosition(this._curPos))
-    }
-
-    update (dt: number) {
-      if (this.c1val > 0) this.executeMove()
-      if (this._deg > 0) this.excuteRotate()
     }
 
     executeMove() {
