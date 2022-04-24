@@ -171,8 +171,13 @@ export class MousePlayer extends Component {
     }
 
     update (dt: number) {
-      if (this.c1val > 0) this.c1val = this.c1val - 1
-      if (this._deg > 0) this.excuteRatate
+      if (this.c1val > 0) this.executeMove()
+      if (this._deg > 0) this.excuteRatate()
+    }
+
+    executeMove() {
+      this.moveObj(this.x1val, 0, this.z1val)
+      this.c1val = this.c1val - 1
     }
 
     excuteRatate() {
