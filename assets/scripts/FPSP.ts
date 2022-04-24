@@ -1,5 +1,6 @@
 import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, AudioSource, AudioClip, Collider, ITriggerEvent, Quat, EventMouse, quat, Camera, CameraComponent, Prefab, instantiate } from 'cc'
 import { OneAxis } from './OneAxis'
+import { curPage, clickerStr } from './Menu'
 const { ccclass, property } = _decorator
 
  enum KeyVal {
@@ -87,26 +88,33 @@ export class FPSP extends Component {
       console.log(this._jump.pushingTime)
       console.log(this._jump.isPushed)
       this.input = e.keyCode
-      switch (this.input) {
-      case KeyVal.LEFT:
-        this._left.isPushed = 1
-        break
-      case KeyVal.RIGHT:
-        this._right.isPushed = 1
-        break
-      case KeyVal.UP:
-        this._up.isPushed = 1
-        break
-      case KeyVal.DOWN:
-        this._down.isPushed = 1
-        break
-      case KeyVal.JUMP:
-        console.log('pushed')
-        this._jump.isPushed = 1
-        break
-      default:
-        break
+      if (clickerStr === 'RTS click') {
+        console.log(clickerStr)
+        this.switchKey()
       }
+    }
+
+    switchKey() {
+      switch (this.input) {
+        case KeyVal.LEFT:
+          this._left.isPushed = 1
+          break
+        case KeyVal.RIGHT:
+          this._right.isPushed = 1
+          break
+        case KeyVal.UP:
+          this._up.isPushed = 1
+          break
+        case KeyVal.DOWN:
+          this._down.isPushed = 1
+          break
+        case KeyVal.JUMP:
+          console.log('pushed')
+          this._jump.isPushed = 1
+          break
+        default:
+          break
+        }
     }
 
     onKeyUP (e: EventKeyboard) {
