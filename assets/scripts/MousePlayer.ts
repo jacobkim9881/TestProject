@@ -16,6 +16,10 @@ const { ccclass, property } = _decorator
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
+
+  export let objectRotDeg
+  export let objectPos
+
 @ccclass('MousePlayer')
 export class MousePlayer extends Component {
     @property({
@@ -128,18 +132,15 @@ export class MousePlayer extends Component {
     }
 
     onMouseDown (e: EventMouse) {
-      const _quat = new Quat()
+      const _quat = new Quat()      
       const rad = 100 * Math.PI / 180
-
-      let cannonball = new Cannonball();
-      cannonball.shootObject();
 
       // this.node.rotation = Quat.fromEuler(new Quat(), 0, 20, 0);
 
       // Quat.rotateAround(_quat, this.node.rotation, Vec3.UP, rad);
       // console.log(test1)
       // console.log(test2 * 180 / Math.PI)
-      this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 3, e.getButton())
+      this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 10, e.getButton())
 
     }
 
@@ -149,10 +150,6 @@ export class MousePlayer extends Component {
 
     isJumpStop (limit: number, dt: number) {
       return dt > limit ? 0 : 1
-    }
-
-    move1 () {
-
     }
 
     moveObj (x: number, y: number, z: number) {
@@ -172,11 +169,13 @@ export class MousePlayer extends Component {
         // console.log(this.moveVal["c1val"])
       }
       if (this._deg > 0) {
-        let moveLessThan1 = this._deg * this._ditn;
-        let move1 = this._ditn;
-        let moveDegree = this._deg < 1 && this._deg > 0 ? moveLessThan1 : move1;
+        let move1 = this._ditn * 4;
+        let moveLessThan1 = this._deg * move1;        
+        let moveDegree = this._deg < move1 && this._deg > 0 ? moveLessThan1 : move1;
         this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, moveDegree * Math.PI / 180)
-        this._deg--
+        objectRotDeg = this.node.eulerAngles.y;
+        objectPos = this.node.getPosition()
+        this._deg = this._deg - move1
       }
     }
 }
