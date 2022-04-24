@@ -19,6 +19,8 @@ const { ccclass, property } = _decorator
 
   export let objectRotDeg
   export let objectPos
+  export let mPlayerUuid
+  export let mPlayerClicked
 
 @ccclass('MousePlayer')
 export class MousePlayer extends Component {
@@ -62,11 +64,8 @@ export class MousePlayer extends Component {
       labels[5].string = str
     }
 
-    calMoveObj (isRay:boolean, curx: number, curz: number, moveLen: number, button: number) {
-      const objId = this.node.uuid
-      if (button === 0) {
-        this.findId(objId)
-      } else if (isRay && button === 2 && this._isMPushed) {
+    rotateObj(curx: number, curz: number, moveLen: number) {
+
         //console.log('--------------------------------------------')
         let xLen, zLen, cval, dt, sinx, xdeg
         dt = 0.015
@@ -128,7 +127,6 @@ export class MousePlayer extends Component {
         // console.log('quat deg: ',this._curDeg)
         // console.log('direction: ',this._ditn)
         // console.log('quat deg - tar deg : ', this._deg)
-      }
     }
 
     onMouseDown (e: EventMouse) {
@@ -139,9 +137,19 @@ export class MousePlayer extends Component {
 
       // Quat.rotateAround(_quat, this.node.rotation, Vec3.UP, rad);
       // console.log(test1)
-      // console.log(test2 * 180 / Math.PI)
-      this.calMoveObj(isRay, this.node.getPosition().x, this.node.getPosition().z, 10, e.getButton())
+      // console.log(test2 * 180 / Math.PI)      
 
+      let button = e.getButton();
+      let curx = this.node.getPosition().x
+      let curz = this.node.getPosition().z
+      let moveLen = 10
+
+      mPlayerUuid = this.node.uuid
+      if (button === 0) {
+        this.findId(mPlayerUuid)
+      } else if (isRay && button === 2 && this._isMPushed) {
+        this.rotateObj(curx, curz, moveLen)
+      }
     }
 
     calJumpTime (pushingTime: number, dt: number, pushed: number) {
@@ -163,19 +171,17 @@ export class MousePlayer extends Component {
     }
 
     update (dt: number) {
-      if (this.c1val > 0) {
-        this.moveObj(this.x1val, 0, this.z1val)
-        this.c1val = this.c1val - 1
-        // console.log(this.moveVal["c1val"])
-      }
-      if (this._deg > 0) {
-        let move1 = this._ditn * 4;
-        let moveLessThan1 = this._deg * move1;        
-        let moveDegree = this._deg < move1 && this._deg > 0 ? moveLessThan1 : move1;
-        this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, moveDegree * Math.PI / 180)
-        objectRotDeg = this.node.eulerAngles.y;
-        objectPos = this.node.getPosition()
-        this._deg = this._deg - move1
-      }
+      if (this.c1val > 0) this.c1val = this.c1val - 1
+      if (this._deg > 0) this.excuteRatate
+    }
+
+    excuteRatate() {
+      let move1 = this._ditn * 4;
+      let moveLessThan1 = this._deg;        
+      let moveDegree = this._deg < move1 && this._deg > 0 ? moveLessThan1 : move1;
+      this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, moveDegree * Math.PI / 180)
+      objectRotDeg = this.node.eulerAngles.y;
+      objectPos = this.node.getPosition()
+      this._deg = this._deg - Math.abs(move1)
     }
 }
