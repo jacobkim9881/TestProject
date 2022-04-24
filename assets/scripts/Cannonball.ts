@@ -1,6 +1,9 @@
 
-import { _decorator, Component, Node, Prefab, director, instantiate, resources } from 'cc';
+import { _decorator, Component, Node, Prefab, director, instantiate, resources, systemEvent, SystemEventType, SphereCollider, RigidBody, Vec3, Scene } from 'cc';
 const { ccclass, property } = _decorator;
+import { objectRotDeg, objectPos, mPlayerUuid } from './MousePlayer';
+import { rayRes } from './Camera';
+import { labels } from './Menu';
 
 /**
  * Predefined variables
@@ -16,28 +19,52 @@ const { ccclass, property } = _decorator;
  
 @ccclass('Cannonball')
 export class Cannonball extends Component {
+
     @property(Prefab)
 
     private callCannonBall: Prefab = null!
+    private objRigid
+    private child1
+    private colider1
+    private _selected;
+
+    onLoad() {
+    }
 
     start () {
-        // [3]
+      systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
+    }
+
+    onMouseDown(e) {
+      let selected = rayRes[0]._collider.node._id;
+      if (labels[5].string === 'Mouse player clicked' && e.getButton() === 2) {
+        this.shootObject();
+      }
     }
 
     shootObject() {
+      this.child1 = instantiate(this.callCannonBall)
+      this.colider1 = this.child1.addComponent(SphereCollider)
+      //console.log(typeof RigidBody)
+      //console.log(typeof this.objRigid)
+      this.colider1.enabled = true;
+      this.objRigid = this.child1.addComponent(RigidBody)
+      this.node.addChild(this.child1)
+      //console.log(this.child1)
+      
+        this.child1.getPosition()        
+        //this.test1234.setLinearVelocity(new Vec3(100, 0, 0))
+        let editedRotDeg = objectRotDeg < 0 ? objectRotDeg + 360 : objectRotDeg
+        editedRotDeg = editedRotDeg + 90
+        editedRotDeg = editedRotDeg *  Math.PI / 180
+        let forceAxisX = 30 * Math.sin(editedRotDeg);
+        let forceAxisY = 30 * Math.cos(editedRotDeg);
+        console.log(forceAxisX, forceAxisY, objectRotDeg)
+        this.objRigid.applyImpulse(new Vec3(forceAxisX, 10, forceAxisY))
+        //this.child1.setPosition(forceAxisX, 0, forceAxisY)
+
+        //this.objRigid.setAngularVelocity(new Vec3(100, 0, 0))
         
-        const child = instantiate(this.callCannonBall)
-        //child.parent = scene
-        this.node.addChild(child)
-        child.setPosition(4, 0, 4)
-        /*
-      let spherePath = 'Sphere'
-      resources.load(spherePath, (err, data) =>{
-          console.log(typeof data)
-        this.callCannonBall = data
-          return
-      })  
-      */      
         
     }
 }
