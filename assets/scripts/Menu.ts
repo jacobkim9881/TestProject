@@ -19,7 +19,7 @@ const { ccclass, property } = _decorator
 
 export let labels:Array<any> = null!
 export let curPage: number = 0
-export let clickerStr: clickerVal = null!
+export let clickerStr: string = null!
 
 export enum clickerVal {
   DEF,
@@ -119,16 +119,18 @@ export class Menu extends Component {
         FpsCamera.enabled = true
         RtsCamera.enabled = false
         this._clicker.string = 'RTS click'
+        clickerStr= 'RTS click'
         // console.log(this._clicker.string)
       } else if (this._clicker.string === 'RTS click') {
         FpsCamera.enabled = false
         RtsCamera.enabled = true
         this._clicker.string = 'FPS click'
+        clickerStr= 'FPS click'
       } else if (this._clicker.string === 'Fire an obj') {
         //fire 
-        clickerStr = clickerVal.FIRE;
+        //clickerStr = clickerVal.FIRE;
         let test3 = new MousePlayer()
-        test3.shootObj();
+        //test3.shootObj();
       }
     }, this)
   }
