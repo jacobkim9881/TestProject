@@ -64,19 +64,9 @@ export class MousePlayer extends Component {
       if (button === 0) {
         this.changeMenuReturnsVal()
       } else if (isRay && button === 2 && this._isMPushed) {      
-        let curx = this.node.getPosition().x
-        let curz = this.node.getPosition().z         
-        let curDeg = - this.node.eulerAngles.y;     
         //if right mouse button clicked and selected
-        let betweenTwoObj = this.calRotationVals(curx, curz, curDeg, rayPosX, rayPosZ, this._rotLen, this._dt)        
-      this.c1val = betweenTwoObj.c1val;
-      this.x1val = betweenTwoObj.x1val;
-      this.z1val = betweenTwoObj.z1val;
-      this._ditn = betweenTwoObj.ditn
-      this._deg = betweenTwoObj.deg
+        this.calRotationVals(rayPosX, rayPosZ, this._rotLen, this._dt)
       }
-
-      return
     }
 
     changeMenuReturnsVal() {
@@ -86,17 +76,22 @@ export class MousePlayer extends Component {
       labels[5].string = this._isMPushed === 1 ? 'Mouse player clicked' : ''
     }
 
-    calRotationVals(curx:number, curz:number, curDeg:number, rayPosX:number, rayPosZ:number, moveLen:number, dt:number) {
-           
-      let betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)      
-      let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, betweenTwoObj.xdeg)      
-      return {
-        c1val: betweenTwoObj.c1val,
-        x1val: betweenTwoObj.x1val,
-        z1val: betweenTwoObj.z1val,
-        ditn: rotateObj.ditn,
-        deg: rotateObj.deg        
-      }
+    calRotationVals(rayPosX:number, rayPosZ:number, moveLen:number, dt:number) {
+      let curx = this.node.getPosition().x
+      let curz = this.node.getPosition().z         
+      let curDeg = - this.node.eulerAngles.y;     
+
+      this._betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)
+      let betweenTwoObj = this._betweenTwoObj;        
+      this.c1val = betweenTwoObj.c1val;
+      this.x1val = betweenTwoObj.x1val;
+      this.z1val = betweenTwoObj.z1val;
+
+      let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, this._betweenTwoObj.xdeg)
+      this._ditn = rotateObj.ditn
+      this._deg = rotateObj.deg
+      
+      return 
     }
 
 
