@@ -41,6 +41,9 @@ export class MousePlayer extends Component {
     private z1val: number = 0
     private _deg: number = 0
     private _ditn: number = 0
+    private _aDeg: number = 4
+    private _dt: number = 0.015
+    private _rotLen: number = 10
     pricurDeg: number = 0
     private _betweenTwoObj: any = null!
 
@@ -49,8 +52,8 @@ export class MousePlayer extends Component {
     }
 
     update (dt: number) {
-      if (this.c1val > 0) this.executeMove()
-      if (this._deg > 0) this.excuteRotate()
+      this.executeMove(this.c1val, this.z1val, this.x1val)
+      this.excuteRotate(this._aDeg)
     }
 
     onMouseDown (e: EventMouse) {
@@ -60,10 +63,20 @@ export class MousePlayer extends Component {
       //if object selected
       if (button === 0) {
         this.changeMenuReturnsVal()
-      } else if (isRay && button === 2 && this._isMPushed) {
+      } else if (isRay && button === 2 && this._isMPushed) {      
+        let curx = this.node.getPosition().x
+        let curz = this.node.getPosition().z         
+        let curDeg = - this.node.eulerAngles.y;     
         //if right mouse button clicked and selected
-        this.calRotationVals()
+        let betweenTwoObj = this.calRotationVals(curx, curz, curDeg, rayPosX, rayPosZ, this._rotLen, this._dt)        
+      this.c1val = betweenTwoObj.c1val;
+      this.x1val = betweenTwoObj.x1val;
+      this.z1val = betweenTwoObj.z1val;
+      this._ditn = betweenTwoObj.ditn
+      this._deg = betweenTwoObj.deg
       }
+
+      return
     }
 
     changeMenuReturnsVal() {
@@ -73,26 +86,22 @@ export class MousePlayer extends Component {
       labels[5].string = this._isMPushed === 1 ? 'Mouse player clicked' : ''
     }
 
-    calRotationVals() {
-      let dt = 0.015
-      let curx = this.node.getPosition().x
-      let curz = this.node.getPosition().z            
-      let moveLen = 10            
-      let curDeg = - this.node.eulerAngles.y;                
-      this._betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)
-      let betweenTwoObj = this._betweenTwoObj;        
-      this.c1val = betweenTwoObj.c1val;
-      this.x1val = betweenTwoObj.x1val;
-      this.z1val = betweenTwoObj.z1val;
-
-      let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, this._betweenTwoObj.xdeg)
-      this._ditn = rotateObj.ditn
-      this._deg = rotateObj.deg
+    calRotationVals(curx:number, curz:number, curDeg:number, rayPosX:number, rayPosZ:number, moveLen:number, dt:number) {
+           
+      let betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)      
+      let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, betweenTwoObj.xdeg)      
+      return {
+        c1val: betweenTwoObj.c1val,
+        x1val: betweenTwoObj.x1val,
+        z1val: betweenTwoObj.z1val,
+        ditn: rotateObj.ditn,
+        deg: rotateObj.deg        
+      }
     }
 
 
-    findId (uuid: string, selected: string) {            
-      if (uuid === selected) return 1
+    findId (uuid: string, targetUuid: string) {            
+      if (uuid === targetUuid) return 1
       else return 0      
     }
 
@@ -182,20 +191,26 @@ export class MousePlayer extends Component {
       Vec3.add(this._curPos, this._curPos, new Vec3(x, y, z))
       this.node.setPosition(this._curPos)
       // console.log(this.node.getPosition(this._curPos))
+      return
     }
 
-    executeMove() {
-      this.moveObj(this.x1val, 0, this.z1val)
-      this.c1val = this.c1val - 1
+    executeMove(c1val: number, z1val: number, x1val: number) {
+      if (c1val < 0) return
+      this.moveObj(x1val, 0, z1val)
+      c1val = c1val - 1
+      return
     }
 
-    excuteRotate() {
-      let move1 = this._ditn * 4;
+    excuteRotate(aDegree) {
+      if (this._deg < 0) return
+      aDegree = 4
+      let move1 = this._ditn * aDegree;
       let moveLessThan1 = this._deg;        
       let moveDegree = this._deg < move1 && this._deg > 0 ? moveLessThan1 : move1;
       this.node.rotation = Quat.rotateY(new Quat(), this.node.rotation, moveDegree * Math.PI / 180)
       objectRotDeg = this.node.eulerAngles.y;
       objectPos = this.node.getPosition()
       this._deg = this._deg - Math.abs(move1)
+      return      
     }
 }
