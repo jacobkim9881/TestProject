@@ -1,5 +1,5 @@
 
-import { _decorator, Component } from 'cc'
+import { _decorator, Component, Quat, Vec3 } from 'cc'
 const { ccclass, property } = _decorator
 
 /**
@@ -20,6 +20,23 @@ export class Action extends Component {
     findId (uuid: string, targetUuid: string) {            
       if (uuid === targetUuid) return 1
       else return 0      
+    }
+
+    calRotationVals(thisClass: any, rayPosX: number, rayPosZ: number) {
+      let dt = 0.015
+      let curx = thisClass.node.getPosition().x
+      let curz = thisClass.node.getPosition().z            
+      let moveLen = 10            
+      let curDeg = - thisClass.node.eulerAngles.y;                
+      thisClass._betweenTwoObj = thisClass._Action.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)
+      let betweenTwoObj = thisClass._betweenTwoObj;        
+      thisClass.c1val = betweenTwoObj.c1val;
+      thisClass.x1val = betweenTwoObj.x1val;
+      thisClass.z1val = betweenTwoObj.z1val;
+
+      let rotateObj = thisClass._Action.rotateObj(curz, rayPosZ, curDeg, thisClass._betweenTwoObj.xdeg)
+      thisClass._ditn = rotateObj.ditn
+      thisClass._deg = rotateObj.deg
     }
 
     rotateObj(curz: number, rayPosZ: number, curDeg:number, xdeg:number) {
@@ -91,5 +108,42 @@ export class Action extends Component {
         c1val: c1val, x1val: x1val, z1val: z1val, sinx: sinx, xdeg: xdeg 
       }
     }
+
+    excuteRotate(thisClass: any, objectRotDeg: number, objectPos: Vec3 ) {
+      let move1 = thisClass._ditn * 4;
+      let moveLessThan1 = thisClass._deg;        
+      let moveDegree = thisClass._deg < move1 && thisClass._deg > 0 ? moveLessThan1 : move1;
+      thisClass.node.rotation = Quat.rotateY(new Quat(), thisClass.node.rotation, moveDegree * Math.PI / 180)      
+      //console.log(objectPos)
+      thisClass._deg = thisClass._deg - Math.abs(move1)
+      objectRotDeg = thisClass.node.eulerAngles.y;
+      objectPos = thisClass.node.getPosition()
+      return {objectRotDeg: objectRotDeg, objectPos: objectPos}      
+    }
+
+    moveObj (thisClass:any, x: number, y: number, z: number) {
+      // console.log(x !== 0 ? x : null + z !== 0 ? z :null)
+      // console.log(x)
+      // console.log(thisClass.node.getPosition(thisClass._curPos))
+      thisClass.node.getPosition(thisClass._curPos)
+      Vec3.add(thisClass._curPos, thisClass._curPos, new Vec3(x, y, z))
+      thisClass.node.setPosition(thisClass._curPos)
+      // console.log(thisClass.node.getPosition(thisClass._curPos))
+    }
+
+    executeMove(thisClass:any) {
+        if (thisClass.c1val < 0) return
+        thisClass.moveObj(thisClass.x1val, 0, thisClass.z1val)
+        thisClass.c1val = thisClass.c1val - 1
+        return
+      }
+      
+    calJumpTime (pushingTime: number, dt: number, pushed: number) {
+        return pushingTime = pushingTime + dt * pushed
+      }
+  
+      isJumpStop (limit: number, dt: number) {
+        return dt > limit ? 0 : 1
+      }
 
 }
