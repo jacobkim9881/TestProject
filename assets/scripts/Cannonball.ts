@@ -43,6 +43,7 @@ export class Cannonball extends Component {
     }
 
     shootObject() {
+      let power = 5
       this.child1 = instantiate(this.callCannonBall)
       this.colider1 = this.child1.addComponent(SphereCollider)
       //console.log(typeof RigidBody)
@@ -57,8 +58,8 @@ export class Cannonball extends Component {
         let editedRotDeg = objectRotDeg < 0 ? objectRotDeg + 360 : objectRotDeg
         editedRotDeg = editedRotDeg + 90
         editedRotDeg = editedRotDeg *  Math.PI / 180
-        let forceAxisX = 30 * Math.sin(editedRotDeg);
-        let forceAxisY = 30 * Math.cos(editedRotDeg);
+        let forceAxisX = power * Math.sin(editedRotDeg);
+        let forceAxisY = power * Math.cos(editedRotDeg);
         console.log(forceAxisX, forceAxisY, objectRotDeg)
         console.log(objectPos)
         this.child1.setPosition(objectPos.x, 2, objectPos.z)        
