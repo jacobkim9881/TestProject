@@ -133,7 +133,7 @@ export class Action extends Component {
 
     executeMove(thisClass:any) {
         if (thisClass.c1val < 0) return
-        thisClass.moveObj(thisClass.x1val, 0, thisClass.z1val)
+        this.moveObj(thisClass, thisClass.x1val, 0, thisClass.z1val)
         thisClass.c1val = thisClass.c1val - 1
         return
       }
