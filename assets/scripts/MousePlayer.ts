@@ -2,6 +2,7 @@
 import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat, Prefab, instantiate, Director, director, resources } from 'cc'
 import { isRay, rayPosX, rayPosZ, rayRes } from './Camera'
 import { labels, Menu, curPage } from './Menu'
+import { Action } from './Action'
 const { ccclass, property } = _decorator
 
 /**
@@ -29,6 +30,8 @@ export class MousePlayer extends Component {
     @property({
       type: Label
     })
+    
+    private _Action = new Action();
 
   private _curPos = new Vec3()
 
@@ -72,7 +75,8 @@ export class MousePlayer extends Component {
     changeMenuReturnsVal() {
       let selectedUuid = rayRes[0]._collider.node._id
       mPlayerUuid = this.node.uuid
-      this._isMPushed = this.findId(mPlayerUuid, selectedUuid);
+      this._isMPushed = this._Action.findId(mPlayerUuid, selectedUuid);
+      //this.findId(mPlayerUuid, selectedUuid);
       labels[5].string = this._isMPushed === 1 ? 'Mouse player clicked' : ''
     }
 
@@ -81,93 +85,18 @@ export class MousePlayer extends Component {
       let curz = this.node.getPosition().z         
       let curDeg = - this.node.eulerAngles.y;     
 
-      this._betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)
+      this._betweenTwoObj = this._Action.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)
       let betweenTwoObj = this._betweenTwoObj;        
       this.c1val = betweenTwoObj.c1val;
       this.x1val = betweenTwoObj.x1val;
       this.z1val = betweenTwoObj.z1val;
 
-      let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, this._betweenTwoObj.xdeg)
+      let rotateObj = this._Action.rotateObj(curz, rayPosZ, curDeg, this._betweenTwoObj.xdeg)
+      //this.rotateObj(curz, rayPosZ, curDeg, this._betweenTwoObj.xdeg)
       this._ditn = rotateObj.ditn
       this._deg = rotateObj.deg
       
       return 
-    }
-
-
-    findId (uuid: string, targetUuid: string) {            
-      if (uuid === targetUuid) return 1
-      else return 0      
-    }
-
-    rotateObj(curz: number, rayPosZ: number, curDeg:number, xdeg:number) {
-        let ditn, deg
-        //console.log('--------------------------------------------')        
-        //curDeg = - this.node.eulerAngles.y;
-        //console.log('object cur deg: ', curDeg)
-        curDeg = curDeg >= 0 ? curDeg : curDeg + 360;
-        //if (curDeg < 0) {console.log('edited cur deg + 360: ', curDeg)}        
-        if (xdeg > 0 && xdeg < 90) { 
-          if (curz < rayPosZ) { // 90-180
-            xdeg = xdeg + 90
-          } else if (curz > rayPosZ) { // 180-270 
-            xdeg = (90 - xdeg) + 180
-          }
-        } else if (xdeg < 0 && xdeg > -90) {
-          if (curz < rayPosZ) { // 0-90
-            xdeg = xdeg + 90
-          } else if (curz > rayPosZ) { // 270-360 
-            xdeg = -xdeg + 270
-          }
-        }
-
-        //console.log('target deg : ', deg)
-        ditn = curDeg - xdeg > 0 ? 1 : -1
-        deg = curDeg - xdeg
-        //console.log('before 360 q-t : ', deg)
-        //console.log('before 360 ditn : ', ditn)
-        ditn = deg > 180
-          ? -1
-          : deg < -180
-            ? 1
-            : ditn
-        deg = deg > 180
-          ? deg - 360
-          : deg < -180
-            ? deg + 360
-            : deg
-        //console.log('q - t : ', deg)
-        //console.log('ditn: ', ditn)
-        deg = Math.abs(deg)
-
-        // console.log('quat deg: ',curDeg)
-        // console.log('direction: ',ditn)
-        // console.log('quat deg - tar deg : ', deg)
-        return {ditn: ditn, deg: deg}
-    }
-
-    betweenObjects(curx:number, curz: number, rayPosX:number, rayPosZ: number, moveLen: number, dt: number) {
-      let xLen, zLen, cval, c1val, x1val, z1val, sinx, xdeg
-      //dt = 0.015
-      // console.log('cur x, z', curx, curz)
-      // console.log('ray x, z', rayPosX, rayPosZ)
-      xLen = curx - rayPosX
-      zLen = curz - rayPosZ
-      cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2))
-      // console.log(cval)
-      c1val = cval / (dt * moveLen)
-      x1val = -xLen / c1val
-      z1val = -zLen / c1val
-      sinx = xLen / cval
-      // console.log(xLen, cval)
-      // console.log(sinx)
-      xdeg = Math.asin(sinx) * (180 / Math.PI)
-      // console.log(xdeg)        
-      //console.log('Euler angle y: ', this.node.eulerAngles.y)
-      //console.log('curDeg: ', curDeg)
-      return {
-        c1val: c1val, x1val: x1val, z1val: z1val, sinx: sinx, xdeg: xdeg 
-      }
     }
 
     calJumpTime (pushingTime: number, dt: number, pushed: number) {
