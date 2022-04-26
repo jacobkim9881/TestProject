@@ -38,7 +38,14 @@ export class MousePlayer extends Component {
     private jumpHeight = 6
     private jumpLimit = 0.2
     private _isMPushed: number = 0
+    private _mPushingTime: number = 0
+    private c1val: number = 0
+    private x1val: number = 0
+    private z1val: number = 0
     private _deg: number = 0
+    private _ditn: number = 0
+    pricurDeg: number = 0
+    private _betweenTwoObj: any = null!
 
     start () {
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
