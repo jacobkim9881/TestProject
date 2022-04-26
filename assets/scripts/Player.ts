@@ -32,7 +32,10 @@ export class Player extends Component {
     @property(AudioSource)
   private _audioSource: AudioSource = null!
 
-    private getAudio: AudioSource = null!
+    private audio: AudioSource = null!
+
+    @property(AudioClip)
+    private _clip: AudioClip = null!
 
     private _curPos = new Vec3()
     private _tarPos = new Vec3()
@@ -119,18 +122,18 @@ export class Player extends Component {
     }
 
     makeSound () {
-      this.getAudio = this.node.getComponent(AudioSource)!
-      console.log(this.getAudio)
-      this._audioSource = this.getAudio
+      this.audio = this.node.getComponent(AudioSource)!
+      console.log(this.audio)
+      this._audioSource = this.audio
       this._audioSource.play()
     }
 
     playbackSound () {
-      this.getAudio = this.node.getComponent(AudioSource)!
-      this._audioSource = this.getAudio
+      this.audio = this.node.getComponent(AudioSource)!
+      this._audioSource = this.audio
       console.log(this._audioSource)
-      console.log(this.getAudio.clip)
-      this._audioSource.playOneShot(this.getAudio.clip, 1)
+      console.log(this.audio.clip)
+      this._audioSource.playOneShot(this.audio.clip, 1)
     }
 
     calJumpTime (pushingTime: number, dt: number, pushed: number) {

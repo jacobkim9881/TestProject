@@ -32,6 +32,8 @@ export class FPSP extends Component {
       type: Animation
     })
 
+    @property(AudioSource)
+
     @property(Prefab)
 
       curPrefabff: Prefab = null!
