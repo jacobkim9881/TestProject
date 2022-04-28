@@ -1,8 +1,10 @@
 
-import { _decorator, Component, Node, Label, assetManager, Button, JsonAsset, systemEvent, SystemEventType, EventMouse, absMax } from 'cc'
+import { _decorator, Component, Node, Label, assetManager, Button, JsonAsset, systemEvent, SystemEventType, EventMouse, absMax, js, CCClass } from 'cc'
 import { FpsCamera } from './FPSP'
 import { RtsCamera } from './Camera'
 import { MousePlayer } from './MousePlayer'
+import { Cannonball, test6 } from './Cannonball' 
+
 const { ccclass, property } = _decorator
 
 /**
@@ -20,6 +22,8 @@ const { ccclass, property } = _decorator
 export let labels:Array<any> = null!
 export let curPage: number = 0
 export let clickerStr: string = null!
+export let button1Clicked;
+export let clcikedNum: number = 0
 
 export enum clickerVal {
   DEF,
@@ -36,12 +40,12 @@ export class Menu extends Component {
   private _next_button = null!
   private _returns = null!
   private _clicker = null!
+  private _CannonBall = new Cannonball()
 
   async start () {
     // this.onStart();
 
     // systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this);
-
     const butts = this.getComponentsInChildren(Button)
     labels = this.getComponentsInChildren(Label)
     this._guideCon = labels[4]
@@ -101,12 +105,19 @@ export class Menu extends Component {
       //butts[2].node.emit('change', 'hi')
 
         labels[6].string = data.json.page[getPage].button1;
-        butts[2].node.active = data.json.page[getPage].button1On
+        butts[2].node.active = data.json.page[getPage].button1On        
       // console.log('cliked')
     }, this)
   }
 
   clcikerEvent (butts) {
+    butts[2].node.on('mouseleave', (e) => {
+      
+      clickerStr = 'off'
+      console.log('mouse up')
+      button1Clicked = false;
+    })
+
     return butts[2].node.on('click', (e) => {
       // console.log(this._curPage)
       // console.log(clicker.string)
@@ -126,11 +137,20 @@ export class Menu extends Component {
         RtsCamera.enabled = true
         this._clicker.string = 'FPS click'
         clickerStr= 'FPS click'
-      } else if (this._clicker.string === 'Fire an obj') {
+      } else if (this._clicker.string === 'Fire an obj') {        
         //fire 
         //clickerStr = clickerVal.FIRE;
         let test3 = new MousePlayer()
         //test3.shootObj();
+        //console.log(this)
+        //clickerStr = 'on'
+        clcikedNum++
+        //this._CannonBall.shootObject1(this._CannonBall)
+
+        
+        //console.log(test6)
+        //console.log()
+        button1Clicked = true;
       }
     }, this)
   }
