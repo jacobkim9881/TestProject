@@ -62,7 +62,9 @@ export class Cannonball extends Component {
         let forceAxisY = power * Math.cos(editedRotDeg);
         console.log(forceAxisX, forceAxisY, objectRotDeg)
         console.log(objectPos)
-        this.child1.setPosition(objectPos.x, 2, objectPos.z)        
+        let tempx = !objectPos ? 1 : objectPos.x;
+        let tempz = !objectPos ? 1 : objectPos.z;
+        this.child1.setPosition(tempx, 2, tempz)        
         this.objRigid.applyImpulse(new Vec3(forceAxisX, 10, forceAxisY))
         //this.child1.setPosition(forceAxisX, 0, forceAxisY)
 

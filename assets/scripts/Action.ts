@@ -37,6 +37,7 @@ export class Action extends Component {
       let rotateObj = thisClass._Action.rotateObj(curz, rayPosZ, curDeg, thisClass._betweenTwoObj.xdeg)
       thisClass._ditn = rotateObj.ditn
       thisClass._deg = rotateObj.deg
+      return
     }
 
     rotateObj(curz: number, rayPosZ: number, curDeg:number, xdeg:number) {
@@ -128,6 +129,16 @@ export class Action extends Component {
       thisClass.node.getPosition(thisClass._curPos)
       Vec3.add(thisClass._curPos, thisClass._curPos, new Vec3(x, y, z))
       thisClass.node.setPosition(thisClass._curPos)
+      // console.log(thisClass.node.getPosition(thisClass._curPos))
+    }
+
+    objSetPos (thisClass:any, x: number, y: number, z: number) {
+      // console.log(x !== 0 ? x : null + z !== 0 ? z :null)
+      // console.log(x)
+      // console.log(thisClass.node.getPosition(thisClass._curPos))
+      thisClass.node.getPosition(thisClass._curPos)
+      //Vec3.add(thisClass._curPos, thisClass._curPos, new Vec3(x, y, z))
+      thisClass.node.setPosition(new Vec3(thisClass._curPos.x + x, thisClass._curPos.y + y, thisClass._curPos.z + z))
       // console.log(thisClass.node.getPosition(thisClass._curPos))
     }
 

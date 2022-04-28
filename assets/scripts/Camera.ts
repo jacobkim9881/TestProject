@@ -2,6 +2,8 @@
 import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, EventMouse, geometry, PhysicsSystem, CameraComponent, Quat } from 'cc'
 import { EDITOR } from 'cc/env'
 import { FPSP, fpsPos } from './FPSP'
+import { Action } from './Action'
+import { MousePlayer } from './MousePlayer'
 const { ccclass, property } = _decorator
 
 /**
@@ -21,6 +23,8 @@ export let rayPosX: number = null!
 export let rayPosZ: number = null!
 export let isRay: boolean = null!
 export let RtsCamera: CameraComponent = null!
+export let rayMovingRes: Array<any> = null!
+export let test5
 
 @ccclass('Camera')
 export class Camera extends Component {
@@ -28,10 +32,23 @@ export class Camera extends Component {
       RtsCamera: CameraComponent = null as any
 
     private _ray: geometry.Ray = new geometry.Ray()
+    private _isMPushed: number = 0
+    private _button: number = null!
+    private _Action
+    private _MousePlayer = new MousePlayer()
 
     start () {
       RtsCamera = this.getComponent(CameraComponent)
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
+      systemEvent.on(SystemEventType.MOUSE_MOVE, this.onMouseMove, this)
+    }
+    
+    onMouseMove(e) {
+      RtsCamera.screenPointToRay(e.getLocationX(), e.getLocationY(), this._ray)      
+      rayMovingRes = PhysicsSystem.instance.raycastResults
+      test5 = e
+      //console.log(e.getLocationX(), e.getLocationY())
+      //console.log(rayMovingRes)
     }
 
     onMouseDown (e: EventMouse) {
@@ -51,6 +68,19 @@ export class Camera extends Component {
       // console.log('raycast get', isRay)
       // console.log(rayRes)
       // console.log(rayPosX, rayPosZ)
+
+      /*
+      this._button = e.getButton();
+
+      
+      //if object selected
+      if (this._button === 0) {
+        this._MousePlayer.changeMenuReturnsVal()        
+      } else if (isRay && this._button === 2 && this._isMPushed) {      
+        //if right mouse button clicked and selected
+        this._Action.calRotationVals(this, rayPosX, rayPosZ)
+      }
+      */
 
       /*
         let tarNode = rayRes[rayRes.length - 1];
@@ -74,6 +104,11 @@ export class Camera extends Component {
     }
 
     update (dt: number) {
+      if (this._isMPushed && this._button === 0) {
+        console.log(rayPosX, rayPosZ)
+      //this._Action.objSetPos(this, rayPosX, 0, rayPosZ)
+      //console.log('pushed')
+      }
 
     }
 }

@@ -1,6 +1,6 @@
 
 import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat, Prefab, instantiate, Director, director, resources } from 'cc'
-import { isRay, rayPosX, rayPosZ, rayRes } from './Camera'
+import { isRay, rayPosX, rayPosZ, rayRes, rayMovingRes } from './Camera'
 import { labels, Menu, curPage } from './Menu'
 import { Action } from './Action'
 const { ccclass, property } = _decorator
@@ -59,7 +59,12 @@ export class MousePlayer extends Component {
         objectRotDeg = objectInfo.objectRotDeg
         objectPos = objectInfo.objectPos
       }
-      if (this._isMPushed && this._button === 0) console.log('pushed')
+      if (this._isMPushed && this._button === 0) {
+        //console.log(rayMovingRes)
+        //console.log(test5)
+      //this._Action.objSetPos(this, rayPosX, 0, rayPosZ)
+      //console.log('pushed')
+      }
     }
 
     onMouseDown (e: EventMouse) {
