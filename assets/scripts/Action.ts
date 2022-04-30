@@ -22,6 +22,20 @@ export class Action extends Component {
       else return 0      
     }
 
+    calRotationValsByCollider(curx, curz, curDeg, rayPosX: number, rayPosZ: number) {
+      let dt = 0.015
+      //let curx = collider.getPosition().x
+      //let curz = collider.getPosition().z            
+      let moveLen = 10            
+      //let curDeg = - collider.eulerAngles.y;    
+      //console.log(curDeg)            
+      //console.log(curx, curz, rayPosX, rayPosZ, moveLen, dt)
+      let betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)      
+
+      let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, betweenTwoObj.xdeg)
+      return rotateObj
+    }
+
     calRotationVals(thisClass: any, rayPosX: number, rayPosZ: number) {
       let dt = 0.015
       let curx = thisClass.node.getPosition().x
@@ -46,7 +60,14 @@ export class Action extends Component {
         //curDeg = - this.node.eulerAngles.y;
         //console.log('object cur deg: ', curDeg)
         curDeg = curDeg >= 0 ? curDeg : curDeg + 360;
-        //if (curDeg < 0) {console.log('edited cur deg + 360: ', curDeg)}        
+        //if (curDeg < 0) {console.log('edited cur deg + 360: ', curDeg)}   
+        
+        if (curz < rayPosZ) {
+          xdeg = xdeg + 90
+        } else {
+          xdeg = (90 - xdeg) + 180
+        }
+/*
         if (xdeg > 0 && xdeg < 90) { 
           if (curz < rayPosZ) { // 90-180
             xdeg = xdeg + 90
@@ -60,7 +81,7 @@ export class Action extends Component {
             xdeg = -xdeg + 270
           }
         }
-
+*/
         //console.log('target deg : ', deg)
         ditn = curDeg - xdeg > 0 ? 1 : -1
         deg = curDeg - xdeg
@@ -133,18 +154,13 @@ export class Action extends Component {
     }
 
     objSetPos (thisClass:any, x: number, y: number, z: number) {
-      // console.log(x !== 0 ? x : null + z !== 0 ? z :null)
-      // console.log(x)
-      // console.log(thisClass.node.getPosition(thisClass._curPos))
       thisClass.node.getPosition(thisClass._curPos)
-      //Vec3.add(thisClass._curPos, thisClass._curPos, new Vec3(x, y, z))
       thisClass.node.setPosition(new Vec3(thisClass._curPos.x + x, thisClass._curPos.y + y, thisClass._curPos.z + z))
-      // console.log(thisClass.node.getPosition(thisClass._curPos))
     }
 
     executeMove(thisClass:any) {
         if (thisClass.c1val < 0) return
-        this.moveObj(thisClass, thisClass.x1val, 0, thisClass.z1val)
+        //this.moveObj(thisClass, thisClass.x1val, 0, thisClass.z1val)
         thisClass.c1val = thisClass.c1val - 1
         return
       }

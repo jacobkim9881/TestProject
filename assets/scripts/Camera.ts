@@ -24,7 +24,10 @@ export let rayPosZ: number = null!
 export let isRay: boolean = null!
 export let RtsCamera: CameraComponent = null!
 export let rayMovingRes: Array<any> = null!
-export let test5
+export let targetRes: Array<any> = null!
+export let targetDeg
+export let targetPosX: number = null!
+export let targetPosZ: number = null!
 
 @ccclass('Camera')
 export class Camera extends Component {
@@ -36,6 +39,7 @@ export class Camera extends Component {
     private _button: number = null!
     private _Action
     private _MousePlayer = new MousePlayer()
+    private _targetObj
 
     start () {
       RtsCamera = this.getComponent(CameraComponent)
@@ -46,29 +50,57 @@ export class Camera extends Component {
     onMouseMove(e) {
       RtsCamera.screenPointToRay(e.getLocationX(), e.getLocationY(), this._ray)      
       rayMovingRes = PhysicsSystem.instance.raycastResults
-      test5 = e
       //console.log(e.getLocationX(), e.getLocationY())
       //console.log(rayMovingRes)
     }
 
     onMouseDown (e: EventMouse) {
-      const player = fpsPos
-      // console.log(player)
-      const cur_position = this.node.getPosition()
-      // console.log(player, cur_position)
-      // this.node.getPosition(cur_position)
-      // Vec3.lerp(cur_position, cur_position, player, 0.1)
-      // this.node.setPosition(cur_position);
-
       RtsCamera.screenPointToRay(e.getLocationX(), e.getLocationY(), this._ray)
       isRay = PhysicsSystem.instance.raycast(this._ray, 0xffffffff, 100, true)
+      this._button = e.getButton()
+//console.log(e.getButton())
+      if (this._button === 0) {
+      
       rayRes = PhysicsSystem.instance.raycastResults
       rayPosX = PhysicsSystem.instance.raycastResults[0].hitPoint.x
       rayPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z
+      //console.log(PhysicsSystem.instance.raycastResults[0].collider._id)
+      //console.log(PhysicsSystem.instance.raycastResults[0])
+      let test7 = PhysicsSystem.instance.raycastResults[0].collider.node.uuid
+      //console.log(this.node.parent)
+      //console.log(this.node.parent.getComponent(test7))
+      let targetObj = PhysicsSystem.instance.raycastResults[0].collider.node      
+      this._targetObj = {
+        x: targetObj.getPosition().x,
+        z: targetObj.getPosition().z,
+        deg: targetObj.eulerAngles.y
+      } 
+      console.log(this._targetObj)
+      //console.log(PhysicsSystem.instance.raycastResults[0].constructor.name)
+      //PhysicsRayResult
+      //console.log(this.constructor.name)
       // console.log('raycast get', isRay)
       // console.log(rayRes)
       // console.log(rayPosX, rayPosZ)
-
+      
+      } else if (this._button === 2) {
+        //rayRes = PhysicsSystem.instance.raycastResults
+        this._Action = new Action()
+        targetRes = PhysicsSystem.instance.raycastResults        
+        targetPosX = PhysicsSystem.instance.raycastResults[0].hitPoint.x
+        targetPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z
+        let posX = targetRes[0].hitPoint.x
+        let posZ = targetRes[0].hitPoint.z
+        //console.log(this._targetObj)
+        targetDeg = this._Action.calRotationValsByCollider(this._targetObj.x, this._targetObj.z, this._targetObj.deg, posX, posZ)        
+        this._targetObj = {
+          x: posX,
+          z: posZ,
+          deg: - targetDeg.ditn * targetDeg.deg
+        } 
+        console.log(this._targetObj)
+      }
+      
       /*
       this._button = e.getButton();
 
@@ -105,7 +137,6 @@ export class Camera extends Component {
 
     update (dt: number) {
       if (this._isMPushed && this._button === 0) {
-        console.log(rayPosX, rayPosZ)
       //this._Action.objSetPos(this, rayPosX, 0, rayPosZ)
       //console.log('pushed')
       }

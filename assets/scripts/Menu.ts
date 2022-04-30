@@ -140,7 +140,6 @@ export class Menu extends Component {
       } else if (this._clicker.string === 'Fire an obj') {        
         //fire 
         //clickerStr = clickerVal.FIRE;
-        let test3 = new MousePlayer()
         //test3.shootObj();
         //console.log(this)
         //clickerStr = 'on'

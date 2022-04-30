@@ -1,6 +1,6 @@
 
 import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat, Prefab, instantiate, Director, director, resources } from 'cc'
-import { isRay, rayPosX, rayPosZ, rayRes, rayMovingRes } from './Camera'
+import { isRay, rayPosX, rayPosZ, rayRes, rayMovingRes, targetPosZ, targetPosX } from './Camera'
 import { labels, Menu, curPage } from './Menu'
 import { Action } from './Action'
 const { ccclass, property } = _decorator
@@ -57,7 +57,10 @@ export class MousePlayer extends Component {
       if (this._deg > 0) {
         let objectInfo = this._Action.excuteRotate(this, objectRotDeg, objectPos)
         objectRotDeg = objectInfo.objectRotDeg
+        
         objectPos = objectInfo.objectPos
+      } else if (this._deg ===0) {
+        console.log(objectRotDeg)
       }
       if (this._isMPushed && this._button === 0) {
         //console.log(rayMovingRes)
@@ -68,15 +71,16 @@ export class MousePlayer extends Component {
     }
 
     onMouseDown (e: EventMouse) {
-
+//console.log(this)
       this._button = e.getButton();
       
       //if object selected
       if (this._button === 0) {
+        //console.log(this.constructor.name)
         this.changeMenuReturnsVal()        
       } else if (isRay && this._button === 2 && this._isMPushed) {      
         //if right mouse button clicked and selected
-        this._Action.calRotationVals(this, rayPosX, rayPosZ)
+        this._Action.calRotationVals(this, targetPosX, targetPosZ)
       }
     }
 

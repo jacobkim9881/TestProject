@@ -3821,7 +3821,8 @@
   },
   {
     "__type__": "cc.PrefabInfo",
-    "fileId": "23058c5e-064e-4fa2-a081-ddaea5b6eb6e"
+    "fileId": "23058c5e-064e-4fa2-a081-ddaea5b6eb6e",
+    "targetOverrides": []
   },
   {
     "__type__": "cc.SceneGlobals",

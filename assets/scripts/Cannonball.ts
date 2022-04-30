@@ -2,7 +2,8 @@
 import { _decorator, Component, Node, Prefab, director, instantiate, resources, systemEvent, SystemEventType, SphereCollider, RigidBody, Vec3, Scene } from 'cc';
 const { ccclass, property } = _decorator;
 import { objectRotDeg, objectPos } from './MousePlayer';
-import { rayRes } from './Camera';
+import { rayPosX, rayPosZ, rayRes, targetDeg, targetRes } from './Camera' 
+import { Action } from './Action'
 import { button1Clicked, clcikedNum, clickerStr, labels } from './Menu';
 
 /**
@@ -31,6 +32,8 @@ export class Cannonball extends Component {
     private _selected;
     private firedNum = 0
 
+    private _Action = new Action()
+
     onLoad() {
     }
 
@@ -42,8 +45,18 @@ export class Cannonball extends Component {
     update() {
       if (clcikedNum - this.firedNum === 1) {
         this.firedNum = clcikedNum;
-        this.shootObject()
-      console.log(clickerStr)
+      //this.shootObject(objectRotDeg);
+      //console.log(targetRes)
+      //console.log(targetRes[0]._collider.node._euler.y)
+      //console.log(targetDeg)
+      let rotate = targetDeg.ditn * targetDeg.deg
+      this.shootObject(rotate, targetRes[0]._hitPoint);
+      let clickedId = targetRes[0]._collider._id
+      //console.log(clickerStr)
+      // euler angle
+      //console.log(rayRes[0]._collider.node._euler.y)
+      console.log(rayRes[0]._hitPoint)
+      console.log(rayRes)
       }
     }
 
@@ -54,48 +67,15 @@ export class Cannonball extends Component {
         this.shootObject();
       }
       */
-      console.log(e)
+      //console.log(e)
      //console.log(test6)
      if (clickerStr === 'Fire an obj' && button1Clicked) {
-      this.shootObject();
+      //this.shootObject(objectRotDeg);
       
      }
     }
 
-    shootObject1(thisClass) {
-      let power = 5
-      thisClass.child1 = thisClass._instantiate(thisClass.callCannonBall)
-      console.log(thisClass.child1)
-      console.log(SphereCollider)
-      thisClass.colider1 = thisClass.child1.addComponent(SphereCollider)
-      //console.log(typeof RigidBody)
-      //console.log(typeof thisClass.objRigid)
-      thisClass.colider1.enabled = true;
-      thisClass.objRigid = thisClass.child1.addComponent(RigidBody)
-      thisClass.node.addChild(thisClass.child1)
-      //console.log(thisClass.child1)
-      
-        thisClass.child1.getPosition()        
-        //thisClass.test1234.setLinearVelocity(new Vec3(100, 0, 0))        
-        let editedRotDeg = objectRotDeg < 0 ? objectRotDeg + 360 : objectRotDeg
-        editedRotDeg = editedRotDeg + 90
-        editedRotDeg = editedRotDeg *  Math.PI / 180
-        let forceAxisX = power * Math.sin(editedRotDeg);
-        let forceAxisY = power * Math.cos(editedRotDeg);
-        console.log(forceAxisX, forceAxisY, objectRotDeg)
-        console.log(objectPos)
-        let tempx = !objectPos ? 1 : objectPos.x;
-        let tempz = !objectPos ? 1 : objectPos.z;
-        thisClass.child1.setPosition(tempx, 2, tempz)        
-        thisClass.objRigid.applyImpulse(new Vec3(forceAxisX, 10, forceAxisY))
-        //thisClass.child1.setPosition(forceAxisX, 0, forceAxisY)
-
-        //thisClass.objRigid.setAngularVelocity(new Vec3(100, 0, 0))
-        
-        
-    }
-
-    shootObject() {
+    shootObject(objectRotDeg: number, hitPoint: any) {
       let power = 5
       this.child1 = instantiate(this.callCannonBall)
       this.colider1 = this.child1.addComponent(SphereCollider)
@@ -108,15 +88,17 @@ export class Cannonball extends Component {
       
         this.child1.getPosition()        
         //this.test1234.setLinearVelocity(new Vec3(100, 0, 0))        
+        console.log(objectRotDeg)
         let editedRotDeg = objectRotDeg < 0 ? objectRotDeg + 360 : objectRotDeg
+        console.log(editedRotDeg)
         editedRotDeg = editedRotDeg + 90
         editedRotDeg = editedRotDeg *  Math.PI / 180
         let forceAxisX = power * Math.sin(editedRotDeg);
         let forceAxisY = power * Math.cos(editedRotDeg);
-        console.log(forceAxisX, forceAxisY, objectRotDeg)
-        console.log(objectPos)
-        let tempx = !objectPos ? 1 : objectPos.x;
-        let tempz = !objectPos ? 1 : objectPos.z;
+        //console.log(forceAxisX, forceAxisY, objectRotDeg)
+        //console.log(objectPos)
+        let tempx = !hitPoint ? 1 : hitPoint.x;
+        let tempz = !hitPoint ? 1 : hitPoint.z;
         this.child1.setPosition(tempx, 2, tempz)        
         this.objRigid.applyImpulse(new Vec3(forceAxisX, 10, forceAxisY))
         //this.child1.setPosition(forceAxisX, 0, forceAxisY)
