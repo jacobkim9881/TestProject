@@ -39,6 +39,7 @@ export class MousePlayer extends Component {
     private jumpLimit = 0.2
     private _isMPushed: number = 0
     private _mPushingTime: number = 0
+    private cval: number = 0
     private c1val: number = 0
     private x1val: number = 0
     private z1val: number = 0
@@ -60,7 +61,7 @@ export class MousePlayer extends Component {
         
         objectPos = objectInfo.objectPos
       } else if (this._deg ===0) {
-        console.log(objectRotDeg)
+        //console.log(objectRotDeg)
       }
       if (this._isMPushed && this._button === 0) {
         //console.log(rayMovingRes)

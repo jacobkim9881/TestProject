@@ -75,7 +75,7 @@ export class Camera extends Component {
         z: targetObj.getPosition().z,
         deg: targetObj.eulerAngles.y
       } 
-      console.log(this._targetObj)
+      //console.log(this._targetObj)
       //console.log(PhysicsSystem.instance.raycastResults[0].constructor.name)
       //PhysicsRayResult
       //console.log(this.constructor.name)
@@ -92,13 +92,15 @@ export class Camera extends Component {
         let posX = targetRes[0].hitPoint.x
         let posZ = targetRes[0].hitPoint.z
         //console.log(this._targetObj)
+        
         targetDeg = this._Action.calRotationValsByCollider(this._targetObj.x, this._targetObj.z, this._targetObj.deg, posX, posZ)        
         this._targetObj = {
           x: posX,
           z: posZ,
           deg: - targetDeg.ditn * targetDeg.deg
         } 
-        console.log(this._targetObj)
+        
+        //console.log(this._targetObj)
       }
       
       /*

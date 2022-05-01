@@ -23,7 +23,7 @@ export class Action extends Component {
     }
 
     calRotationValsByCollider(curx, curz, curDeg, rayPosX: number, rayPosZ: number) {
-      let dt = 0.015
+      let dt = 0.0166667
       //let curx = collider.getPosition().x
       //let curz = collider.getPosition().z            
       let moveLen = 10            
@@ -33,22 +33,25 @@ export class Action extends Component {
       let betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)      
 
       let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, betweenTwoObj.xdeg)
+      console.log('calRotval By collider ',curz, rayPosZ, curDeg, betweenTwoObj.xdeg)
       return rotateObj
     }
 
     calRotationVals(thisClass: any, rayPosX: number, rayPosZ: number) {
-      let dt = 0.015
+      let dt = 0.0166667
       let curx = thisClass.node.getPosition().x
       let curz = thisClass.node.getPosition().z            
       let moveLen = 10            
       let curDeg = - thisClass.node.eulerAngles.y;                
       thisClass._betweenTwoObj = thisClass._Action.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)
-      let betweenTwoObj = thisClass._betweenTwoObj;        
+      let betweenTwoObj = thisClass._betweenTwoObj;    
+      thisClass.cval = betweenTwoObj.cval;    
       thisClass.c1val = betweenTwoObj.c1val;
       thisClass.x1val = betweenTwoObj.x1val;
       thisClass.z1val = betweenTwoObj.z1val;
 
       let rotateObj = thisClass._Action.rotateObj(curz, rayPosZ, curDeg, thisClass._betweenTwoObj.xdeg)
+      console.log('calRotvals: ',curz, rayPosZ, curDeg, thisClass._betweenTwoObj.xdeg)
       thisClass._ditn = rotateObj.ditn
       thisClass._deg = rotateObj.deg
       return
@@ -62,27 +65,9 @@ export class Action extends Component {
         curDeg = curDeg >= 0 ? curDeg : curDeg + 360;
         //if (curDeg < 0) {console.log('edited cur deg + 360: ', curDeg)}   
         
-        if (curz < rayPosZ) {
-          xdeg = xdeg + 90
-        } else {
-          xdeg = (90 - xdeg) + 180
-        }
-/*
-        if (xdeg > 0 && xdeg < 90) { 
-          if (curz < rayPosZ) { // 90-180
-            xdeg = xdeg + 90
-          } else if (curz > rayPosZ) { // 180-270 
-            xdeg = (90 - xdeg) + 180
-          }
-        } else if (xdeg < 0 && xdeg > -90) {
-          if (curz < rayPosZ) { // 0-90
-            xdeg = xdeg + 90
-          } else if (curz > rayPosZ) { // 270-360 
-            xdeg = -xdeg + 270
-          }
-        }
-*/
-        //console.log('target deg : ', deg)
+        xdeg = curz < rayPosZ ? xdeg + 90 : - xdeg + 270
+
+        //console.log('target deg : ', xdeg)
         ditn = curDeg - xdeg > 0 ? 1 : -1
         deg = curDeg - xdeg
         //console.log('before 360 q-t : ', deg)
@@ -115,10 +100,10 @@ export class Action extends Component {
       xLen = curx - rayPosX
       zLen = curz - rayPosZ
       cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2))
-      // console.log(cval)
-      c1val = cval / (dt * moveLen)
-      x1val = -xLen / c1val
-      z1val = -zLen / c1val
+      // console.log(cval)      
+      c1val = cval / 100/// (dt * moveLen)
+      x1val = -xLen / 100
+      z1val = -zLen / 100
       sinx = xLen / cval
       // console.log(xLen, cval)
       // console.log(sinx)
@@ -127,7 +112,7 @@ export class Action extends Component {
       //console.log('Euler angle y: ', this.node.eulerAngles.y)
       //console.log('curDeg: ', curDeg)
       return {
-        c1val: c1val, x1val: x1val, z1val: z1val, sinx: sinx, xdeg: xdeg 
+        c1val: c1val, x1val: x1val, z1val: z1val, sinx: sinx, xdeg: xdeg, cval: cval 
       }
     }
 
@@ -159,9 +144,11 @@ export class Action extends Component {
     }
 
     executeMove(thisClass:any) {
-        if (thisClass.c1val < 0) return
-        //this.moveObj(thisClass, thisClass.x1val, 0, thisClass.z1val)
-        thisClass.c1val = thisClass.c1val - 1
+        if (thisClass.cval < 0) return
+        //console.log(`move by xval: ${thisClass.x1val}, move by zval: ${thisClass.z1val}`)
+        //console.log('move by: ', thisClass.cval)
+        this.moveObj(thisClass, thisClass.x1val, 0, thisClass.z1val)
+        thisClass.cval = thisClass.cval - thisClass.c1val
         return
       }
       
