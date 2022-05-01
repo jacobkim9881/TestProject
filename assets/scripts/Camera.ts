@@ -52,6 +52,7 @@ export class Camera extends Component {
       rayMovingRes = PhysicsSystem.instance.raycastResults
       //console.log(e.getLocationX(), e.getLocationY())
       //console.log(rayMovingRes)
+      return
     }
 
     onMouseDown (e: EventMouse) {
@@ -101,49 +102,11 @@ export class Camera extends Component {
           z: posZ,
           deg: targetDeg
         } 
-        
-        //console.log(this._targetPos)
       }
-      
-      /*
-      this._button = e.getButton();
-
-      
-      //if object selected
-      if (this._button === 0) {
-        this._MousePlayer.changeMenuReturnsVal()        
-      } else if (isRay && this._button === 2 && this._isMPushed) {      
-        //if right mouse button clicked and selected
-        this._Action.calRotationVals(this, rayPosX, rayPosZ)
-      }
-      */
-
-      /*
-        let tarNode = rayRes[rayRes.length - 1];
-        let pos2:Vec3= this.node.position;
-        console.log(tarNode, pos2)
-        let _quat = new Quat();
-        let v1 = new Vec3();
-        let v2 = new Vec3();
-        let rad = 0.5 * Math.PI / 180;
-        let axis = Vec3.UP
-        //new Vec3(0, 0, 0);
-        let pos = tarNode._hitPoint;
-        Quat.fromAxisAngle(_quat, axis, rad);
-        Vec3.subtract(v1, pos2, pos)
-        Vec3.transformQuat(v2, v1, _quat)
-        this.node.position = Vec3.add(v2, pos, v2);
-        console.log(this.node.rotation)
-        Quat.rotateAround(_quat, this.node.rotation, axis, rad)
-        //Quat.rotateAroundLocal(tarNode._hitPoint, pos2, v1, 100);
-        */
+      return
     }
 
     update (dt: number) {
-      if (this._isMPushed && this._button === 0) {
-      //this._Action.objSetPos(this, rayPosX, 0, rayPosZ)
-      //console.log('pushed')
-      }
 
     }
 }

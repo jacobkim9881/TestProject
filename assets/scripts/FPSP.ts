@@ -64,8 +64,7 @@ export class FPSP extends Component {
 
     start () {
       fpsPos = this.node.getPosition()
-      FpsCamera = this.getComponentInChildren(CameraComponent)
-      console.log('dd')
+      FpsCamera = this.getComponentInChildren(CameraComponent)      
       const collider : Collider = this.getComponent(Collider)
       collider.on('onTriggerEnter', this.onTrigger, this)
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this)

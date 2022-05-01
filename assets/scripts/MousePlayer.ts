@@ -60,19 +60,10 @@ export class MousePlayer extends Component {
         objectRotDeg = objectInfo.objectRotDeg
         
         objectPos = objectInfo.objectPos
-      } else if (this._deg ===0) {
-        //console.log(objectRotDeg)
-      }
-      if (this._isMPushed && this._button === 0) {
-        //console.log(rayMovingRes)
-        //console.log(test5)
-      //this._Action.objSetPos(this, rayPosX, 0, rayPosZ)
-      //console.log('pushed')
-      }
+      } 
     }
 
     onMouseDown (e: EventMouse) {
-//console.log(this)
       this._button = e.getButton();
       
       //if object selected

@@ -29,7 +29,6 @@ export class Cannonball extends Component {
     private objRigid
     private child1
     private colider1
-    private _selected;
     private firedNum = 0
 
     private _Action = new Action()
@@ -38,41 +37,22 @@ export class Cannonball extends Component {
     }
 
     start () {
-      systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
-      test6 = this.callCannonBall
     }
 
     update() {
       if (clcikedNum - this.firedNum === 1) {
         this.firedNum = clcikedNum;
-      //this.shootObject(objectRotDeg);
       //console.log(targetRes)
       //console.log(targetRes[0]._collider.node._euler.y)
       //console.log(targetDeg)
       let rotate = targetDeg
       this.shootObject(rotate, targetRes[0]._hitPoint);
-      let clickedId = targetRes[0]._collider._id
       //console.log(clickerStr)
       // euler angle
       //console.log(rayRes[0]._collider.node._euler.y)
-      console.log(rayRes[0]._hitPoint)
-      console.log(rayRes)
+      //console.log(rayRes[0]._hitPoint)
+      //console.log(rayRes)
       }
-    }
-
-    onMouseDown(e) {
-      let selected = rayRes[0]._collider.node._id;
-      /*
-      if (labels[5].string === 'Mouse player clicked' && e.getButton() === 2) {
-        this.shootObject();
-      }
-      */
-      //console.log(e)
-     //console.log(test6)
-     if (clickerStr === 'Fire an obj' && button1Clicked) {
-      //this.shootObject(objectRotDeg);
-      
-     }
     }
 
     shootObject(objectRotDeg: number, hitPoint: any) {
@@ -95,7 +75,7 @@ export class Cannonball extends Component {
         editedRotDeg = editedRotDeg *  Math.PI / 180
         let forceAxisX = power * Math.sin(editedRotDeg);
         let forceAxisY = power * Math.cos(editedRotDeg);
-        console.log(forceAxisX, forceAxisY, objectRotDeg)
+        //console.log(forceAxisX, forceAxisY, objectRotDeg)
         //console.log(objectPos)
         let tempx = !hitPoint ? 1 : hitPoint.x;
         let tempz = !hitPoint ? 1 : hitPoint.z;
