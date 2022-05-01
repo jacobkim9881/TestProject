@@ -49,7 +49,7 @@ export class Cannonball extends Component {
       //console.log(targetRes)
       //console.log(targetRes[0]._collider.node._euler.y)
       //console.log(targetDeg)
-      let rotate = targetDeg.ditn * targetDeg.deg
+      let rotate = targetDeg
       this.shootObject(rotate, targetRes[0]._hitPoint);
       let clickedId = targetRes[0]._collider._id
       //console.log(clickerStr)
@@ -88,18 +88,19 @@ export class Cannonball extends Component {
       
         this.child1.getPosition()        
         //this.test1234.setLinearVelocity(new Vec3(100, 0, 0))        
-        console.log(objectRotDeg)
-        let editedRotDeg = objectRotDeg < 0 ? objectRotDeg + 360 : objectRotDeg
-        console.log(editedRotDeg)
-        editedRotDeg = editedRotDeg + 90
+        //console.log(objectRotDeg)
+        let editedRotDeg = - objectRotDeg + 90
+        //objectRotDeg < 0 ? objectRotDeg + 360 : objectRotDeg
+        //console.log(editedRotDeg)
         editedRotDeg = editedRotDeg *  Math.PI / 180
         let forceAxisX = power * Math.sin(editedRotDeg);
         let forceAxisY = power * Math.cos(editedRotDeg);
-        //console.log(forceAxisX, forceAxisY, objectRotDeg)
+        console.log(forceAxisX, forceAxisY, objectRotDeg)
         //console.log(objectPos)
         let tempx = !hitPoint ? 1 : hitPoint.x;
         let tempz = !hitPoint ? 1 : hitPoint.z;
         this.child1.setPosition(tempx, 2, tempz)        
+        //this.child1.setPosition(0, 2, 0)        
         this.objRigid.applyImpulse(new Vec3(forceAxisX, 10, forceAxisY))
         //this.child1.setPosition(forceAxisX, 0, forceAxisY)
 

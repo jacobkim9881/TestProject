@@ -39,7 +39,7 @@ export class Camera extends Component {
     private _button: number = null!
     private _Action
     private _MousePlayer = new MousePlayer()
-    private _targetObj
+    private _targetPos
 
     start () {
       RtsCamera = this.getComponent(CameraComponent)
@@ -69,13 +69,13 @@ export class Camera extends Component {
       let test7 = PhysicsSystem.instance.raycastResults[0].collider.node.uuid
       //console.log(this.node.parent)
       //console.log(this.node.parent.getComponent(test7))
-      let targetObj = PhysicsSystem.instance.raycastResults[0].collider.node      
-      this._targetObj = {
-        x: targetObj.getPosition().x,
-        z: targetObj.getPosition().z,
-        deg: targetObj.eulerAngles.y
+      let targetPos = PhysicsSystem.instance.raycastResults[0].collider.node      
+      this._targetPos = {
+        x: targetPos.getPosition().x,
+        z: targetPos.getPosition().z,
+        deg: targetPos.eulerAngles.y
       } 
-      //console.log(this._targetObj)
+      //console.log(this._targetPos)
       //console.log(PhysicsSystem.instance.raycastResults[0].constructor.name)
       //PhysicsRayResult
       //console.log(this.constructor.name)
@@ -91,16 +91,18 @@ export class Camera extends Component {
         targetPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z
         let posX = targetRes[0].hitPoint.x
         let posZ = targetRes[0].hitPoint.z
-        //console.log(this._targetObj)
+        //console.log(this._targetPos)
         
-        targetDeg = this._Action.calRotationValsByCollider(this._targetObj.x, this._targetObj.z, this._targetObj.deg, posX, posZ)        
-        this._targetObj = {
+        targetDeg = this._Action.calRotationValsByCollider(this._targetPos.x, this._targetPos.z, this._targetPos.deg, posX, posZ)        
+        this._targetPos = {
+          //x: 0,
+          //z: 0,
           x: posX,
           z: posZ,
-          deg: - targetDeg.ditn * targetDeg.deg
+          deg: targetDeg
         } 
         
-        //console.log(this._targetObj)
+        //console.log(this._targetPos)
       }
       
       /*

@@ -30,11 +30,13 @@ export class Action extends Component {
       //let curDeg = - collider.eulerAngles.y;    
       //console.log(curDeg)            
       //console.log(curx, curz, rayPosX, rayPosZ, moveLen, dt)
-      let betweenTwoObj = this.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)      
+      let targetDeg = this.degBetweenObjects(curx, curz, rayPosX, rayPosZ)      
 
-      let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, betweenTwoObj.xdeg)
-      console.log('calRotval By collider ',curz, rayPosZ, curDeg, betweenTwoObj.xdeg)
-      return rotateObj
+      //let rotateObj = this.rotateObj(curz, rayPosZ, curDeg, targetDeg)
+      
+      targetDeg = curz < rayPosZ ? targetDeg + 90 : - targetDeg + 270
+      //console.log('calRotval By collider ',curz, rayPosZ, curDeg, targetDeg)
+      return targetDeg
     }
 
     calRotationVals(thisClass: any, rayPosX: number, rayPosZ: number) {
@@ -51,10 +53,14 @@ export class Action extends Component {
       thisClass.z1val = betweenTwoObj.z1val;
 
       let rotateObj = thisClass._Action.rotateObj(curz, rayPosZ, curDeg, thisClass._betweenTwoObj.xdeg)
-      console.log('calRotvals: ',curz, rayPosZ, curDeg, thisClass._betweenTwoObj.xdeg)
+      //console.log('calRotvals: ',curz, rayPosZ, curDeg, thisClass._betweenTwoObj.xdeg)
       thisClass._ditn = rotateObj.ditn
       thisClass._deg = rotateObj.deg
       return
+    }
+
+    getTargetDeg(curz: number, rayPosZ: number, curDeg:number, xdeg:number) {
+      return xdeg = curz < rayPosZ ? xdeg + 90 : - xdeg + 270
     }
 
     rotateObj(curz: number, rayPosZ: number, curDeg:number, xdeg:number) {
@@ -90,6 +96,16 @@ export class Action extends Component {
         // console.log('direction: ',ditn)
         // console.log('quat deg - tar deg : ', deg)
         return {ditn: ditn, deg: deg}
+    }
+
+    degBetweenObjects(curx:number, curz: number, rayPosX:number, rayPosZ: number) {
+      let xLen, zLen, cval, sinx, xdeg
+      xLen = curx - rayPosX
+      zLen = curz - rayPosZ
+      cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2))
+      sinx = xLen / cval
+      xdeg = Math.asin(sinx) * (180 / Math.PI)
+      return xdeg
     }
 
     betweenObjects(curx:number, curz: number, rayPosX:number, rayPosZ: number, moveLen: number, dt: number) {
