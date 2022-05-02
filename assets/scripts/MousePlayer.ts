@@ -1,5 +1,5 @@
 
-import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat, Prefab, instantiate, Director, director, resources } from 'cc'
+import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat, Prefab, instantiate, Director, director, resources, Collider, CapsuleCollider } from 'cc'
 import { isRay, rayPosX, rayPosZ, rayRes, rayMovingRes, targetPosZ, targetPosX } from './Camera'
 import { labels, Menu, curPage } from './Menu'
 import { Action } from './Action'
@@ -45,16 +45,27 @@ export class MousePlayer extends Component {
     private _ditn: number = 0
     private _betweenTwoObj: any = null!
     private _button: number = null!
+    //private _collider = this.node.getChildByName('Capsule').getComponent(CapsuleCollider)
 
     start () {
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
       systemEvent.on(SystemEventType.MOUSE_UP, this.onMouseUp, this)
+      let _collider = this.node.getChildByName('Capsule').getComponent(CapsuleCollider)
+      console.log(_collider)
+      _collider.on('onCollisionEnter', this.collisionEnter, this)
+    }
+
+    collisionEnter(e) {
+      console.log('collided: ',e)
+      console.log(e.otherCollider)
+      console.log(e.otherCollider.node.name)
     }
 
     update (dt: number) {
       this._Action.executeMove(this)
 
       const objectInfo = this._Action.excuteRotate(this, objectRotDeg, objectPos, this._deg)
+      
       objectRotDeg = objectInfo.objectRotDeg
       objectPos = objectInfo.objectPos
     }

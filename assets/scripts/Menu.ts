@@ -2,7 +2,6 @@
 import { _decorator, Component, Node, Label, assetManager, Button, JsonAsset, systemEvent, SystemEventType, EventMouse, absMax, js, CCClass } from 'cc'
 import { FpsCamera } from './FPSP'
 import { RtsCamera } from './Camera'
-import { MousePlayer } from './MousePlayer'
 import { Cannonball } from './Cannonball'
 
 const { ccclass, property } = _decorator

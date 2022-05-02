@@ -3,7 +3,6 @@ import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec
 import { EDITOR } from 'cc/env'
 import { FPSP, fpsPos } from './FPSP'
 import { Action } from './Action'
-import { MousePlayer } from './MousePlayer'
 const { ccclass, property } = _decorator
 
 /**
@@ -38,7 +37,6 @@ export class Camera extends Component {
     private _isMPushed: number = 0
     private _button: number = null!
     private _Action
-    private _MousePlayer = new MousePlayer()
     private _targetPos
 
     start () {
