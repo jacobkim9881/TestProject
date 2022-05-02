@@ -106,9 +106,7 @@ export class Action extends Component {
       zLen = curz - rayPosZ
       cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2))
       // console.log(cval)      
-      //c1val = dt * moveLen
-      let aMove = dt * moveLen
-      c1val = Math.trunc(cval / aMove)
+      c1val = cval / (dt * moveLen)
       x1val = -xLen / c1val
       z1val = -zLen / c1val
       sinx = xLen / cval
@@ -120,7 +118,7 @@ export class Action extends Component {
       //console.log('curDeg: ', curDeg)
       return {
         c1val: c1val, x1val: x1val, z1val: z1val, sinx: sinx, xdeg: xdeg, cval: cval
-        , aMove: aMove, xLen: xLen, zLen: zLen 
+        , aMove: 0, xLen: xLen, zLen: zLen 
       }
     }
 
@@ -153,18 +151,10 @@ export class Action extends Component {
       return
     }
 
-    executeMove(thisClass:any) {
-        if (thisClass.cval < 0) return
-        //console.log(`move by xval: ${thisClass.x1val}, move by zval: ${thisClass.z1val}`)
-        //console.log('move by: ', thisClass.cval)
-        let xMove = Math.abs(thisClass.xLen) < Math.abs(thisClass.x1val) ? thisClass.xLen : thisClass.x1val
-        let zMove = Math.abs(thisClass.zLen) < Math.abs(thisClass.z1val) ? thisClass.zLen : thisClass.z1val
-        this.moveObj(thisClass, xMove, 0, zMove)
-        xMove > 0 ? console.log('x move, z move: ', xMove, zMove) : null
-        thisClass.xLen > 0 ? console.log('x len, zlen, cval: ', thisClass.xLen, thisClass.zLen, thisClass.cval) : null
-        thisClass.xLen = thisClass.xLen < 0 ? thisClass.xLen + thisClass.x1val : thisClass.xLen - thisClass.x1val
-        thisClass.zLen = thisClass.zLen < 0 ? thisClass.zLen + thisClass.z1val : thisClass.zLen - thisClass.z1val
-        thisClass.cval = thisClass.cval - thisClass.aMove
+    executeMove(thisClass:any) { 
+      if (thisClass.c1val < 0) return
+      this.moveObj(thisClass, thisClass.x1val, 0, thisClass.z1val)
+      thisClass.c1val = thisClass.c1val - 1
         return
       }
       
