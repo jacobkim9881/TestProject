@@ -41,6 +41,7 @@ export class FPSP extends Component {
     @property(AudioClip)
 
     private _curPos = new Vec3()
+
     private moveLen = 0.15
     private jumpHeight = 6
     private jumpLimit = 0.2
@@ -64,12 +65,12 @@ export class FPSP extends Component {
 
     start () {
       fpsPos = this.node.getPosition()
-      FpsCamera = this.getComponentInChildren(CameraComponent)      
+      FpsCamera = this.getComponentInChildren(CameraComponent)
       const collider : Collider = this.getComponent(Collider)
       collider.on('onTriggerEnter', this.onTrigger, this)
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this)
       systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this)
-      //systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
+      // systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
 
       FpsCamera.enabled = false
       // [3]
@@ -93,27 +94,27 @@ export class FPSP extends Component {
       }
     }
 
-    switchKey() {
+    switchKey () {
       switch (this.input) {
-        case KeyVal.LEFT:
-          this._left.isPushed = 1
-          break
-        case KeyVal.RIGHT:
-          this._right.isPushed = 1
-          break
-        case KeyVal.UP:
-          this._up.isPushed = 1
-          break
-        case KeyVal.DOWN:
-          this._down.isPushed = 1
-          break
-        case KeyVal.JUMP:
-          console.log('pushed')
-          this._jump.isPushed = 1
-          break
-        default:
-          break
-        }
+      case KeyVal.LEFT:
+        this._left.isPushed = 1
+        break
+      case KeyVal.RIGHT:
+        this._right.isPushed = 1
+        break
+      case KeyVal.UP:
+        this._up.isPushed = 1
+        break
+      case KeyVal.DOWN:
+        this._down.isPushed = 1
+        break
+      case KeyVal.JUMP:
+        console.log('pushed')
+        this._jump.isPushed = 1
+        break
+      default:
+        break
+      }
     }
 
     onKeyUP (e: EventKeyboard) {

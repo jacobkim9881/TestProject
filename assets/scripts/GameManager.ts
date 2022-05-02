@@ -16,20 +16,19 @@ const { ccclass, property } = _decorator
  */
 @ccclass('GameManager')
 export class GameManager extends Component {
-
     @property(Prefab)
 
       curPrefab: Prefab = null!
 
     createObject (n: number) {
       const child = instantiate(this.curPrefab)
-      //child.getPosition(new Vec3())       
-      this.node.addChild(child)     
-      //let objColider = child.addComponent(SphereCollider)
-      //let objRigid = child.addComponent(RigidBody)
-      //objColider.enabled = true;
-      //objRigid.wakeUp();
-      //objRigid.node.
+      // child.getPosition(new Vec3())
+      this.node.addChild(child)
+      // let objColider = child.addComponent(SphereCollider)
+      // let objRigid = child.addComponent(RigidBody)
+      // objColider.enabled = true;
+      // objRigid.wakeUp();
+      // objRigid.node.
       child.setPosition(n, 0, n)
     }
 
@@ -41,6 +40,6 @@ export class GameManager extends Component {
       this.createObject(1)
       this.createObject(2)
       this.createObject(3)
-      //console.log('prefab: ', this.curPrefab)
+      // console.log('prefab: ', this.curPrefab)
     }
 }

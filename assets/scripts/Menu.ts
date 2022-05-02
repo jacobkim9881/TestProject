@@ -3,7 +3,7 @@ import { _decorator, Component, Node, Label, assetManager, Button, JsonAsset, sy
 import { FpsCamera } from './FPSP'
 import { RtsCamera } from './Camera'
 import { MousePlayer } from './MousePlayer'
-import { Cannonball, test6 } from './Cannonball' 
+import { Cannonball } from './Cannonball'
 
 const { ccclass, property } = _decorator
 
@@ -22,7 +22,7 @@ const { ccclass, property } = _decorator
 export let labels:Array<any> = null!
 export let curPage: number = 0
 export let clickerStr: string = null!
-export let button1Clicked;
+export let button1Clicked
 export let clcikedNum: number = 0
 
 export enum clickerVal {
@@ -96,26 +96,25 @@ export class Menu extends Component {
     butts[buttonNum].node.on('click', (e) => {
       curPage = parseInt(this._pageNum.string.split('/')[0])
       const getPage = isPrev === 1 ? curPage - 2 : curPage
-      
+
       isPrev === 1
         ? this.prevEvent(curPage, isPrev, data, next, getPage)
         : this.nextEvent(curPage, data, next, getPage)
-        
-      console.log(curPage, isPrev)
-      //butts[2].node.emit('change', 'hi')
 
-        labels[6].string = data.json.page[getPage].button1;
-        butts[2].node.active = data.json.page[getPage].button1On        
+      console.log(curPage, isPrev)
+      // butts[2].node.emit('change', 'hi')
+
+      labels[6].string = data.json.page[getPage].button1
+      butts[2].node.active = data.json.page[getPage].button1On
       // console.log('cliked')
     }, this)
   }
 
   clcikerEvent (butts) {
     butts[2].node.on('mouseleave', (e) => {
-      
       clickerStr = 'off'
       console.log('mouse up')
-      button1Clicked = false;
+      button1Clicked = false
     })
 
     return butts[2].node.on('click', (e) => {
@@ -130,31 +129,30 @@ export class Menu extends Component {
         FpsCamera.enabled = true
         RtsCamera.enabled = false
         this._clicker.string = 'RTS click'
-        clickerStr= 'RTS click'
+        clickerStr = 'RTS click'
         // console.log(this._clicker.string)
       } else if (this._clicker.string === 'RTS click') {
         FpsCamera.enabled = false
         RtsCamera.enabled = true
         this._clicker.string = 'FPS click'
-        clickerStr= 'FPS click'
-      } else if (this._clicker.string === 'Fire an obj') {        
-        //fire 
-        //clickerStr = clickerVal.FIRE;
-        //test3.shootObj();
-        //console.log(this)
-        //clickerStr = 'on'
+        clickerStr = 'FPS click'
+      } else if (this._clicker.string === 'Fire an obj') {
+        // fire
+        // clickerStr = clickerVal.FIRE;
+        // test3.shootObj();
+        // console.log(this)
+        // clickerStr = 'on'
         clcikedNum++
-        //this._CannonBall.shootObject1(this._CannonBall)
+        // this._CannonBall.shootObject1(this._CannonBall)
 
-        
-        //console.log(test6)
-        //console.log()
-        button1Clicked = true;
+        // console.log(test6)
+        // console.log()
+        button1Clicked = true
       }
     }, this)
   }
 
   onMouseDown (e: EventMouse) {
-    //console.log(e)
+    // console.log(e)
   }
 }

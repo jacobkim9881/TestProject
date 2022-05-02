@@ -46,64 +46,60 @@ export class Camera extends Component {
       systemEvent.on(SystemEventType.MOUSE_DOWN, this.onMouseDown, this)
       systemEvent.on(SystemEventType.MOUSE_MOVE, this.onMouseMove, this)
     }
-    
-    onMouseMove(e) {
-      RtsCamera.screenPointToRay(e.getLocationX(), e.getLocationY(), this._ray)      
+
+    onMouseMove (e) {
+      RtsCamera.screenPointToRay(e.getLocationX(), e.getLocationY(), this._ray)
       rayMovingRes = PhysicsSystem.instance.raycastResults
-      //console.log(e.getLocationX(), e.getLocationY())
-      //console.log(rayMovingRes)
-      return
+      // console.log(e.getLocationX(), e.getLocationY())
+      // console.log(rayMovingRes)
     }
 
     onMouseDown (e: EventMouse) {
       RtsCamera.screenPointToRay(e.getLocationX(), e.getLocationY(), this._ray)
       isRay = PhysicsSystem.instance.raycast(this._ray, 0xffffffff, 100, true)
       this._button = e.getButton()
-//console.log(e.getButton())
+      // console.log(e.getButton())
       if (this._button === 0) {
-      
-      rayRes = PhysicsSystem.instance.raycastResults
-      rayPosX = PhysicsSystem.instance.raycastResults[0].hitPoint.x
-      rayPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z
-      //console.log(PhysicsSystem.instance.raycastResults[0].collider._id)
-      //console.log(PhysicsSystem.instance.raycastResults[0])
-      let test7 = PhysicsSystem.instance.raycastResults[0].collider.node.uuid
-      //console.log(this.node.parent)
-      //console.log(this.node.parent.getComponent(test7))
-      let targetPos = PhysicsSystem.instance.raycastResults[0].collider.node      
-      this._targetPos = {
-        x: targetPos.getPosition().x,
-        z: targetPos.getPosition().z,
-        deg: targetPos.eulerAngles.y
-      } 
-      //console.log(this._targetPos)
-      //console.log(PhysicsSystem.instance.raycastResults[0].constructor.name)
-      //PhysicsRayResult
-      //console.log(this.constructor.name)
-      // console.log('raycast get', isRay)
-      // console.log(rayRes)
-      // console.log(rayPosX, rayPosZ)
-      
+        rayRes = PhysicsSystem.instance.raycastResults
+        rayPosX = PhysicsSystem.instance.raycastResults[0].hitPoint.x
+        rayPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z
+        // console.log(PhysicsSystem.instance.raycastResults[0].collider._id)
+        // console.log(PhysicsSystem.instance.raycastResults[0])
+        const test7 = PhysicsSystem.instance.raycastResults[0].collider.node.uuid
+        // console.log(this.node.parent)
+        // console.log(this.node.parent.getComponent(test7))
+        const targetPos = PhysicsSystem.instance.raycastResults[0].collider.node
+        this._targetPos = {
+          x: targetPos.getPosition().x,
+          z: targetPos.getPosition().z,
+          deg: targetPos.eulerAngles.y
+        }
+        // console.log(this._targetPos)
+        // console.log(PhysicsSystem.instance.raycastResults[0].constructor.name)
+        // PhysicsRayResult
+        // console.log(this.constructor.name)
+        // console.log('raycast get', isRay)
+        // console.log(rayRes)
+        // console.log(rayPosX, rayPosZ)
       } else if (this._button === 2) {
-        //rayRes = PhysicsSystem.instance.raycastResults
+        // rayRes = PhysicsSystem.instance.raycastResults
         this._Action = new Action()
-        targetRes = PhysicsSystem.instance.raycastResults        
+        targetRes = PhysicsSystem.instance.raycastResults
         targetPosX = PhysicsSystem.instance.raycastResults[0].hitPoint.x
         targetPosZ = PhysicsSystem.instance.raycastResults[0].hitPoint.z
-        let posX = targetRes[0].hitPoint.x
-        let posZ = targetRes[0].hitPoint.z
-        //console.log(this._targetPos)
-        
-        targetDeg = this._Action.calRotationValsByCollider(this._targetPos.x, this._targetPos.z, this._targetPos.deg, posX, posZ)        
+        const posX = targetRes[0].hitPoint.x
+        const posZ = targetRes[0].hitPoint.z
+        // console.log(this._targetPos)
+
+        targetDeg = this._Action.calRotationValsByCollider(this._targetPos.x, this._targetPos.z, posX, posZ)
         this._targetPos = {
-          //x: 0,
-          //z: 0,
+          // x: 0,
+          // z: 0,
           x: posX,
           z: posZ,
           deg: targetDeg
-        } 
+        }
       }
-      return
     }
 
     update (dt: number) {

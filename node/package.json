@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": " npx eslint -c ./.eslintrc.json  ~/cocos2d-x-3.17.2/TestProject/assets/scripts/* --fix"
+    "lint": " npx eslint -c ./.eslintrc.json  ../assets/scripts/* --fix"
   },
   "keywords": [],
   "author": "",
