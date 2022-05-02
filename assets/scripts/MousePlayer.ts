@@ -43,6 +43,9 @@ export class MousePlayer extends Component {
     private c1val: number = 0
     private x1val: number = 0
     private z1val: number = 0
+    private xLen = 0
+    private zLen = 0
+    private aMove = 0
     private _deg: number = 0
     private _ditn: number = 0
     private _betweenTwoObj: any = null!

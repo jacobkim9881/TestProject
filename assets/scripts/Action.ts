@@ -47,7 +47,9 @@ export class Action extends Component {
       let moveLen = 10            
       let curDeg = - thisClass.node.eulerAngles.y;                
       thisClass._betweenTwoObj = thisClass._Action.betweenObjects(curx, curz, rayPosX, rayPosZ, moveLen, dt)
-      let betweenTwoObj = thisClass._betweenTwoObj;    
+      let betweenTwoObj = thisClass._betweenTwoObj;          
+      thisClass.xLen = betweenTwoObj.xLen
+      thisClass.zLen = betweenTwoObj.zLen
       thisClass.cval = betweenTwoObj.cval;    
       thisClass.c1val = betweenTwoObj.c1val;
       thisClass.x1val = betweenTwoObj.x1val;
@@ -104,9 +106,11 @@ export class Action extends Component {
       zLen = curz - rayPosZ
       cval = Math.sqrt(Math.pow(xLen, 2) + Math.pow(zLen, 2))
       // console.log(cval)      
-      c1val = cval / 100/// (dt * moveLen)
-      x1val = -xLen / 100
-      z1val = -zLen / 100
+      //c1val = dt * moveLen
+      let aMove = dt * moveLen
+      c1val = Math.trunc(cval / aMove)
+      x1val = -xLen / c1val
+      z1val = -zLen / c1val
       sinx = xLen / cval
       // console.log(xLen, cval)
       // console.log(sinx)
@@ -115,7 +119,8 @@ export class Action extends Component {
       //console.log('Euler angle y: ', this.node.eulerAngles.y)
       //console.log('curDeg: ', curDeg)
       return {
-        c1val: c1val, x1val: x1val, z1val: z1val, sinx: sinx, xdeg: xdeg, cval: cval 
+        c1val: c1val, x1val: x1val, z1val: z1val, sinx: sinx, xdeg: xdeg, cval: cval
+        , aMove: aMove, xLen: xLen, zLen: zLen 
       }
     }
 
@@ -152,8 +157,14 @@ export class Action extends Component {
         if (thisClass.cval < 0) return
         //console.log(`move by xval: ${thisClass.x1val}, move by zval: ${thisClass.z1val}`)
         //console.log('move by: ', thisClass.cval)
-        this.moveObj(thisClass, thisClass.x1val, 0, thisClass.z1val)
-        thisClass.cval = thisClass.cval - thisClass.c1val
+        let xMove = Math.abs(thisClass.xLen) < Math.abs(thisClass.x1val) ? thisClass.xLen : thisClass.x1val
+        let zMove = Math.abs(thisClass.zLen) < Math.abs(thisClass.z1val) ? thisClass.zLen : thisClass.z1val
+        this.moveObj(thisClass, xMove, 0, zMove)
+        xMove > 0 ? console.log('x move, z move: ', xMove, zMove) : null
+        thisClass.xLen > 0 ? console.log('x len, zlen, cval: ', thisClass.xLen, thisClass.zLen, thisClass.cval) : null
+        thisClass.xLen = thisClass.xLen < 0 ? thisClass.xLen + thisClass.x1val : thisClass.xLen - thisClass.x1val
+        thisClass.zLen = thisClass.zLen < 0 ? thisClass.zLen + thisClass.z1val : thisClass.zLen - thisClass.z1val
+        thisClass.cval = thisClass.cval - thisClass.aMove
         return
       }
       
