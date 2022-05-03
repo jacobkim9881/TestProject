@@ -20,6 +20,24 @@ export class GameManager extends Component {
 
       curPrefab: Prefab = null!
 
+    findByUuid(targetId, parent) {      
+      //if (parent.uuid === targetId) return console.log('node : \n', parent)
+      console.log('test') 
+      let nodes = parent.children
+      console.log('nodes: \n', nodes)
+      console.log('nodes length: \n', nodes.length)
+      console.log('node: \n', parent)
+      for (let i = 0; i < nodes.length; i++) {        
+        let node = nodes[i]
+        if (node.uuid === targetId) return console.log('found node : \n', node) 
+        else {
+          console.log('else find at: ', node)
+          this.findByUuid(targetId, node)
+          return console.log('node id: ', node.uuid)
+        }
+      }
+    }
+
     createObject (n: number) {
       const child = instantiate(this.curPrefab)
       // child.getPosition(new Vec3())
@@ -37,6 +55,9 @@ export class GameManager extends Component {
     }
 
     start () {
+      let tarId = "d8H0tyl0dJL6B39kzbm5iN"
+      let parent = this.node.parent
+      this.findByUuid(tarId, parent)
       this.createObject(1)
       this.createObject(2)
       this.createObject(3)
