@@ -1,22 +1,22 @@
 {
-  "Title": 'Manual',
+  "Title": "Manual",
   "page": [
     {
       "guide": "push 'w' to start play sound \n push arrow keys to move object",
-      "returns": '',
-      "button1": '',
+      "returns": "",
+      "button1": "",
       "button1On": false
     },
     {
-      "guide": 'click to FPS mode',
-      "returns": '',
-      "button1": 'FPS click',
+      "guide": "click to FPS mode",
+      "returns": "",
+      "button1": "FPS click",
       "button1On": true
     },
     {
-      "guide": '- click object and right-click at a point to move\n- button will fire an obj',
-      "returns": '',
-      "button1": 'Fire an obj',
+      "guide": "- click object and right-click at a point to move\n- button will fire an obj",
+      "returns": "",
+      "button1": "Fire an obj",
       "button1On": true
     }
   ]
