@@ -27,6 +27,7 @@ export let targetRes: Array<any> = null!
 export let targetDeg
 export let targetPosX: number = null!
 export let targetPosZ: number = null!
+export let targetId: string = null!
 
 @ccclass('Camera')
 export class Camera extends Component {
@@ -72,6 +73,7 @@ export class Camera extends Component {
           z: targetPos.getPosition().z,
           deg: targetPos.eulerAngles.y
         }
+        targetId = PhysicsSystem.instance.raycastResults[0].collider.node.uuid
         // console.log(this._targetPos)
         // console.log(PhysicsSystem.instance.raycastResults[0].constructor.name)
         // PhysicsRayResult

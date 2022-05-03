@@ -63,9 +63,9 @@ export class MousePlayer extends Component {
 
     update (dt: number) {
       this._Action.executeMove(this)
-
+      if (this._deg <= 0) return
       const objectInfo = this._Action.excuteRotate(this, objectRotDeg, objectPos, this._deg)
-      
+      //console.log('obj info: ',objectInfo)
       objectRotDeg = objectInfo.objectRotDeg
       objectPos = objectInfo.objectPos
     }

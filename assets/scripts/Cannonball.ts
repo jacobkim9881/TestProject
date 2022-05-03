@@ -1,7 +1,8 @@
 
-import { _decorator, Component, Node, Prefab, director, instantiate, resources, systemEvent, SystemEventType, SphereCollider, RigidBody, Vec3, Scene } from 'cc'
-import { targetDeg, targetRes } from './Camera'
+import { _decorator, Component, Node, Prefab, director, instantiate, resources, systemEvent, SystemEventType, SphereCollider, RigidBody, Vec3, Scene, Game } from 'cc'
+import { targetDeg, targetId, targetRes } from './Camera'
 import { clcikedNum } from './Menu'
+import { GameManager } from './GameManager'
 const { ccclass, property } = _decorator
 
 /**
@@ -25,12 +26,17 @@ export class Cannonball extends Component {
     private objRigid
     private _child
     private _collider
-    private firedNum = 0
+    private firedNum = 0    
+    private _Manager = new GameManager()
+    //private 
 
     update () {
       if (clcikedNum - this.firedNum !== 1) return
       this.firedNum = clcikedNum
-      this.shootObject(targetDeg, targetRes[0]._hitPoint)
+      //console.log('target id: ', targetId)
+      let objPos = this._Manager.findNodeByUuid(targetId, this.node.parent, []).getPosition()
+      //console.log(objPos)
+      this.shootObject(targetDeg, objPos)
     }
 
     shootObject (objectRotDeg: number, hitPoint: any, power: number = 5) {

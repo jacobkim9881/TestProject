@@ -20,13 +20,26 @@ export class GameManager extends Component {
 
       curPrefab: Prefab = null!
 
-    findByUuid(targetId, parent) {
-      let nodes = parent.children
-      for (const node of nodes) {        
-        if (node.uuid === targetId) return node //console.log(node) 
-        else this.findByUuid(targetId, node)
+      findNodeByUuid(targetId: string, parent, returns: Array<any>) {
+        const nodes = parent.children
+        for (const node of nodes) {        
+          if (node.uuid === targetId) return returns.push(node)//console.log(node) 
+          else this.findNodeByUuid(targetId, node, returns)
+        }
+        //console.log('find id arguments: ', targetId, parent)
+        //console.log(returns)
+        return returns[0]
       }
-      return
+
+    findNodesByUuid(targetId: string, parent, returns: Array<any>) {
+      const nodes = parent.children
+      for (const node of nodes) {        
+        if (node.uuid === targetId) returns.push(node)//console.log(node) 
+        else this.findNodesByUuid(targetId, node, returns)
+      }
+      //console.log('find id arguments: ', targetId, parent)
+      //console.log(returns)
+      return returns
     }
 
     createObject (n: number) {

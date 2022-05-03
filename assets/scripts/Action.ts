@@ -122,7 +122,6 @@ export class Action extends Component {
   }
 
   excuteRotate (thisClass: any, objectRotDeg: number, objectPos: Vec3, curDeg: number) {
-    if (curDeg < 0) return
     const move1 = thisClass._ditn * 4
     const moveLessThan1 = thisClass._deg
     const moveDegree = thisClass._deg < move1 && thisClass._deg > 0 ? moveLessThan1 : move1
