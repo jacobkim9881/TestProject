@@ -21,6 +21,7 @@ export class GameManager extends Component {
       curPrefab: Prefab = null!
 
       findNodeByUuid(targetId: string, parent, returns: Array<any>) {
+        if (returns.length > 0) return
         const nodes = parent.children
         for (const node of nodes) {        
           if (node.uuid === targetId) return returns.push(node)//console.log(node) 
