@@ -133,12 +133,14 @@ export class Action extends Component {
     return { objectRotDeg, objectPos }
   }
 
-  moveObj (thisClass:any, x: number, y: number, z: number) {
+  moveObj (thisClass:any, x: number, y: number, z: number, speed: number = 1) {
     // console.log(x !== 0 ? x : null + z !== 0 ? z :null)
     // console.log(x)
     // console.log(thisClass.node.getPosition(thisClass._curPos))
+    let movex = x * speed
+    let movez = z * speed
     thisClass.node.getPosition(thisClass._curPos)
-    Vec3.add(thisClass._curPos, thisClass._curPos, new Vec3(x, y, z))
+    Vec3.add(thisClass._curPos, thisClass._curPos, new Vec3(movex, y, movez))
     thisClass.node.setPosition(thisClass._curPos)
     // console.log(thisClass.node.getPosition(thisClass._curPos))
   }
@@ -150,7 +152,7 @@ export class Action extends Component {
 
   executeMove (thisClass:any) {
     if (thisClass.c1val < 0) return
-    this.moveObj(thisClass, thisClass.x1val, 0, thisClass.z1val)
+    this.moveObj(thisClass, thisClass.x1val, 0, thisClass.z1val, thisClass._speed)
     thisClass.c1val = thisClass.c1val - 1
   }
 

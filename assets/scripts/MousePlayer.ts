@@ -1,5 +1,5 @@
 
-import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat, Prefab, instantiate, Director, director, resources, Collider, CapsuleCollider } from 'cc'
+import { _decorator, Component, systemEvent, SystemEventType, Vec3, EventMouse, Label, Quat, quat, Prefab, instantiate, Director, director, resources, Collider, CapsuleCollider, RigidBody } from 'cc'
 import { isRay, rayPosX, rayPosZ, rayRes, rayMovingRes, targetPosZ, targetPosX } from './Camera'
 import { labels, Menu, curPage } from './Menu'
 import { Action } from './Action'
@@ -45,6 +45,7 @@ export class MousePlayer extends Component {
     private _ditn: number = 0
     private _betweenTwoObj: any = null!
     private _button: number = null!
+    private _speed: number = 1
     //private _collider = this.node.getChildByName('Capsule').getComponent(CapsuleCollider)
 
     start () {
@@ -56,9 +57,11 @@ export class MousePlayer extends Component {
     }
 
     collisionEnter(e) {
+      /*
       console.log('collided: ',e)
       console.log(e.otherCollider)
       console.log(e.otherCollider.node.name)
+      */
     }
 
     update (dt: number) {

@@ -84,9 +84,9 @@ export class FPSP extends Component {
     }
 
     onKeyDown (e: EventKeyboard) {
-      console.log('key pushed: ', e.keyCode)
-      console.log(this._jump.pushingTime)
-      console.log(this._jump.isPushed)
+      //console.log('key pushed: ', e.keyCode)
+      //console.log(this._jump.pushingTime)
+      //console.log(this._jump.isPushed)
       this.input = e.keyCode
       if (clickerStr === 'RTS click') {
         console.log(clickerStr)

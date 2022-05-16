@@ -1,4 +1,4 @@
-import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, AudioSource, AudioClip, Collider, ITriggerEvent, Quat } from 'cc'
+import { _decorator, Component, systemEvent, SystemEventType, EventKeyboard, Vec3, AudioSource, AudioClip, Collider, ITriggerEvent, Quat, BoxCollider } from 'cc'
 import { OneAxis } from './OneAxis'
 const { ccclass, property } = _decorator
 
@@ -55,15 +55,19 @@ export class Player extends Component {
     private _yCode = 0
 
     start () {
-      const collider : Collider = this.getComponent(Collider)
-      collider.on('onTriggerEnter', this.onTrigger, this)
+      const collider = this.getComponent(BoxCollider)
+      console.log(collider)
+      collider.on('onCollisionEnter', this.onCollisionEnter, this)
       systemEvent.on(SystemEventType.KEY_DOWN, this.onKeyDown, this)
       systemEvent.on(SystemEventType.KEY_UP, this.onKeyUP, this)
       // [3]
     }
 
-    private onTrigger (event: ITriggerEvent) {
-      // console.log(event.type, event);
+    onCollisionEnter (e: ITriggerEvent) {
+      //console.log(event.type, event);
+      //console.log(e.otherCollider.node.eulerAngles)
+      //console.log(e.selfCollider.node.eulerAngles.y)
+      console.log(e)
     }
 
     onKeyDown (e: EventKeyboard) {

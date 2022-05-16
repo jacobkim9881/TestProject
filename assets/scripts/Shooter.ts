@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, Prefab, director, instantiate, resources, systemEvent, SystemEventType, SphereCollider, RigidBody, Vec3, Scene, Game } from 'cc'
+import { _decorator, Component, Node, Prefab, director, instantiate, resources, systemEvent, SystemEventType, SphereCollider, RigidBody, Vec3, Scene, Game, random } from 'cc'
 import { targetDeg, targetId, targetRes } from './Camera'
 import { clcikedNum } from './Menu'
 import { GameManager } from './GameManager'
@@ -7,18 +7,18 @@ const { ccclass, property } = _decorator
 
 /**
  * Predefined variables
- * Name = Cannonball
- * DateTime = Sat Apr 23 2022 07:36:21 GMT+0900 (대한민국 표준시)
+ * Name = Shooter
+ * DateTime = Wed May 04 2022 16:47:56 GMT+0900 (대한민국 표준시)
  * Author = jacobkim9881
- * FileBasename = Cannonball.ts
- * FileBasenameNoExtension = Cannonball
- * URL = db://assets/scripts/Cannonball.ts
+ * FileBasename = Shooter.ts
+ * FileBasenameNoExtension = Shooter
+ * URL = db://assets/scripts/Shooter.ts
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
-
-@ccclass('Cannonball')
-export class Cannonball extends Component {
+ 
+@ccclass('Shooter')
+export class Shooter extends Component {
     @property(Prefab)
 
   private callCannonBall: Prefab = null!
@@ -28,15 +28,24 @@ export class Cannonball extends Component {
     private _collider
     private firedNum = 0    
     private _Manager = new GameManager()
-    //private 
+    private _totalTime: number = 0 
+    private _isFired:boolean = false
+    private _round: number = 3
 
     update (dt) {
-      if (clcikedNum - this.firedNum !== 1) return
-      this.firedNum = clcikedNum
-      //console.log('target id: ', targetId)
-      let objPos = this._Manager.findNodeByUuid(targetId, this.node.parent, []).getPosition()
-      //console.log(objPos)
-      this.shootObject(targetDeg, objPos)
+        this._totalTime = this._totalTime + dt
+        //console.log(Math.trunc(this._totalTime) % 5)
+        //console.log(Math.trunc(this._totalTime) % 5 === 4 && !this._isFired)
+        if (Math.trunc(this._totalTime) % this._round === 0 && this._isFired) {
+            //console.log('reset')
+            this._isFired = false
+        }
+        if (Math.trunc(this._totalTime) % this._round === this._round - 1 && !this._isFired) {
+            //console.log('fired')
+            let ranDeg = Math.random() * 30
+            this.shootObject(ranDeg, {x:0, y:0}, 10)
+            this._isFired = true
+        }
     }
 
     shootObject (objectRotDeg: number, hitPoint: any, power: number = 5) {
